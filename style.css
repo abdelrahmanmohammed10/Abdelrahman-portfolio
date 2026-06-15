@@ -255,11 +255,50 @@ button, input, textarea {
 }
 
 .content-section {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 120px 0;
+  padding: 80px 0;
+}
+
+/* SECTION DIVIDER LINE */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.08) 25%, 
+    rgba(255, 255, 255, 0.08) 75%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+  position: relative;
+  margin: 10px 0; /* subtle gap */
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 4px;
+  height: 4px;
+  background: var(--color-cyan);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 8px var(--color-cyan);
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  width: 4px;
+  height: 4px;
+  background: var(--color-purple);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 8px var(--color-purple);
 }
 
 /* HERO SECTION */
@@ -1804,13 +1843,19 @@ button, input, textarea {
     align-items: start;
     width: 100%;
   }
-  .about-text {
-    max-width: 100%;
-  }
-  .about-showcase {
+  .about-left-col {
     display: flex;
     flex-direction: column;
     gap: 40px;
+    max-width: 100%;
+  }
+  .about-text {
+    max-width: 100%;
+  }
+  .about-right-col {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
   }
   .stats-grid {
     margin-top: 0;
