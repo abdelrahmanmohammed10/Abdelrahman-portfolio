@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  /* ----- 4. CANVAS PARTICLE SYSTEM ----- */
+  /* ----- 4. CANVAS PARTICLE SYSTEM (MINIMAL STARFIELD) ----- */
   const canvas = document.getElementById('particle-canvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -63,101 +63,55 @@ document.addEventListener('DOMContentLoaded', () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    const mouse = { x: null, y: null, radius: 120 };
-
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-
-    window.addEventListener('mouseleave', () => {
-      mouse.x = null;
-      mouse.y = null;
-    });
-
     window.addEventListener('resize', () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     });
 
-    // Color choices corresponding to our theme variables
-    const colors = ['#F59E0B', '#06B6D4', '#7C3AED'];
-
-    class Particle {
+    class Star {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.size = Math.random() * 2 + 1;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.baseX = this.x;
-        this.baseY = this.y;
+        this.size = Math.random() * 1.0 + 0.3; // Tiny stars
+        this.vx = (Math.random() - 0.5) * 0.08; // Very slow drift
+        this.vy = (Math.random() - 0.5) * 0.08;
+        this.alpha = Math.random() * 0.5 + 0.2; // Translucent
       }
 
       update() {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Bounce on boundaries
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-
-        // Mouse interaction (push away)
-        if (mouse.x !== null && mouse.y !== null) {
-          const dx = this.x - mouse.x;
-          const dy = this.y - mouse.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < mouse.radius) {
-            const force = (mouse.radius - dist) / mouse.radius;
-            const angle = Math.atan2(dy, dx);
-            this.x += Math.cos(angle) * force * 2;
-            this.y += Math.sin(angle) * force * 2;
-          }
-        }
+        // Wrap around boundaries
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
       }
 
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
         ctx.fill();
       }
     }
 
     function init() {
       particles = [];
-      const count = Math.floor((width * height) / 16000);
-      const safeCount = Math.min(Math.max(count, 40), 120);
+      const count = Math.floor((width * height) / 18000);
+      const safeCount = Math.min(Math.max(count, 40), 100);
       for (let i = 0; i < safeCount; i++) {
-        particles.push(new Particle());
+        particles.push(new Star());
       }
     }
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
 
-      // Connect lines
       for (let i = 0; i < particles.length; i++) {
         particles[i].update();
         particles[i].draw();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 110) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            const alpha = (110 - dist) / 110 * 0.12;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
       }
 
       requestAnimationFrame(animate);
@@ -287,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ----- 8. ACTIVE NAV LINK TRACKING & BACKGROUND PLANETS ----- */
   const sections = document.querySelectorAll('section[id]');
-  const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
+  const navItems = document.querySelectorAll('.nav-spine .spine-dot, .mobile-menu .mob-link');
   const planetElements = document.querySelectorAll('.bg-planet');
   let lastActiveSection = '';
 
@@ -295,25 +249,43 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activeSec === lastActiveSection) return;
     lastActiveSection = activeSec;
 
-    let activeIdx = -1;
-    planetElements.forEach((p, idx) => {
+    // Solar system mapping coordinates (Center is 1500, 1500)
+    const coordinates = {
+      'hero': { x: 1500, y: 1500, scale: 1.6 },
+      'about': { x: 1747, y: 1253, scale: 1.25 },
+      'work': { x: 1076, y: 1076, scale: 1.25 },
+      'campaigns': { x: 1925, y: 2236, scale: 1.25 },
+      'journey': { x: 722, y: 2278, scale: 1.25 },
+      'credentials': { x: 2150, y: 374, scale: 1.25 },
+      'contact': { x: 138, y: 1996, scale: 1.25 }
+    };
+
+    const coord = coordinates[activeSec] || coordinates['hero'];
+
+    // Dynamic panning based on text layout alignment (desktop only)
+    const isMobile = window.innerWidth <= 900;
+    let xOffset = 0;
+    if (!isMobile) {
+      // Offset planet to the left (text on right) or right (text on left)
+      const rightLayoutSections = ['work', 'credentials'];
+      xOffset = rightLayoutSections.includes(activeSec) ? -280 : 280;
+    }
+
+    const panX = 1500 - coord.x + xOffset;
+    const panY = 1500 - coord.y;
+
+    // Set translation and scale variables for CSS transform panning
+    document.documentElement.style.setProperty('--pan-x', `${panX}px`);
+    document.documentElement.style.setProperty('--pan-y', `${panY}px`);
+    document.documentElement.style.setProperty('--zoom-scale', coord.scale);
+
+    // Toggle active classes on background planets
+    planetElements.forEach(p => {
+      p.classList.remove('active');
       if (p.getAttribute('data-sec') === activeSec) {
-        activeIdx = idx;
+        p.classList.add('active');
       }
     });
-
-    if (activeIdx !== -1) {
-      planetElements.forEach((p, idx) => {
-        p.classList.remove('active', 'previous', 'next');
-        if (idx === activeIdx) {
-          p.classList.add('active');
-        } else if (idx < activeIdx) {
-          p.classList.add('previous');
-        } else {
-          p.classList.add('next');
-        }
-      });
-    }
   };
 
   window.addEventListener('scroll', () => {
@@ -328,14 +300,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Default to about section planet near the top
-    if (window.scrollY < 120) {
-      currentActive = 'about';
+    // Default to Hero section when near the top of the scroll
+    if (window.scrollY < 180) {
+      currentActive = 'hero';
     }
 
     if (currentActive) {
       navItems.forEach(item => {
         item.classList.remove('active');
+        // When hero is active, highlight the home/hero link as active
         if (item.getAttribute('href') === `#${currentActive}`) {
           item.classList.add('active');
         }
@@ -353,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Calculate how much of the timeline has been scrolled past the center of the viewport
       const startTrigger = windowHeight / 2;
       const scrolled = startTrigger - rect.top;
-      const percent = Math.min(Math.max(scrolled / rect.height * 100, 0), 100);
+      const percent = Math.min(Math.max((scrolled / rect.height) * 100, 0), 100);
       spineProgress.style.height = percent + '%';
     }
   });

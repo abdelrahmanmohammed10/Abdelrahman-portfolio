@@ -23,29 +23,49 @@
   <div class="cursor-spotlight" aria-hidden="true"></div>
 
   <div class="bg-planet-stage" aria-hidden="true">
-    <div class="bg-planet active" data-sec="about">
-      <img src="earth.png" alt="" class="planet-img-bg" />
-      <div class="planet-glow cyan-glow"></div>
-    </div>
-    <div class="bg-planet next" data-sec="work">
-      <img src="neptune.jpg" alt="" class="planet-img-bg" />
-      <div class="planet-glow purple-glow"></div>
-    </div>
-    <div class="bg-planet next" data-sec="campaigns">
-      <img src="sun.png" alt="" class="planet-img-bg" />
-      <div class="planet-glow gold-glow"></div>
-    </div>
-    <div class="bg-planet next" data-sec="journey">
-      <img src="mars.png" alt="" class="planet-img-bg" />
-      <div class="planet-glow orange-glow"></div>
-    </div>
-    <div class="bg-planet next" data-sec="credentials">
-      <img src="saturn.jpg" alt="" class="planet-img-bg" />
-      <div class="planet-glow gold-cyan-glow"></div>
-    </div>
-    <div class="bg-planet next" data-sec="contact">
-      <img src="earth.png" alt="" class="planet-img-bg" style="transform: rotate(180deg);" />
-      <div class="planet-glow cyan-glow"></div>
+    <div class="solar-system">
+      <!-- Sun (Hero Section) -->
+      <div class="bg-planet active" data-sec="hero">
+        <img src="javier-miranda-5qPsVqmlQOs-unsplash.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow gold-glow"></div>
+      </div>
+      <!-- Earth (About Section) -->
+      <div class="bg-planet" data-sec="about">
+        <img src="planet-volumes-awYEQyYdHVE-unsplash.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow cyan-glow"></div>
+      </div>
+      <!-- Mars (Work Section) -->
+      <div class="bg-planet" data-sec="work">
+        <img src="pexels-zelch-20337601.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow purple-glow"></div>
+      </div>
+      <!-- Jupiter (Campaigns Section) -->
+      <div class="bg-planet" data-sec="campaigns">
+        <img src="pexels-t-keawkanok-3252323-13229275.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow gold-glow"></div>
+      </div>
+      <!-- Saturn (Journey Section) -->
+      <div class="bg-planet" data-sec="journey">
+        <img src="pexels-zelch-20337597.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow gold-cyan-glow"></div>
+      </div>
+      <!-- Uranus (Credentials Section) -->
+      <div class="bg-planet" data-sec="credentials">
+        <img src="pexels-zelch-20376399.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow purple-glow"></div>
+      </div>
+      <!-- Neptune (Contact Section) -->
+      <div class="bg-planet" data-sec="contact">
+        <img src="pexels-zelch-30596214.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow cyan-glow"></div>
+      </div>
     </div>
   </div>
 
@@ -54,6 +74,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <nav class="mobile-menu">
+      <a href="#hero" class="mob-link"><span class="num">00</span> Home</a>
       <a href="#about" class="mob-link"><span class="num">01</span> About</a>
       <a href="#work" class="mob-link"><span class="num">02</span> Work</a>
       <a href="#campaigns" class="mob-link"><span class="num">03</span> Campaigns</a>
@@ -64,114 +85,102 @@
   </div>
 
   <div class="app-container">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo-wrap"><img src="logo.png" alt="Logo" class="site-logo" /></div>
-        <div class="badge-status"><span class="status-dot"></span><span>Open to Opportunities</span></div>
-      </div>
-      <div class="sidebar-intro">
-        <h1 class="site-name magnetic-text">Abdelrahman<br>Mohammed</h1>
-        <p class="site-title">Digital Marketer <span class="sep">·</span> Marketing Strategist <span class="sep">·</span> Content Planner</p>
-        <p class="site-bio">Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.</p>
-      </div>
-      <nav class="sidebar-nav" aria-label="Main Navigation">
-        <ul class="nav-list">
-          <li><a href="#about" class="nav-item active"><span class="nav-line"></span><span class="nav-text">01 // ABOUT</span></a></li>
-          <li><a href="#work" class="nav-item"><span class="nav-line"></span><span class="nav-text">02 // FEATURED WORK</span></a></li>
-          <li><a href="#campaigns" class="nav-item"><span class="nav-line"></span><span class="nav-text">03 // CAMPAIGNS</span></a></li>
-          <li><a href="#journey" class="nav-item"><span class="nav-line"></span><span class="nav-text">04 // JOURNEY</span></a></li>
-          <li><a href="#credentials" class="nav-item"><span class="nav-line"></span><span class="nav-text">05 // CREDENTIALS</span></a></li>
-          <li><a href="#contact" class="nav-item"><span class="nav-line"></span><span class="nav-text">06 // CONTACT</span></a></li>
-        </ul>
-      </nav>
-      <div class="sidebar-footer">
-        <div class="sidebar-cv">
-          <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="btn-cv-download magnetic-button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Download CV</span>
-          </a>
-        </div>
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic-button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
-          <a href="mailto:abdelrahman.abdelhafez10@gmail.com" aria-label="Email" class="magnetic-button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </a>
-          <a href="tel:+201157265599" aria-label="Phone" class="magnetic-button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </a>
-        </div>
-      </div>
-    </aside>
+    <nav class="nav-spine" aria-label="Main Navigation">
+      <div class="spine-line"></div>
+      <ul class="spine-list">
+        <li><a href="#hero" class="spine-dot active" data-title="Home"></a></li>
+        <li><a href="#about" class="spine-dot" data-title="About"></a></li>
+        <li><a href="#work" class="spine-dot" data-title="Work"></a></li>
+        <li><a href="#campaigns" class="spine-dot" data-title="Campaigns"></a></li>
+        <li><a href="#journey" class="spine-dot" data-title="Journey"></a></li>
+        <li><a href="#credentials" class="spine-dot" data-title="Credentials"></a></li>
+        <li><a href="#contact" class="spine-dot" data-title="Contact"></a></li>
+      </ul>
+    </nav>
 
     <header class="mobile-header">
       <div class="logo-wrap"><img src="logo.png" alt="Logo" class="site-logo" /></div>
       <button class="burger" id="burger" aria-label="Open Menu"><span></span><span></span><span></span></button>
-    </header>
+    </heade    <main class="main-content">
 
-    <main class="main-content">
-
-      <section class="mobile-hero">
-        <div class="badge-status"><span class="status-dot"></span><span>Open to Opportunities</span></div>
-        <h1 class="mobile-site-name">Abdelrahman<br>Mohammed</h1>
-        <p class="mobile-site-title">Digital Marketer <span class="sep">·</span> Marketing Strategist <span class="sep">·</span> Content Planner</p>
-        <p class="mobile-site-bio">Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.</p>
-        <div class="mobile-cta-row">
-          <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="btn-cv-download magnetic-button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Download CV</span>
-          </a>
+      <section id="hero" class="hero-section content-section">
+        <div class="hero-brand-header">
+          <div class="logo-wrap"><img src="logo.png" alt="Logo" class="hero-logo" /></div>
+          <div class="badge-status"><span class="status-dot"></span><span>Open to Opportunities</span></div>
         </div>
-        <div class="mobile-social-links">
-          <a href="https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="mailto:abdelrahman.abdelhafez10@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
-          <a href="tel:+201157265599" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        <div class="hero-intro-grid">
+          <div class="hero-left-col animate-fadeInLeft">
+            <h1 class="hero-name split-reveal-heading">Abdelrahman<br><em>Mohammed</em></h1>
+            <p class="hero-title">Digital Marketer <span class="sep">·</span> Marketing Strategist <span class="sep">·</span> Content Planner</p>
+          </div>
+          <div class="hero-right-col animate-fadeInRight">
+            <p class="hero-bio">Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.</p>
+            <div class="hero-cta-row">
+              <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="btn-cv-download magnetic-button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download CV</span>
+              </a>
+              <div class="hero-social-links">
+                <a href="https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic-button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="mailto:abdelrahman.abdelhafez10@gmail.com" aria-label="Email" class="magnetic-button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </a>
+                <a href="tel:+201157265599" aria-label="Phone" class="magnetic-button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <section id="about" class="content-section">
         <div class="eyebrow-split"><span class="line"></span><span class="text">ABOUT ME</span></div>
         <h2 class="split-reveal-heading">The <em>Strategist</em> Behind the Brand</h2>
-        <div class="about-text">
-          <p class="reveal-paragraph">I am <strong>Abdelrahman</strong> — a digital marketer who believes every brand has a story worth telling, and every campaign should be built on real data, not guesswork.</p>
-          <p class="reveal-paragraph">With hands-on experience in <strong>content strategy, social media management, brand development, and customer retention</strong>, I have helped Egyptian brands build their digital presence from scratch — from creating full marketing plans and buyer personas to executing multi-platform content campaigns.</p>
-          <p class="reveal-paragraph">I bring <strong>structured thinking to creative work</strong> — measuring, iterating, and optimizing until the results speak for themselves.</p>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-card reveal-card"><span class="stat-num" data-val="4">0</span><span class="stat-plus">+</span><span class="stat-label">Years Experience</span></div>
-          <div class="stat-card reveal-card"><span class="stat-num" data-val="7">0</span><span class="stat-plus">+</span><span class="stat-label">Certifications</span></div>
-          <div class="stat-card reveal-card"><span class="stat-num" data-val="3">0</span><span class="stat-label">Major Projects</span></div>
-        </div>
-        <div class="skills-showcase">
-          <h3 class="skills-title">Core Competencies</h3>
-          <div class="skills-grid">
-            <div class="skill-category reveal-card">
-              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><h4>Strategy &amp; Planning</h4></div>
-              <div class="tags-list"><span class="tag">SWOT</span><span class="tag">SMART Goals</span><span class="tag">4Ps</span><span class="tag">Blue Ocean</span><span class="tag">Buyer Personas</span><span class="tag">Business Model Canvas</span></div>
+        <div class="about-layout-grid">
+          <div class="about-text">
+            <p class="reveal-paragraph">I am <strong>Abdelrahman</strong> — a digital marketer who believes every brand has a story worth telling, and every campaign should be built on real data, not guesswork.</p>
+            <p class="reveal-paragraph">With hands-on experience in <strong>content strategy, social media management, brand development, and customer retention</strong>, I have helped Egyptian brands build their digital presence from scratch — from creating full marketing plans and buyer personas to executing multi-platform content campaigns.</p>
+            <p class="reveal-paragraph">I bring <strong>structured thinking to creative work</strong> — measuring, iterating, and optimizing until the results speak for themselves.</p>
+          </div>
+          <div class="about-showcase">
+            <div class="stats-grid">
+              <div class="stat-card reveal-card"><span class="stat-num" data-val="4">0</span><span class="stat-plus">+</span><span class="stat-label">Years Experience</span></div>
+              <div class="stat-card reveal-card"><span class="stat-num" data-val="7">0</span><span class="stat-plus">+</span><span class="stat-label">Certifications</span></div>
+              <div class="stat-card reveal-card"><span class="stat-num" data-val="3">0</span><span class="stat-label">Major Projects</span></div>
             </div>
-            <div class="skill-category reveal-card">
-              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><h4>Content &amp; Copywriting</h4></div>
-              <div class="tags-list"><span class="tag">AR/EN Copy</span><span class="tag">Content Calendars</span><span class="tag">Hero/Hub/Hygiene</span><span class="tag">Brand Voice</span><span class="tag">Content Audits</span></div>
-            </div>
-            <div class="skill-category reveal-card">
-              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><h4>Growth &amp; Analytics</h4></div>
-              <div class="tags-list"><span class="tag">KPI Frameworks</span><span class="tag">Meta Insights</span><span class="tag">Competitor Analysis</span><span class="tag">Conversion Optimization</span></div>
-            </div>
-            <div class="skill-category reveal-card">
-              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h4>Digital Tools</h4></div>
-              <div class="tags-list"><span class="tag">Meta Ads</span><span class="tag">TikTok Ads</span><span class="tag">Canva</span><span class="tag">Odoo CMS</span><span class="tag">AI Tools</span><span class="tag">Office 365</span></div>
-            </div>
-            <div class="skill-category reveal-card">
-              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><h4>Leadership</h4></div>
-              <div class="tags-list"><span class="tag">Team Lead (8+)</span><span class="tag">Corporate Trainer</span><span class="tag">Public Speaking</span><span class="tag">Bilingual</span></div>
+            <div class="skills-showcase">
+              <h3 class="skills-title">Core Competencies</h3>
+              <div class="skills-grid">
+                <div class="skill-category reveal-card">
+                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><h4>Strategy &amp; Planning</h4></div>
+                  <div class="tags-list"><span class="tag">SWOT</span><span class="tag">SMART Goals</span><span class="tag">4Ps</span><span class="tag">Blue Ocean</span><span class="tag">Buyer Personas</span><span class="tag">Business Model Canvas</span></div>
+                </div>
+                <div class="skill-category reveal-card">
+                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><h4>Content &amp; Copywriting</h4></div>
+                  <div class="tags-list"><span class="tag">AR/EN Copy</span><span class="tag">Content Calendars</span><span class="tag">Hero/Hub/Hygiene</span><span class="tag">Brand Voice</span><span class="tag">Content Audits</span></div>
+                </div>
+                <div class="skill-category reveal-card">
+                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><h4>Growth &amp; Analytics</h4></div>
+                  <div class="tags-list"><span class="tag">KPI Frameworks</span><span class="tag">Meta Insights</span><span class="tag">Competitor Analysis</span><span class="tag">Conversion Optimization</span></div>
+                </div>
+                <div class="skill-category reveal-card">
+                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h4>Digital Tools</h4></div>
+                  <div class="tags-list"><span class="tag">Meta Ads</span><span class="tag">TikTok Ads</span><span class="tag">Canva</span><span class="tag">Odoo CMS</span><span class="tag">AI Tools</span><span class="tag">Office 365</span></div>
+                </div>
+                <div class="skill-category reveal-card">
+                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><h4>Leadership</h4></div>
+                  <div class="tags-list"><span class="tag">Team Lead (8+)</span><span class="tag">Corporate Trainer</span><span class="tag">Public Speaking</span><span class="tag">Bilingual</span></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-
-      <section id="work" class="content-section">
+      <section id="work" class="content-section section-right-layout">
         <div class="eyebrow-split"><span class="line"></span><span class="text">FEATURED WORK</span></div>
         <h2 class="split-reveal-heading">Mission <em>Log</em></h2>
         <p class="section-lead">Strategic marketing projects — end-to-end brand development, market research, and growth planning.</p>
@@ -212,7 +221,6 @@
         </div>
       </section>
 
-
       <section id="campaigns" class="content-section">
         <div class="eyebrow-split"><span class="line"></span><span class="text">CAMPAIGNS</span></div>
         <h2 class="split-reveal-heading">Content &amp; <em>Copywriting</em></h2>
@@ -226,7 +234,6 @@
           <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 06</span><span class="post-obj">Conversion Funnel</span></div><p class="post-caption" dir="rtl">بوست ختامي للحملة الأولى — يلخّص رسالة البراند ويفتح الباب للـ conversion في المرحلة الجاية.</p><div class="campaign-meta"><strong>Objective:</strong> تحضير الجمهور للانتقال من Awareness إلى Consideration.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/411974437306485/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
         </div>
       </section>
-
 
       <section id="journey" class="content-section">
         <div class="eyebrow-split"><span class="line"></span><span class="text">JOURNEY</span></div>
@@ -243,20 +250,25 @@
         </div>
       </section>
 
-
-      <section id="credentials" class="content-section">
-        <div class="eyebrow-split"><span class="line"></span><span class="text">CREDENTIALS</span></div>
-        <h2 class="split-reveal-heading">Verified <em>Skills</em></h2>
-        <p class="section-lead">The top 4 most impactful credentials driving results in the Egyptian marketing and corporate sector.</p>
-        <div class="certificates-grid">
-          <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_24_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Marketing Diploma</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">Professional Diploma in Digital Marketing</h3><p class="cert-card-issuer">BSA (Business Studies Academy)</p><p class="cert-card-reason">40 hours of intensive training in Performance Marketing, content strategy, media buying, and a graduation project. Holds significant corporate value.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
-          <div class="certificate-glass-card reveal-card border-cyan" data-img="certificates/photo_23_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Corporate Award</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">1st Enterprise Loyalty Award</h3><p class="cert-card-issuer">Concentrix / Boost Mobile</p><p class="cert-card-reason">Official recognition for real-world excellence in churn reduction, customer retention, sales consulting, and lifetime value optimization.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
-          <div class="certificate-glass-card reveal-card border-purple" data-img="certificates/photo_1_2026-06-14_15-50-39.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Trainer Diploma</span><span class="cert-year">2024</span></div><h3 class="cert-card-title">Certified Corporate Trainer (CCT)</h3><p class="cert-card-issuer">CTCHD / Dr. Ibrahim Elfiky</p><p class="cert-card-reason">Demonstrated competence in corporate onboarding, leadership alignment, speech delivery, and executive communication structures.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
-          <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_fwd.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Tech Credential</span><span class="cert-year">2020</span></div><h3 class="cert-card-title">Digital Marketing Challenger Track</h3><p class="cert-card-issuer">Egypt FWD — Udacity + ITIDA</p><p class="cert-card-reason">Government-backed international credential focusing on digital analytics, target personas, social media funnels, and marketing metrics.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
-        </div>
-        <div class="cert-download-center reveal-card">
-          <p>Looking for the full set of certifications including ECDL, Satellite Sciences, and others?</p>
-          <a href="ceritificate portofolio.pdf" class="btn-full-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Full Certificate Portfolio (PDF)</span></a>
+      <section id="credentials" class="content-section section-right-layout">
+        <div class="credentials-layout-grid">
+          <div class="credentials-info-col">
+            <div class="eyebrow-split"><span class="line"></span><span class="text">CREDENTIALS</span></div>
+            <h2 class="split-reveal-heading">Verified <em>Skills</em></h2>
+            <p class="section-lead">The top 4 most impactful credentials driving results in the Egyptian marketing and corporate sector.</p>
+            <div class="cert-download-center reveal-card">
+              <p>Looking for the full set of certifications including ECDL, Satellite Sciences, and others?</p>
+              <a href="ceritificate portofolio.pdf" class="btn-full-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Full Certificate Portfolio (PDF)</span></a>
+            </div>
+          </div>
+          <div class="credentials-cards-col">
+            <div class="certificates-grid">
+              <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_24_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Marketing Diploma</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">Professional Diploma in Digital Marketing</h3><p class="cert-card-issuer">BSA (Business Studies Academy)</p><p class="cert-card-reason">40 hours of intensive training in Performance Marketing, content strategy, media buying, and a graduation project. Holds significant corporate value.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+              <div class="certificate-glass-card reveal-card border-cyan" data-img="certificates/photo_23_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Corporate Award</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">1st Enterprise Loyalty Award</h3><p class="cert-card-issuer">Concentrix / Boost Mobile</p><p class="cert-card-reason">Official recognition for real-world excellence in churn reduction, customer retention, sales consulting, and lifetime value optimization.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+              <div class="certificate-glass-card reveal-card border-purple" data-img="certificates/photo_1_2026-06-14_15-50-39.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Trainer Diploma</span><span class="cert-year">2024</span></div><h3 class="cert-card-title">Certified Corporate Trainer (CCT)</h3><p class="cert-card-issuer">CTCHD / Dr. Ibrahim Elfiky</p><p class="cert-card-reason">Demonstrated competence in corporate onboarding, leadership alignment, speech delivery, and executive communication structures.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+              <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_fwd.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Tech Credential</span><span class="cert-year">2020</span></div><h3 class="cert-card-title">Digital Marketing Challenger Track</h3><p class="cert-card-issuer">Egypt FWD — Udacity + ITIDA</p><p class="cert-card-reason">Government-backed international credential focusing on digital analytics, target personas, social media funnels, and marketing metrics.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+            </div>
+          </div>
         </div>
       </section>
 
