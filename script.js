@@ -248,13 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Solar system mapping coordinates (Center is 1500, 1500)
     const coordinates = {
-      'hero': { x: 1500, y: 1500, scale: 1.6 },
-      'about': { x: 1747, y: 1253, scale: 1.25 },
-      'work': { x: 1076, y: 1076, scale: 1.25 },
-      'campaigns': { x: 1925, y: 2236, scale: 1.25 },
-      'journey': { x: 722, y: 2278, scale: 1.25 },
-      'credentials': { x: 2150, y: 374, scale: 1.25 },
-      'contact': { x: 138, y: 1996, scale: 1.25 }
+      'hero': { x: 1500, y: 1500, scale: 1.15 },
+      'about': { x: 1747, y: 1253, scale: 1.15 },
+      'work': { x: 1076, y: 1076, scale: 1.15 },
+      'campaigns': { x: 1925, y: 2236, scale: 1.15 },
+      'journey': { x: 722, y: 2278, scale: 1.15 },
+      'credentials': { x: 2150, y: 374, scale: 1.15 },
+      'contact': { x: 138, y: 1996, scale: 1.15 }
     };
 
     const coord = coordinates[activeSec] || coordinates['hero'];
@@ -553,6 +553,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (successUsername) {
               successUsername.textContent = nameVal ? nameVal.trim() : 'Friend';
             }
+            const successUsernameAr = document.getElementById('success-username-ar');
+            if (successUsernameAr) {
+              successUsernameAr.textContent = nameVal ? nameVal.trim() : 'صديقي';
+            }
             
             // Show success state
             formSuccessState.style.display = 'flex';
@@ -590,5 +594,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 50);
     });
   }
+
+  /* ----- 15. LANGUAGE SWITCHER LOGIC ----- */
+  const initLanguage = () => {
+    const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+    setLanguage(savedLang);
+
+    // Bind clicks to all language toggle buttons
+    const langBtns = document.querySelectorAll('.lang-btn');
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang');
+        setLanguage(lang);
+      });
+    });
+  };
+
+  const setLanguage = (lang) => {
+    document.documentElement.setAttribute('lang', lang);
+    localStorage.setItem('selectedLanguage', lang);
+
+    // Update active visual state for language buttons
+    const langBtns = document.querySelectorAll('.lang-btn');
+    langBtns.forEach(btn => {
+      if (btn.getAttribute('data-lang') === lang) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update document title based on language
+    if (lang === 'ar') {
+      document.title = 'عبد الرحمن عبد الحافظ — مخطط واستراتيجي تسويق رقمي';
+    } else {
+      document.title = 'Abdelrahman Abdelhafez — Digital Marketing Strategist';
+    }
+  };
+
+  initLanguage();
 
 });

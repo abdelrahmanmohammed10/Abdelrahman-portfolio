@@ -1480,23 +1480,24 @@ button, input, textarea {
   width: 3000px;
   height: 3000px;
   /* Transform pans and zooms centered on the active planet coordinates */
-  transform: translate(calc(-50% + var(--pan-x, 0px)), calc(-50% + var(--pan-y, 0px))) scale(var(--zoom-scale, 1.2));
+  transform: translate(calc(-50% + var(--pan-x, 0px)), calc(-50% + var(--pan-y, 0px))) scale(var(--zoom-scale, 1.15));
   transform-origin: center center;
-  transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bg-planet {
   position: absolute;
   width: 580px;
   height: 580px;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.9);
   pointer-events: none;
   opacity: 0.02; /* Faintly visible in the background when inactive */
-  transition: opacity 1.8s ease-in-out;
+  transition: opacity 2.2s ease-in-out, transform 2.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bg-planet.active {
   opacity: 0.28; /* Sitting in negative space, highly readable text */
+  transform: translate(-50%, -50%) scale(1.1);
   z-index: 2;
 }
 
@@ -1532,22 +1533,25 @@ button, input, textarea {
   top: 1996px;
 }
 
-/* Base image styling - removes circular borders and applies mask blending */
-.planet-img-bg {
+/* Base 3D Sphere texture repeating styling */
+.planet-sphere {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border-radius: 50%;
+  background-repeat: repeat-x;
+  background-size: cover;
+  background-position: 0 0;
   display: block;
   filter: brightness(0.85) contrast(1.1);
   mix-blend-mode: screen; /* drops out the black background completely */
   -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0) 66%);
   mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0) 66%);
-  animation: planetSpinBackground 320s linear infinite;
+  animation: planetScrollTexture 120s linear infinite;
 }
 
-@keyframes planetSpinBackground {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes planetScrollTexture {
+  from { background-position-x: 0; }
+  to { background-position-x: -200%; } /* Scrolls horizontal repeat-x texture */
 }
 
 /* Realistic 3D Sphere Shading Overlay */
@@ -2328,18 +2332,21 @@ button, input, textarea {
 
   .solar-system {
     /* Scale down the orbit system and shift it up slightly on mobile for header alignment */
-    transform: translate(calc(-50% + var(--pan-x, 0px) * 0.65), calc(-50% + var(--pan-y, 0px) * 0.65 - 120px)) scale(calc(var(--zoom-scale, 1.2) * 0.6));
-    transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translate(calc(-50% + var(--pan-x, 0px) * 0.65), calc(-50% + var(--pan-y, 0px) * 0.65 - 120px)) scale(calc(var(--zoom-scale, 1.15) * 0.6));
+    transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .bg-planet {
     width: 420px;
     height: 420px;
+    transform: translate(-50%, -50%) scale(0.9);
     opacity: 0.02; /* Faintly visible in the background when inactive */
+    transition: opacity 2.2s ease-in-out, transform 2.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .bg-planet.active {
     opacity: 0.16; /* Focused planet opacity for readable overlay text */
+    transform: translate(-50%, -50%) scale(1.1);
   }
   
   /* Performance override for mobile - remove expensive blurs */
@@ -2421,5 +2428,243 @@ button, input, textarea {
   
   .drawer-panel {
     padding: 60px 24px 40px;
+  }
+}
+
+/* ============================================================
+   LOCALIZATION & LANGUAGE SWITCHER STYLES
+   ============================================================ */
+
+/* 1. Visibility Logic */
+html[lang="en"] .lang-ar {
+  display: none !important;
+}
+
+html[lang="ar"] .lang-en {
+  display: none !important;
+}
+
+/* 2. Floating Language Toggle (Desktop Only) */
+.floating-lang-toggle {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 30px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: var(--transition-smooth);
+}
+
+.floating-lang-toggle button {
+  color: var(--text-muted);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.floating-lang-toggle button.active {
+  color: var(--color-cyan);
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+}
+
+.floating-lang-toggle button:hover {
+  color: var(--text-primary);
+}
+
+.floating-lang-toggle .sep {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* 3. Mobile Header & Language Toggle */
+.mobile-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.mobile-lang-toggle button {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 700;
+  transition: var(--transition-fast);
+}
+
+.mobile-lang-toggle button.active {
+  color: var(--color-cyan);
+}
+
+.mobile-lang-toggle .sep {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 1024px) {
+  .floating-lang-toggle {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   ARABIC RTL LAYOUT OVERRIDES & CAIRO FONT
+   ============================================================ */
+html[lang="ar"] {
+  direction: rtl;
+  font-family: 'Cairo', sans-serif;
+  --font-heading: 'Cairo', sans-serif;
+  --font-body: 'Cairo', sans-serif;
+}
+
+html[lang="ar"] .nav-spine {
+  left: auto;
+  right: 50px;
+}
+
+html[lang="ar"] .app-container {
+  padding: 0 140px 0 40px;
+}
+
+html[lang="ar"] .eyebrow-split {
+  flex-direction: row-reverse;
+}
+
+html[lang="ar"] .timeline-container {
+  padding-left: 0;
+  padding-right: 32px;
+}
+
+html[lang="ar"] .timeline-spine {
+  left: auto;
+  right: 0;
+}
+
+html[lang="ar"] .spine-progress {
+  left: auto;
+  right: 0;
+}
+
+html[lang="ar"] .timeline-dot {
+  left: auto;
+  right: -40px;
+}
+
+html[lang="ar"] .project-glass-card {
+  border-left: none;
+  border-right: 1px solid var(--border-color);
+}
+
+html[lang="ar"] .project-glass-card:hover {
+  border-right-color: var(--border-hover);
+}
+
+html[lang="ar"] .card-accent-line {
+  left: auto;
+  right: 0;
+}
+
+html[lang="ar"] .detail-item {
+  gap: 20px;
+}
+
+html[lang="ar"] .drawer-panel {
+  right: auto;
+  left: 0;
+  border-left: none;
+  border-right: 1px solid var(--border-color);
+  transform: translateX(-100%);
+}
+
+html[lang="ar"] .project-drawer.active .drawer-panel {
+  transform: translateX(0);
+}
+
+html[lang="ar"] .drawer-close {
+  left: auto;
+  right: 30px;
+}
+
+html[lang="ar"] .spine-dot::after {
+  left: auto;
+  right: 24px;
+  transform: translateY(-50%) translateX(8px);
+}
+
+html[lang="ar"] .spine-dot:hover::after,
+html[lang="ar"] .spine-dot.active::after {
+  transform: translateY(-50%) translateX(0);
+}
+
+html[lang="ar"] .form-group label {
+  text-align: right;
+}
+
+html[lang="ar"] .form-title,
+html[lang="ar"] .form-desc {
+  text-align: right;
+}
+
+/* Easing for Spine Dot Tooltip in RTL */
+html[lang="ar"] .spine-dot::after {
+  content: attr(data-title-ar);
+}
+
+html[lang="en"] .spine-dot::after {
+  content: attr(data-title-en);
+}
+
+@media (min-width: 1025px) {
+  html[lang="ar"] .timeline-spine {
+    left: auto;
+    right: 240px;
+  }
+  html[lang="ar"] .timeline-dot {
+    left: auto;
+    right: 231px;
+  }
+  html[lang="ar"] .timeline-header {
+    text-align: left;
+  }
+  html[lang="ar"] .credentials-layout-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+  html[lang="ar"] .cert-download-center {
+    text-align: right;
+  }
+}
+
+@media (max-width: 1024px) {
+  html[lang="ar"] .app-container {
+    padding: 0 20px;
+  }
+  html[lang="ar"] .main-content {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  html[lang="ar"] .mobile-header {
+    left: 16px;
+    right: 16px;
+  }
+  html[lang="ar"] .burger span:nth-child(2) {
+    transform: translateX(-3px);
+  }
+  html[lang="ar"] .burger:hover span:nth-child(2) {
+    transform: translateX(0);
   }
 }

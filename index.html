@@ -7,7 +7,7 @@
   <meta name="description" content="Portfolio of Abdelrahman Mohammed Abdelhafez — Digital Marketer, Marketing Strategist, and Content Planner." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=3.2.0" />
   <link rel="icon" type="image/png" href="logo.png" />
 
@@ -37,47 +37,54 @@
   <div class="gradient-mesh" aria-hidden="true"></div>
   <div class="cursor-spotlight" aria-hidden="true"></div>
 
+  <!-- Floating Language Switcher (Desktop Only) -->
+  <div class="floating-lang-toggle" aria-label="Language Selector">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <span class="sep">/</span>
+    <button class="lang-btn" data-lang="ar">AR</button>
+  </div>
+
   <div class="bg-planet-stage" aria-hidden="true">
     <div class="solar-system">
       <!-- Sun (Hero Section) -->
       <div class="bg-planet active" data-sec="hero">
-        <img src="javier-miranda-5qPsVqmlQOs-unsplash.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-sphere" style="background-image: url('javier-miranda-5qPsVqmlQOs-unsplash.jpg');"></div>
         <div class="planet-shadow-overlay"></div>
         <div class="planet-glow gold-glow"></div>
       </div>
       <!-- Earth (About Section) -->
       <div class="bg-planet" data-sec="about">
-        <img src="planet-volumes-awYEQyYdHVE-unsplash.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-sphere" style="background-image: url('planet-volumes-awYEQyYdHVE-unsplash.jpg');"></div>
         <div class="planet-shadow-overlay"></div>
         <div class="planet-glow cyan-glow"></div>
       </div>
       <!-- Mars (Work Section) -->
       <div class="bg-planet" data-sec="work">
-        <img src="pexels-zelch-20337601.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-sphere" style="background-image: url('pexels-zelch-20337601.jpg');"></div>
         <div class="planet-shadow-overlay"></div>
         <div class="planet-glow purple-glow"></div>
       </div>
       <!-- Jupiter (Campaigns Section) -->
       <div class="bg-planet" data-sec="campaigns">
-        <img src="pexels-t-keawkanok-3252323-13229275.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-sphere" style="background-image: url('pexels-t-keawkanok-3252323-13229275.jpg');"></div>
         <div class="planet-shadow-overlay"></div>
         <div class="planet-glow gold-glow"></div>
       </div>
       <!-- Saturn (Journey Section) -->
       <div class="bg-planet" data-sec="journey">
-        <img src="pexels-zelch-20337597.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-sphere" style="background-image: url('pexels-zelch-20337597.jpg');"></div>
         <div class="planet-shadow-overlay"></div>
         <div class="planet-glow gold-cyan-glow"></div>
       </div>
       <!-- Uranus (Credentials Section) -->
       <div class="bg-planet" data-sec="credentials">
-        <img src="pexels-zelch-20376399.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-sphere" style="background-image: url('pexels-zelch-20376399.jpg');"></div>
         <div class="planet-shadow-overlay"></div>
         <div class="planet-glow purple-glow"></div>
       </div>
       <!-- Neptune (Contact Section) -->
       <div class="bg-planet" data-sec="contact">
-        <img src="pexels-zelch-30596214.jpg" alt="" class="planet-img-bg" />
+        <div class="planet-sphere" style="background-image: url('pexels-zelch-30596214.jpg');"></div>
         <div class="planet-shadow-overlay"></div>
         <div class="planet-glow cyan-glow"></div>
       </div>
@@ -89,13 +96,34 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <nav class="mobile-menu">
-      <a href="#hero" class="mob-link"><span class="num">00</span> Home</a>
-      <a href="#about" class="mob-link"><span class="num">01</span> About</a>
-      <a href="#work" class="mob-link"><span class="num">02</span> Work</a>
-      <a href="#campaigns" class="mob-link"><span class="num">03</span> Campaigns</a>
-      <a href="#journey" class="mob-link"><span class="num">04</span> Journey</a>
-      <a href="#credentials" class="mob-link"><span class="num">05</span> Credentials</a>
-      <a href="#contact" class="mob-link"><span class="num">06</span> Contact</a>
+      <a href="#hero" class="mob-link">
+        <span class="num">00</span>
+        <span class="lang-en">Home</span><span class="lang-ar">الرئيسية</span>
+      </a>
+      <a href="#about" class="mob-link">
+        <span class="num">01</span>
+        <span class="lang-en">About</span><span class="lang-ar">من أنا</span>
+      </a>
+      <a href="#work" class="mob-link">
+        <span class="num">02</span>
+        <span class="lang-en">Work</span><span class="lang-ar">أعمالي</span>
+      </a>
+      <a href="#campaigns" class="mob-link">
+        <span class="num">03</span>
+        <span class="lang-en">Campaigns</span><span class="lang-ar">الحملات</span>
+      </a>
+      <a href="#journey" class="mob-link">
+        <span class="num">04</span>
+        <span class="lang-en">Journey</span><span class="lang-ar">مسيرتي</span>
+      </a>
+      <a href="#credentials" class="mob-link">
+        <span class="num">05</span>
+        <span class="lang-en">Credentials</span><span class="lang-ar">الشهادات</span>
+      </a>
+      <a href="#contact" class="mob-link">
+        <span class="num">06</span>
+        <span class="lang-en">Contact</span><span class="lang-ar">اتصل بي</span>
+      </a>
     </nav>
   </div>
 
@@ -103,19 +131,26 @@
     <nav class="nav-spine" aria-label="Main Navigation">
       <div class="spine-line"></div>
       <ul class="spine-list">
-        <li><a href="#hero" class="spine-dot active" data-title="Home"></a></li>
-        <li><a href="#about" class="spine-dot" data-title="About"></a></li>
-        <li><a href="#work" class="spine-dot" data-title="Work"></a></li>
-        <li><a href="#campaigns" class="spine-dot" data-title="Campaigns"></a></li>
-        <li><a href="#journey" class="spine-dot" data-title="Journey"></a></li>
-        <li><a href="#credentials" class="spine-dot" data-title="Credentials"></a></li>
-        <li><a href="#contact" class="spine-dot" data-title="Contact"></a></li>
+        <li><a href="#hero" class="spine-dot active" data-title-en="Home" data-title-ar="الرئيسية"></a></li>
+        <li><a href="#about" class="spine-dot" data-title-en="About" data-title-ar="من أنا"></a></li>
+        <li><a href="#work" class="spine-dot" data-title-en="Work" data-title-ar="أعمالي"></a></li>
+        <li><a href="#campaigns" class="spine-dot" data-title-en="Campaigns" data-title-ar="الحملات"></a></li>
+        <li><a href="#journey" class="spine-dot" data-title-en="Journey" data-title-ar="مسيرتي"></a></li>
+        <li><a href="#credentials" class="spine-dot" data-title-en="Credentials" data-title-ar="الشهادات"></a></li>
+        <li><a href="#contact" class="spine-dot" data-title-en="Contact" data-title-ar="اتصل بي"></a></li>
       </ul>
     </nav>
 
     <header class="mobile-header">
       <div class="logo-wrap"><img src="logo.png" alt="Logo" class="site-logo" /></div>
-      <button class="burger" id="burger" aria-label="Open Menu"><span></span><span></span><span></span></button>
+      <div class="mobile-header-right">
+        <div class="mobile-lang-toggle">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <span class="sep">/</span>
+          <button class="lang-btn" data-lang="ar">AR</button>
+        </div>
+        <button class="burger" id="burger" aria-label="Open Menu"><span></span><span></span><span></span></button>
+      </div>
     </header>
 
     <main class="main-content">
@@ -123,19 +158,33 @@
       <section id="hero" class="hero-section content-section">
         <div class="hero-brand-header">
           <div class="logo-wrap"><img src="logo.png" alt="Logo" class="hero-logo" /></div>
-          <div class="badge-status"><span class="status-dot"></span><span>Open to Opportunities</span></div>
+          <div class="badge-status">
+            <span class="status-dot"></span>
+            <span class="lang-en">Open to Opportunities</span>
+            <span class="lang-ar">متاح للفرص الجديدة</span>
+          </div>
         </div>
         <div class="hero-intro-grid">
           <div class="hero-left-col animate-fadeInLeft">
-            <h1 class="hero-name split-reveal-heading">Abdelrahman<br><em>Mohammed</em></h1>
-            <p class="hero-title">Digital Marketer <span class="sep">·</span> Marketing Strategist <span class="sep">·</span> Content Planner</p>
+            <h1 class="hero-name split-reveal-heading">
+              <span class="lang-en">Abdelrahman<br><em>Mohammed</em></span>
+              <span class="lang-ar">عبد الرحمن<br><em>محمد</em></span>
+            </h1>
+            <p class="hero-title">
+              <span class="lang-en">Digital Marketer <span class="sep">·</span> Marketing Strategist <span class="sep">·</span> Content Planner</span>
+              <span class="lang-ar">مسوق رقمي <span class="sep">·</span> استراتيجي تسويق <span class="sep">·</span> مخطط محتوى</span>
+            </p>
           </div>
           <div class="hero-right-col animate-fadeInRight">
-            <p class="hero-bio">Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.</p>
+            <p class="hero-bio">
+              <span class="lang-en">Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.</span>
+              <span class="lang-ar">أدمج بين الدقة التحليلية والاستراتيجية الإبداعية — لبناء العلامات التجارية، وتحفيز النمو، وتحويل البيانات إلى قصص ملهمة.</span>
+            </p>
             <div class="hero-cta-row">
               <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="btn-cv-download magnetic-button">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>Download CV</span>
+                <span class="lang-en">Download CV</span>
+                <span class="lang-ar">تحميل السيرة الذاتية</span>
               </a>
               <div class="hero-social-links">
                 <a href="https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic-button">
@@ -159,44 +208,125 @@
       <div class="section-divider" aria-hidden="true"></div>
 
       <section id="about" class="content-section">
-        <div class="eyebrow-split"><span class="line"></span><span class="text">ABOUT ME</span></div>
-        <h2 class="split-reveal-heading">The <em>Strategist</em> Behind the Brand</h2>
+        <div class="eyebrow-split">
+          <span class="line"></span>
+          <span class="text lang-en">ABOUT ME</span>
+          <span class="text lang-ar">نبذة عني</span>
+        </div>
+        <h2 class="split-reveal-heading">
+          <span class="lang-en">The <em>Strategist</em> Behind the Brand</span>
+          <span class="lang-ar">الاستراتيجي وراء <em>العلامة التجارية</em></span>
+        </h2>
         <div class="about-layout-grid">
           <div class="about-left-col">
             <div class="about-text">
-              <p class="reveal-paragraph">I am <strong>Abdelrahman</strong> — a digital marketer who believes every brand has a story worth telling, and every campaign should be built on real data, not guesswork.</p>
-              <p class="reveal-paragraph">With hands-on experience in <strong>content strategy, social media management, brand development, and customer retention</strong>, I have helped Egyptian brands build their digital presence from scratch — from creating full marketing plans and buyer personas to executing multi-platform content campaigns.</p>
-              <p class="reveal-paragraph">I bring <strong>structured thinking to creative work</strong> — measuring, iterating, and optimizing until the results speak for themselves.</p>
+              <p class="reveal-paragraph">
+                <span class="lang-en">I am <strong>Abdelrahman</strong> — a digital marketer who believes every brand has a story worth telling, and every campaign should be built on real data, not guesswork.</span>
+                <span class="lang-ar">أنا <strong>عبد الرحمن</strong> — مسوق رقمي أؤمن بأن لكل علامة تجارية قصة تستحق أن تروى، وأن كل حملة تسويقية يجب أن تُبنى على بيانات حقيقية، لا على التخمين.</span>
+              </p>
+              <p class="reveal-paragraph">
+                <span class="lang-en">With hands-on experience in <strong>content strategy, social media management, brand development, and customer retention</strong>, I have helped Egyptian brands build their digital presence from scratch — from creating full marketing plans and buyer personas to executing multi-platform content campaigns.</span>
+                <span class="lang-ar">بفضل خبرتي العملية في <strong>استراتيجية المحتوى، وإدارة منصات التواصل الاجتماعي، وتطوير العلامات التجارية، والاحتفاظ بالعملاء</strong>، ساعدت علامات تجارية مصرية في حضورها الرقمي من الصفر — بدءاً من إعداد خطط التسويق المتكاملة وتحديد شخصية المشتري (Buyer Personas) وحتى تنفيذ حملات المحتوى عبر مختلف المنصات.</span>
+              </p>
+              <p class="reveal-paragraph">
+                <span class="lang-en">I bring <strong>structured thinking to creative work</strong> — measuring, iterating, and optimizing until the results speak for themselves.</span>
+                <span class="lang-ar">أضفي <strong>التفكير المنهجي المنظم على العمل الإبداعي</strong> — حيث أستمر في القياس، والتكرار، والتحسين المستمر حتى تتحدث النتائج عن نفسها.</span>
+              </p>
             </div>
             <div class="stats-grid">
-              <div class="stat-card reveal-card"><span class="stat-num" data-val="4">0</span><span class="stat-plus">+</span><span class="stat-label">Years Experience</span></div>
-              <div class="stat-card reveal-card"><span class="stat-num" data-val="7">0</span><span class="stat-plus">+</span><span class="stat-label">Certifications</span></div>
-              <div class="stat-card reveal-card"><span class="stat-num" data-val="3">0</span><span class="stat-label">Major Projects</span></div>
+              <div class="stat-card reveal-card">
+                <span class="stat-num" data-val="4">0</span><span class="stat-plus">+</span>
+                <span class="stat-label lang-en">Years Experience</span>
+                <span class="stat-label lang-ar">سنوات خبرة</span>
+              </div>
+              <div class="stat-card reveal-card">
+                <span class="stat-num" data-val="7">0</span><span class="stat-plus">+</span>
+                <span class="stat-label lang-en">Certifications</span>
+                <span class="stat-label lang-ar">شهادات معتمدة</span>
+              </div>
+              <div class="stat-card reveal-card">
+                <span class="stat-num" data-val="3">0</span>
+                <span class="stat-label lang-en">Major Projects</span>
+                <span class="stat-label lang-ar">مشاريع رئيسية</span>
+              </div>
             </div>
           </div>
           <div class="about-right-col">
             <div class="skills-showcase">
-              <h3 class="skills-title">Core Competencies</h3>
+              <h3 class="skills-title">
+                <span class="lang-en">Core Competencies</span>
+                <span class="lang-ar">المهارات والقدرات</span>
+              </h3>
               <div class="skills-grid">
                 <div class="skill-category reveal-card">
-                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><h4>Strategy &amp; Planning</h4></div>
-                  <div class="tags-list"><span class="tag">SWOT</span><span class="tag">SMART Goals</span><span class="tag">4Ps</span><span class="tag">Blue Ocean</span><span class="tag">Buyer Personas</span><span class="tag">Business Model Canvas</span></div>
+                  <div class="category-header">
+                    <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+                    <h4 class="lang-en">Strategy &amp; Planning</h4>
+                    <h4 class="lang-ar">الاستراتيجية والتخطيط</h4>
+                  </div>
+                  <div class="tags-list">
+                    <span class="tag lang-en">SWOT</span><span class="tag lang-ar">تحليل سوات</span>
+                    <span class="tag lang-en">SMART Goals</span><span class="tag lang-ar">أهداف SMART</span>
+                    <span class="tag lang-en">4Ps</span><span class="tag lang-ar">المزيج التسويقي 4Ps</span>
+                    <span class="tag lang-en">Blue Ocean</span><span class="tag lang-ar">المحيط الأزرق</span>
+                    <span class="tag lang-en">Buyer Personas</span><span class="tag lang-ar">شخصيات المشترين</span>
+                    <span class="tag lang-en">BMC</span><span class="tag lang-ar">نموذج العمل التجاري</span>
+                  </div>
                 </div>
                 <div class="skill-category reveal-card">
-                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><h4>Content &amp; Copywriting</h4></div>
-                  <div class="tags-list"><span class="tag">AR/EN Copy</span><span class="tag">Content Calendars</span><span class="tag">Hero/Hub/Hygiene</span><span class="tag">Brand Voice</span><span class="tag">Content Audits</span></div>
+                  <div class="category-header">
+                    <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
+                    <h4 class="lang-en">Content &amp; Copywriting</h4>
+                    <h4 class="lang-ar">المحتوى وكتابة الإعلانات</h4>
+                  </div>
+                  <div class="tags-list">
+                    <span class="tag lang-en">AR/EN Copy</span><span class="tag lang-ar">نصوص عربي/إنجليزي</span>
+                    <span class="tag lang-en">Content Calendars</span><span class="tag lang-ar">جداول المحتوى</span>
+                    <span class="tag lang-en">Hero/Hub/Hygiene</span><span class="tag lang-ar">هيكلة المحتوى</span>
+                    <span class="tag lang-en">Brand Voice</span><span class="tag lang-ar">نبرة البراند</span>
+                    <span class="tag lang-en">Content Audits</span><span class="tag lang-ar">تدقيق المحتوى</span>
+                  </div>
                 </div>
                 <div class="skill-category reveal-card">
-                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><h4>Growth &amp; Analytics</h4></div>
-                  <div class="tags-list"><span class="tag">KPI Frameworks</span><span class="tag">Meta Insights</span><span class="tag">Competitor Analysis</span><span class="tag">Conversion Optimization</span></div>
+                  <div class="category-header">
+                    <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                    <h4 class="lang-en">Growth &amp; Analytics</h4>
+                    <h4 class="lang-ar">النمو والتحليلات</h4>
+                  </div>
+                  <div class="tags-list">
+                    <span class="tag lang-en">KPI Frameworks</span><span class="tag lang-ar">أطر مؤشرات الأداء</span>
+                    <span class="tag lang-en">Meta Insights</span><span class="tag lang-ar">رؤى ميتا</span>
+                    <span class="tag lang-en">Competitor Analysis</span><span class="tag lang-ar">تحليل المنافسين</span>
+                    <span class="tag lang-en">CRO</span><span class="tag lang-ar">تحسين التحويل</span>
+                  </div>
                 </div>
                 <div class="skill-category reveal-card">
-                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h4>Digital Tools</h4></div>
-                  <div class="tags-list"><span class="tag">Meta Ads</span><span class="tag">TikTok Ads</span><span class="tag">Canva</span><span class="tag">Odoo CMS</span><span class="tag">AI Tools</span><span class="tag">Office 365</span></div>
+                  <div class="category-header">
+                    <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+                    <h4 class="lang-en">Digital Tools</h4>
+                    <h4 class="lang-ar">الأدوات الرقمية</h4>
+                  </div>
+                  <div class="tags-list">
+                    <span class="tag">Meta Ads</span>
+                    <span class="tag">TikTok Ads</span>
+                    <span class="tag">Canva</span>
+                    <span class="tag">Odoo CMS</span>
+                    <span class="tag lang-en">AI Tools</span><span class="tag lang-ar">أدوات الذكاء الاصطناعي</span>
+                    <span class="tag">Office 365</span>
+                  </div>
                 </div>
                 <div class="skill-category reveal-card">
-                  <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><h4>Leadership</h4></div>
-                  <div class="tags-list"><span class="tag">Team Lead (8+)</span><span class="tag">Corporate Trainer</span><span class="tag">Public Speaking</span><span class="tag">Bilingual</span></div>
+                  <div class="category-header">
+                    <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                    <h4 class="lang-en">Leadership</h4>
+                    <h4 class="lang-ar">القيادة والتدريب</h4>
+                  </div>
+                  <div class="tags-list">
+                    <span class="tag lang-en">Team Lead (8+)</span><span class="tag lang-ar">قائد فريق (+8)</span>
+                    <span class="tag lang-en">Corporate Trainer</span><span class="tag lang-ar">مدرب شركات معتمد</span>
+                    <span class="tag lang-en">Public Speaking</span><span class="tag lang-ar">التحدث أمام الجمهور</span>
+                    <span class="tag lang-en">Bilingual</span><span class="tag lang-ar">ثنائي اللغة</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -207,41 +337,116 @@
       <div class="section-divider" aria-hidden="true"></div>
 
       <section id="work" class="content-section section-right-layout">
-        <div class="eyebrow-split"><span class="line"></span><span class="text">FEATURED WORK</span></div>
-        <h2 class="split-reveal-heading">Mission <em>Log</em></h2>
-        <p class="section-lead">Strategic marketing projects — end-to-end brand development, market research, and growth planning.</p>
+        <div class="eyebrow-split">
+          <span class="line"></span>
+          <span class="text lang-en">FEATURED WORK</span>
+          <span class="text lang-ar">أعمالي المختارة</span>
+        </div>
+        <h2 class="split-reveal-heading">
+          <span class="lang-en">Mission <em>Log</em></span>
+          <span class="lang-ar">سجل <em>المهام</em></span>
+        </h2>
+        <p class="section-lead">
+          <span class="lang-en">Strategic marketing projects — end-to-end brand development, market research, and growth planning.</span>
+          <span class="lang-ar">مشاريع تسويقية استراتيجية — تطوير متكامل للعلامات التجارية، بحوث السوق، وتخطيط النمو.</span>
+        </p>
         <div class="projects-stack">
           <article class="project-glass-card reveal-card border-purple" data-drawer="drawer-kyoko">
             <div class="card-glow"></div><div class="card-accent-line bg-purple"></div>
             <div class="card-content">
-              <div class="project-tag-badge">Flagship Project</div>
-              <h3 class="project-card-title">Kyoko Gifts — Full Marketing Plan</h3>
-              <p class="project-card-meta">2026 · Gift &amp; E-commerce · Cairo</p>
-              <p class="project-card-desc">Built a comprehensive marketing plan for an Egyptian gifting brand covering brand positioning, customer research, content planning, marketing funnels, and growth-focused KPIs.</p>
-              <div class="project-card-tags"><span>Business Model Canvas</span><span>Blue Ocean Strategy</span><span>Buyer Personas</span><span>Meta &amp; TikTok Ads</span><span>KPI Framework</span></div>
-              <button class="project-btn-reveal magnetic-button"><span>View Detailed Strategy</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+              <div class="project-tag-badge">
+                <span class="lang-en">Flagship Project</span>
+                <span class="lang-ar">المشروع الرئيسي</span>
+              </div>
+              <h3 class="project-card-title">
+                <span class="lang-en">Kyoko Gifts — Full Marketing Plan</span>
+                <span class="lang-ar">هدايا كيوكو — خطة تسويقية متكاملة</span>
+              </h3>
+              <p class="project-card-meta">
+                <span class="lang-en">2026 · Gift &amp; E-commerce · Cairo</span>
+                <span class="lang-ar">٢٠٢٦ · الهدايا والتجارة الإلكترونية · القاهرة</span>
+              </p>
+              <p class="project-card-desc">
+                <span class="lang-en">Built a comprehensive marketing plan for an Egyptian gifting brand covering brand positioning, customer research, content planning, marketing funnels, and growth-focused KPIs.</span>
+                <span class="lang-ar">إعداد خطة تسويق شاملة لبراند هدايا مصري تغطي تموضع العلامة التجارية، دراسة سلوك العملاء، تخطيط المحتوى، أقماع التسويق، ومؤشرات الأداء الموجهة للنمو.</span>
+              </p>
+              <div class="project-card-tags">
+                <span class="lang-en">Business Model Canvas</span><span class="lang-ar">نموذج العمل التجاري</span>
+                <span class="lang-en">Blue Ocean Strategy</span><span class="lang-ar">استراتيجية المحيط الأزرق</span>
+                <span class="lang-en">Buyer Personas</span><span class="lang-ar">شخصية المشتري</span>
+                <span class="lang-en">Meta &amp; TikTok Ads</span><span class="lang-ar">إعلانات ميتا وتيك توك</span>
+                <span class="lang-en">KPI Framework</span><span class="lang-ar">إطار مؤشرات الأداء</span>
+              </div>
+              <button class="project-btn-reveal magnetic-button">
+                <span class="lang-en">View Detailed Strategy</span>
+                <span class="lang-ar">عرض الاستراتيجية بالتفصيل</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
             </div>
           </article>
           <article class="project-glass-card reveal-card border-cyan" data-drawer="drawer-new-direction">
             <div class="card-glow"></div><div class="card-accent-line bg-cyan"></div>
             <div class="card-content">
-              <div class="project-tag-badge">Brand Strategy</div>
-              <h3 class="project-card-title">New Direction English Academy</h3>
-              <p class="project-card-meta">2020–2022 · EdTech · Egypt</p>
-              <p class="project-card-desc">Led full brand identity creation and marketing strategy for an Egyptian EdTech startup — from logo direction and tone of voice to content campaigns and competitive analysis.</p>
-              <div class="project-card-tags"><span>Brand Identity</span><span>SWOT Analysis</span><span>Content Campaigns</span><span>Competitor Research</span><span>Buyer Persona</span></div>
-              <button class="project-btn-reveal magnetic-button"><span>View Detailed Strategy</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+              <div class="project-tag-badge">
+                <span class="lang-en">Brand Strategy</span>
+                <span class="lang-ar">استراتيجية العلامة التجارية</span>
+              </div>
+              <h3 class="project-card-title">
+                <span class="lang-en">New Direction English Academy</span>
+                <span class="lang-ar">أكاديمية نيو دايركشن لتعليم الإنجليزية</span>
+              </h3>
+              <p class="project-card-meta">
+                <span class="lang-en">2020–2022 · EdTech · Egypt</span>
+                <span class="lang-ar">٢٠٢٠–٢٠٢٢ · تكنولوجيا التعليم · مصر</span>
+              </p>
+              <p class="project-card-desc">
+                <span class="lang-en">Led full brand identity creation and marketing strategy for an Egyptian EdTech startup — from logo direction and tone of voice to content campaigns and competitive analysis.</span>
+                <span class="lang-ar">قيادة بناء الهوية الكاملة للعلامة التجارية واستراتيجية التسويق لشركة تعليمية ناشئة — من توجيه تصميم الشعار ونبرة الصوت إلى حملات المحتوى والتحليل التنافسي.</span>
+              </p>
+              <div class="project-card-tags">
+                <span class="lang-en">Brand Identity</span><span class="lang-ar">هوية العلامة التجارية</span>
+                <span class="lang-en">SWOT Analysis</span><span class="lang-ar">تحليل سوات</span>
+                <span class="lang-en">Content Campaigns</span><span class="lang-ar">حملات المحتوى</span>
+                <span class="lang-en">Competitor Research</span><span class="lang-ar">تحليل المنافسين</span>
+                <span class="lang-en">Buyer Persona</span><span class="lang-ar">شخصية المشتري</span>
+              </div>
+              <button class="project-btn-reveal magnetic-button">
+                <span class="lang-en">View Detailed Strategy</span>
+                <span class="lang-ar">عرض الاستراتيجية بالتفصيل</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
             </div>
           </article>
           <article class="project-glass-card reveal-card border-gold" data-drawer="drawer-hosting">
             <div class="card-glow"></div><div class="card-accent-line bg-gold"></div>
             <div class="card-content">
-              <div class="project-tag-badge">Website Audit</div>
-              <h3 class="project-card-title">HostingWDomain — UX &amp; Content Audit</h3>
-              <p class="project-card-meta">Tech / SaaS</p>
-              <p class="project-card-desc">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</p>
-              <div class="project-card-tags"><span>UX Audit</span><span>Site Architecture</span><span>Conversion Optimization</span><span>A/B Testing</span></div>
-              <button class="project-btn-reveal magnetic-button"><span>View Detailed Strategy</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+              <div class="project-tag-badge">
+                <span class="lang-en">Website Audit</span>
+                <span class="lang-ar">تدقيق المواقع الإلكترونية</span>
+              </div>
+              <h3 class="project-card-title">
+                <span class="lang-en">HostingWDomain — UX &amp; Content Audit</span>
+                <span class="lang-ar">HostingWDomain — تدقيق المحتوى وتجربة المستخدم</span>
+              </h3>
+              <p class="project-card-meta">
+                <span class="lang-en">Tech / SaaS</span>
+                <span class="lang-ar">التكنولوجيا / البرمجيات كخدمة</span>
+              </p>
+              <p class="project-card-desc">
+                <span class="lang-en">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</span>
+                <span class="lang-ar">تدقيق منهجي لتجربة المستخدم والمحتوى لمزود خدمات استضافة ونطاقات، لتحديد فجوات الهوية التسويقية، مشكلات جودة المحتوى، ونقاط الاحتكاك التي تعيق التحويل.</span>
+              </p>
+              <div class="project-card-tags">
+                <span class="lang-en">UX Audit</span><span class="lang-ar">تدقيق تجربة المستخدم</span>
+                <span class="lang-en">Site Architecture</span><span class="lang-ar">بنية الموقع</span>
+                <span class="lang-en">Conversion Optimization</span><span class="lang-ar">تحسين التحويل</span>
+                <span class="lang-en">A/B Testing</span><span class="lang-ar">اختبارات A/B</span>
+              </div>
+              <button class="project-btn-reveal magnetic-button">
+                <span class="lang-en">View Detailed Strategy</span>
+                <span class="lang-ar">عرض الاستراتيجية بالتفصيل</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
             </div>
           </article>
         </div>
@@ -250,71 +455,270 @@
       <div class="section-divider" aria-hidden="true"></div>
 
       <section id="campaigns" class="content-section">
-        <div class="eyebrow-split"><span class="line"></span><span class="text">CAMPAIGNS</span></div>
-        <h2 class="split-reveal-heading">Content &amp; <em>Copywriting</em></h2>
-        <p class="section-lead">Every caption is a small strategic decision. Fluent in Arabic and English, bridging customer psychology with persuasive copywriting.</p>
+        <div class="eyebrow-split">
+          <span class="line"></span>
+          <span class="text lang-en">CAMPAIGNS</span>
+          <span class="text lang-ar">الحملات التسويقية</span>
+        </div>
+        <h2 class="split-reveal-heading">
+          <span class="lang-en">Content &amp; <em>Copywriting</em></span>
+          <span class="lang-ar">المحتوى <em>وكتابة الإعلانات</em></span>
+        </h2>
+        <p class="section-lead">
+          <span class="lang-en">Every caption is a small strategic decision. Fluent in Arabic and English, bridging customer psychology with persuasive copywriting.</span>
+          <span class="lang-ar">كل نص إعلاني هو قرار استراتيجي مصغر. أكتب باللغتين العربية والإنجليزية لربط علم نفس المستهلك بالنص المقنع.</span>
+        </p>
         <div class="posts-grid-system">
-          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 01</span><span class="post-obj">Awareness / Launch</span></div><p class="post-caption" dir="rtl">أول بوست في الحملة — افتتاحية تأسيسية بنبرة هادئة، تعرّف الجمهور بفلسفة New Direction قبل ما تتكلم عن الخدمات.</p><div class="campaign-meta"><strong>Objective:</strong> بناء وعي أولي + تحديد الـ tone of voice للبراند.</div><a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/109443580892907/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
-          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 02</span><span class="post-obj">Educational</span></div><p class="post-caption" dir="rtl">محتوى تعليمي قصير — يقدّم فكرة عملية واحدة لطلاب الثانوية، الهدف يخلق قيمة فورية بدون ما يبيع.</p><div class="campaign-meta"><strong>Objective:</strong> زيادة الـ Saves والـ Shares كمؤشر مبكر للثقة.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/194898819014049/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
-          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 03</span><span class="post-obj">Emotional Insight</span></div><p class="post-caption" dir="rtl">بوست تحفيزي مبني على insight حقيقي من الـ buyer persona: قلق الطالب من الاختيار الخطأ.</p><div class="campaign-meta"><strong>Objective:</strong> اللعب على Pain Point لتوليد تفاعل عاطفي وتعليقات.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/402849314885664/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
-          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 04</span><span class="post-obj">Awareness Dialogue</span></div><p class="post-caption" dir="rtl">محتوى Awareness عن خدمة محددة — مكتوب كحوار قصير بدل ما يكون إعلان مباشر.</p><div class="campaign-meta"><strong>Objective:</strong> تعريف الجمهور بالخدمة بدون ما يحس إنه بيتباع له.</div><a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/397460562091206/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
-          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 05</span><span class="post-obj">Interactive Ask</span></div><p class="post-caption" dir="rtl">بوست تفاعلي بسؤال مفتوح — مصمم يخلق تعليقات تساعد الـ Algorithm + يدّينا data عن الجمهور.</p><div class="campaign-meta"><strong>Objective:</strong> Engagement مع جمع insights للحملات الجاية.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/111795970657668/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
-          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 06</span><span class="post-obj">Conversion Funnel</span></div><p class="post-caption" dir="rtl">بوست ختامي للحملة الأولى — يلخّص رسالة البراند ويفتح الباب للـ conversion في المرحلة الجاية.</p><div class="campaign-meta"><strong>Objective:</strong> تحضير الجمهور للانتقال من Awareness إلى Consideration.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/411974437306485/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
+          <article class="campaign-glass-card reveal-card">
+            <div class="campaign-header">
+              <span class="post-num">POST · 01</span>
+              <span class="post-obj">
+                <span class="lang-en">Awareness / Launch</span>
+                <span class="lang-ar">الوعي / الإطلاق</span>
+              </span>
+            </div>
+            <p class="post-caption lang-en">In a world of traditional learning, a new direction was necessary. 🚀 At New Direction, we don't just teach English—we help you live it. Through interactive games, role-playing, and simulations, we pave the way for you to speak fluently and confidently. 🗣️✨ Are you ready?</p>
+            <p class="post-caption lang-ar" dir="rtl">في عالم مليء بالطرق التقليدية، كان لا بد من اتجاه جديد. 🚀 نحن في New Direction لا نعلّم اللغة الإنجليزية فحسب، بل نساعدك على عيشها وتطبيقها في حياتك اليومية. من خلال الألعاب التفاعلية ولعب الأدوار، نمهد لك الطريق لتتحدث بطلاقة وثقة. 🗣️✨ هل أنت مستعد؟</p>
+            <div class="campaign-meta">
+              <strong>Objective // الهدف:</strong> 
+              <span class="lang-en">Building initial awareness + defining the brand's tone of voice.</span>
+              <span class="lang-ar">بناء وعي أولي + تحديد نبرة صوت العلامة التجارية.</span>
+            </div>
+            <a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/109443580892907/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
+              <span class="lang-en">View original post</span>
+              <span class="lang-ar">عرض المنشور الأصلي</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </article>
+          <article class="campaign-glass-card reveal-card">
+            <div class="campaign-header">
+              <span class="post-num">POST · 02</span>
+              <span class="post-obj">
+                <span class="lang-en">Educational</span>
+                <span class="lang-ar">التعليمي</span>
+              </span>
+            </div>
+            <p class="post-caption lang-en">Struggling with English practice? 🎓💡 The secret is smart practice, not memorizing. Here are 3 actionable tips to improve pronunciation from home: 1. Watch with English subtitles. 2. Practice speaking 10 mins daily. 3. Connect new words to real-life situations. Save this post!</p>
+            <p class="post-caption lang-ar" dir="rtl">لكل طلاب الثانوية العامة اللي شايلين هم الإنجليزي! 🎓💡 السر مش في الحفظ الكتير، السر في الممارسة الذكية. النهاردة بنقدملك أهم 3 نصائح لتحسين نطقك وحصيلة كلماتك يومياً من البيت: 1. اسمع أفلام بـ English Subtitles. 2. مارس اللغة 10 دقايق يومياً. 3. اربط الكلمات الجديدة بمواقف حقيقية. احفظ البوست عندك!</p>
+            <div class="campaign-meta">
+              <strong>Objective // الهدف:</strong>
+              <span class="lang-en">Increasing Saves and Shares as early trust indicators.</span>
+              <span class="lang-ar">زيادة الحفظ (Saves) والمشاركة (Shares) كمؤشر مبكر للثقة.</span>
+            </div>
+            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/194898819014049/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
+              <span class="lang-en">View original post</span>
+              <span class="lang-ar">عرض المنشور الأصلي</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </article>
+          <article class="campaign-glass-card reveal-card">
+            <div class="campaign-header">
+              <span class="post-num">POST · 03</span>
+              <span class="post-obj">
+                <span class="lang-en">Emotional Insight</span>
+                <span class="lang-ar">الجانب العاطفي</span>
+              </span>
+            </div>
+            <p class="post-caption lang-en">"I'm afraid of spending money on a course and getting no value..." 😟 The fear of wasting time in traditional academies that rely on memorization is completely valid. At New Direction, we teach in groups of 3-4 so you get full attention and speak for 70% of the class time. Try it yourself!</p>
+            <p class="post-caption lang-ar" dir="rtl">"أنا خايف أدفع فلوس في كورس ومستفدش..." 😟 الخوف من تضييع الوقت والفلوس في مراكز تقليدية بتعتمد على الحفظ والتلقين هو خوف مشروع جداً. في New Direction، بنعلّم في مجموعات صغيرة جداً (3-4 طلاب) عشان نضمن إنك تتكلم بنفسك 70% من وقت الحصة. جرب بنفسك!</p>
+            <div class="campaign-meta">
+              <strong>Objective // الهدف:</strong>
+              <span class="lang-en">Addressing pain points to drive emotional connection and comments.</span>
+              <span class="lang-ar">اللعب على نقاط الألم لتوليد تفاعل عاطفي وتعليقات.</span>
+            </div>
+            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/402849314885664/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
+              <span class="lang-en">View original post</span>
+              <span class="lang-ar">عرض المنشور الأصلي</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </article>
+          <article class="campaign-glass-card reveal-card">
+            <div class="campaign-header">
+              <span class="post-num">POST · 04</span>
+              <span class="post-obj">
+                <span class="lang-en">Awareness Dialogue</span>
+                <span class="lang-ar">الحوار التوعوي</span>
+              </span>
+            </div>
+            <p class="post-caption lang-en">- "Is your course like any other place?" <br>- "No, here you don't just study English.. you live it! 😉" <br>- "How?" <br>- "Because we practice real-life situations like job interviews, meetings, or travel through interactive role-plays in small groups." Message us today!</p>
+            <p class="post-caption lang-ar" dir="rtl">- "هو كورس المحادثة عندكم زي أي مكان تاني؟"<br>- "لأ، عندنا مش هتدرس إنجليزي.. هتعيش إنجليزي! 😉"<br>- "إزاي؟"<br>- "لأننا بنربط الكلمات بمواقف حقيقية زي الإنترفيو أو السفر وبنمارس ده عملياً من خلال تمثيل الأدوار في مجموعات صغيرة." ابدأ خطوتك الأولى وكلمنا النهاردة!</p>
+            <div class="campaign-meta">
+              <strong>Objective // الهدف:</strong>
+              <span class="lang-en">Educating users about services through a non-salesy dialogue.</span>
+              <span class="lang-ar">تعريف الجمهور بالخدمة بدون الإعلان المباشر.</span>
+            </div>
+            <a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/397460562091206/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
+              <span class="lang-en">View original post</span>
+              <span class="lang-ar">عرض المنشور الأصلي</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </article>
+          <article class="campaign-glass-card reveal-card">
+            <div class="campaign-header">
+              <span class="post-num">POST · 05</span>
+              <span class="post-obj">
+                <span class="lang-en">Interactive Ask</span>
+                <span class="lang-ar">السؤال التفاعلي</span>
+              </span>
+            </div>
+            <p class="post-caption lang-en">Quick question: 👇 What is the biggest barrier that makes you afraid of speaking English in public?<br>1. Fear of making grammar mistakes.<br>2. Pronunciation and Accent.<br>3. Lack of vocabulary.<br>Share your answer in the comments, and we'll solve it in a video next week!</p>
+            <p class="post-caption lang-ar" dir="rtl">سؤال صريح ومحتاجين إجابتكم عليه: 👇 إيه أكتر حاجة بتعطلك وتخليك تخاف تتكلم إنجليزي قدام الناس؟<br>1. الخوف من الغلط في الجرامر.<br>2. النطق والـ Accent.<br>3. مفيش كلمات كفاية في دماغي.<br>شاركونا في التعليقات، وهنختار أكتر مشكلة ونعمل عنها فيديو عملي الأسبوع الجاي!</p>
+            <div class="campaign-meta">
+              <strong>Objective // الهدف:</strong>
+              <span class="lang-en">Boosting engagement while gathering audience intelligence.</span>
+              <span class="lang-ar">زيادة التفاعل وجمع بيانات للحملات القادمة.</span>
+            </div>
+            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/111795970657668/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
+              <span class="lang-en">View original post</span>
+              <span class="lang-ar">عرض المنشور الأصلي</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </article>
+          <article class="campaign-glass-card reveal-card">
+            <div class="campaign-header">
+              <span class="post-num">POST · 06</span>
+              <span class="post-obj">
+                <span class="lang-en">Conversion Funnel</span>
+                <span class="lang-ar">مرحلة التحويل</span>
+              </span>
+            </div>
+            <p class="post-caption lang-en">No more hesitation.. it's time to take action! 🌟 Registration is now open for our new intake of intensive conversation courses. Small groups, daily trainer follow-up, and affordable pricing. Message us now to book your free placement test!</p>
+            <p class="post-caption lang-ar" dir="rtl">انتهى وقت التردد.. حان وقت الانطلاق! 🌟 الباب مفتوح الآن للتسجيل في الدفعة الجديدة من كورسات المحادثة المكثفة. مجموعات صغيرة، متابعة يومية من المدرب، وأسعار مناسبة للجميع. سجل بياناتك الآن عبر رسائل الصفحة لطلب تحديد المستوى المجاني!</p>
+            <div class="campaign-meta">
+              <strong>Objective // الهدف:</strong>
+              <span class="lang-en">Preparing the audience to transition from Awareness to Consideration.</span>
+              <span class="lang-ar">تحضير الجمهور للانتقال من مرحلة الوعي إلى الاهتمام.</span>
+            </div>
+            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/411974437306485/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
+              <span class="lang-en">View original post</span>
+              <span class="lang-ar">عرض المنشور الأصلي</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </article>
         </div>
       </section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
       <section id="journey" class="content-section">
-        <div class="eyebrow-split"><span class="line"></span><span class="text">JOURNEY</span></div>
-        <h2 class="split-reveal-heading">Professional <em>Path</em></h2>
+        <div class="eyebrow-split">
+          <span class="line"></span>
+          <span class="text lang-en">JOURNEY</span>
+          <span class="text lang-ar">مسيرتي المهنية</span>
+        </div>
+        <h2 class="split-reveal-heading">
+          <span class="lang-en">Professional <em>Path</em></span>
+          <span class="lang-ar">المسار <em>الاحترافي</em></span>
+        </h2>
         <div class="timeline-container">
           <div class="timeline-spine"><div class="spine-progress"></div></div>
+          <div class="timeline-items">
             <div class="timeline-item reveal-card">
               <div class="timeline-dot bg-gold"></div>
-              <span class="timeline-date">Aug 2025 — Present</span>
+              <span class="timeline-date">
+                <span class="lang-en">Aug 2025 — Present</span>
+                <span class="lang-ar">أغسطس ٢٠٢٥ — الحالي</span>
+              </span>
               <div class="timeline-content">
-                <h3 class="timeline-role">Customer Retention &amp; Sales Specialist</h3>
-                <span class="timeline-company">Concentrix (Boost Mobile Account) · Cairo</span>
-                <div class="timeline-body"><p>Awarded the 1st Enterprise Loyalty Award (2026) for top-tier retention performance. Drive client loyalty and Lifetime Value consulting high-risk customers, resolving conflicts, and building retention strategies.</p></div>
+                <h3 class="timeline-role">
+                  <span class="lang-en">Customer Retention &amp; Sales Specialist</span>
+                  <span class="lang-ar">أخصائي مبيعات والاحتفاظ بالعملاء</span>
+                </h3>
+                <span class="timeline-company">
+                  <span class="lang-en">Concentrix (Boost Mobile Account) · Cairo</span>
+                  <span class="lang-ar">Concentrix (حساب Boost Mobile) · القاهرة</span>
+                </span>
+                <div class="timeline-body">
+                  <p class="lang-en">Awarded the 1st Enterprise Loyalty Award (2026) for top-tier retention performance. Drive client loyalty and Lifetime Value consulting high-risk customers, resolving conflicts, and building retention strategies.</p>
+                  <p class="lang-ar">حصلت على جائزة الولاء للمؤسسات الأولى (٢٠٢٦) لأدائي المتميز في الاحتفاظ بالعملاء. أعمل على تعزيز ولاء العملاء والقيمة الدائمة لهم من خلال تقديم المشورة للعملاء المعرضين للمغادرة، وحل النزاعات، وإعداد استراتيجيات الولاء.</p>
+                </div>
               </div>
             </div>
             <div class="timeline-item reveal-card">
               <div class="timeline-dot bg-cyan"></div>
-              <span class="timeline-date">Apr 2025 — Aug 2025</span>
+              <span class="timeline-date">
+                <span class="lang-en">Apr 2025 — Aug 2025</span>
+                <span class="lang-ar">أبريل ٢٠٢٥ — أغسطس ٢٠٢٥</span>
+              </span>
               <div class="timeline-content">
-                <h3 class="timeline-role">Customer Service Ambassador</h3>
-                <span class="timeline-company">Tabby Technologies (Fintech / BNPL) · Cairo</span>
-                <div class="timeline-body"><p>Developed deep e-commerce buyer understanding. Improved FAQ self-service content layouts to systematically reduce repeat contacts.</p></div>
+                <h3 class="timeline-role">
+                  <span class="lang-en">Customer Service Ambassador</span>
+                  <span class="lang-ar">سفير خدمة العملاء</span>
+                </h3>
+                <span class="timeline-company">
+                  <span class="lang-en">Tabby Technologies (Fintech / BNPL) · Cairo</span>
+                  <span class="lang-ar">Tabby للتكنولوجيا المالية (اشتر الآن وادفع لاحقاً) · القاهرة</span>
+                </span>
+                <div class="timeline-body">
+                  <p class="lang-en">Developed deep e-commerce buyer understanding. Improved FAQ self-service content layouts to systematically reduce repeat contacts.</p>
+                  <p class="lang-ar">بنيت فهماً عميقاً لسلوك المشترين في التجارة الإلكترونية. ساهمت في تحسين وتنسيق محتوى الأسئلة الشائعة ذاتية الخدمة لتقليل الحاجة للتواصل المتكرر بشكل منهجي.</p>
+                </div>
               </div>
             </div>
             <div class="timeline-item reveal-card">
               <div class="timeline-dot bg-purple"></div>
-              <span class="timeline-date">Sep 2020 — May 2022</span>
+              <span class="timeline-date">
+                <span class="lang-en">Sep 2020 — May 2022</span>
+                <span class="lang-ar">سبتمبر ٢٠٢٠ — مايو ٢٠٢٢</span>
+              </span>
               <div class="timeline-content">
-                <h3 class="timeline-role">Digital Marketer</h3>
-                <span class="timeline-company">New Direction English Academy · Remote</span>
-                <div class="timeline-body"><p>Established complete brand identity, positioning, voice, and monthly creative social campaigns. Crafted long-term marketing strategy packs containing customer personas and journeys.</p></div>
+                <h3 class="timeline-role">
+                  <span class="lang-en">Digital Marketer</span>
+                  <span class="lang-ar">مسوق رقمي</span>
+                </h3>
+                <span class="timeline-company">
+                  <span class="lang-en">New Direction English Academy · Remote</span>
+                  <span class="lang-ar">أكاديمية New Direction لتعليم اللغة الإنجليزية · عن بعد</span>
+                </span>
+                <div class="timeline-body">
+                  <p class="lang-en">Established complete brand identity, positioning, voice, and monthly creative social campaigns. Crafted long-term marketing strategy packs containing customer personas and journeys.</p>
+                  <p class="lang-ar">أسست الهوية الكاملة للعلامة التجارية، وتموضعها في السوق، ونبرة صوتها، إلى جانب إدارة حملات التواصل الاجتماعي الإبداعية الشهرية. أعددت حقائب استراتيجيات التسويق طويلة المدى التي تشمل شخصيات المشترين ورحلتهم.</p>
+                </div>
               </div>
             </div>
             <div class="timeline-item reveal-card">
               <div class="timeline-dot bg-gold"></div>
-              <span class="timeline-date">Jul 2019 — Feb 2020</span>
+              <span class="timeline-date">
+                <span class="lang-en">Jul 2019 — Feb 2020</span>
+                <span class="lang-ar">يوليو ٢٠١٩ — فبراير ٢٠٢٠</span>
+              </span>
               <div class="timeline-content">
-                <h3 class="timeline-role">Website Editor &amp; Content Coordinator</h3>
-                <span class="timeline-company">Fine Stone (UnionAire Group) · Egypt</span>
-                <div class="timeline-body"><p>Managed and optimized product content layouts on Odoo CMS. Boosted traffic conversions and maintained content calendars for tech/hosting domains.</p></div>
+                <h3 class="timeline-role">
+                  <span class="lang-en">Website Editor &amp; Content Coordinator</span>
+                  <span class="lang-ar">محرر موقع ومنسق محتوى</span>
+                </h3>
+                <span class="timeline-company">
+                  <span class="lang-en">Fine Stone (UnionAire Group) · Egypt</span>
+                  <span class="lang-ar">Fine Stone (مجموعة UnionAire) · مصر</span>
+                </span>
+                <div class="timeline-body">
+                  <p class="lang-en">Managed and optimized product content layouts on Odoo CMS. Boosted traffic conversions and maintained content calendars for tech/hosting domains.</p>
+                  <p class="lang-ar">أدرت ونسقت محتوى المنتجات على نظام Odoo لإدارة المحتوى. ساهمت في تحسين معدلات التحويل وإدارة جداول المحتوى لخدمات الاستضافة والويب.</p>
+                </div>
               </div>
             </div>
             <div class="timeline-item reveal-card">
               <div class="timeline-dot bg-cyan"></div>
-              <span class="timeline-date">May 2019 — Oct 2022</span>
+              <span class="timeline-date">
+                <span class="lang-en">May 2019 — Oct 2022</span>
+                <span class="lang-ar">مايو ٢٠١٩ — أكتوبر ٢٠٢٢</span>
+              </span>
               <div class="timeline-content">
-                <h3 class="timeline-role">Marketing Team Lead (Volunteer)</h3>
-                <span class="timeline-company">Resala Charity · Zagazig</span>
-                <div class="timeline-body"><p>Guided an active marketing team of 8+ members coordinating community events. Recognized with the official Presentation &amp; Public Speaking award.</p></div>
+                <h3 class="timeline-role">
+                  <span class="lang-en">Marketing Team Lead (Volunteer)</span>
+                  <span class="lang-ar">قائد فريق التسويق (متطوع)</span>
+                </h3>
+                <span class="timeline-company">
+                  <span class="lang-en">Resala Charity · Zagazig</span>
+                  <span class="lang-ar">جمعية رسالة للأعمال الخيرية · الزقازيق</span>
+                </span>
+                <div class="timeline-body">
+                  <p class="lang-en">Guided an active marketing team of 8+ members coordinating community events. Recognized with the official Presentation &amp; Public Speaking award.</p>
+                  <p class="lang-ar">قمت بقيادة وتوجيه فريق تسويق نشط يضم أكثر من ٨ أعضاء لتنسيق الفعاليات المجتمعية. تم تكريمي بجائزة رسمية في العرض والتقديم والتحدث أمام الجمهور.</p>
+                </div>
               </div>
             </div>
+          </div>
         </div>
       </section>
 
@@ -323,20 +727,107 @@
       <section id="credentials" class="content-section section-right-layout">
         <div class="credentials-layout-grid">
           <div class="credentials-info-col">
-            <div class="eyebrow-split"><span class="line"></span><span class="text">CREDENTIALS</span></div>
-            <h2 class="split-reveal-heading">Verified <em>Skills</em></h2>
-            <p class="section-lead">The top 4 most impactful credentials driving results in the Egyptian marketing and corporate sector.</p>
+            <div class="eyebrow-split">
+              <span class="line"></span>
+              <span class="text lang-en">CREDENTIALS</span>
+              <span class="text lang-ar">الشهادات والاعتمادات</span>
+            </div>
+            <h2 class="split-reveal-heading">
+              <span class="lang-en">Verified <em>Skills</em></span>
+              <span class="lang-ar">المهارات <em>المعتمدة</em></span>
+            </h2>
+            <p class="section-lead">
+              <span class="lang-en">The top 4 most impactful credentials driving results in the Egyptian marketing and corporate sector.</span>
+              <span class="lang-ar">أهم ٤ شهادات واعتمادات كان لها الأثر الأكبر في تحقيق النتائج في قطاع التسويق والشركات بمصر.</span>
+            </p>
             <div class="cert-download-center reveal-card">
-              <p>Looking for the full set of certifications including ECDL, Satellite Sciences, and others?</p>
-              <a href="ceritificate portofolio.pdf" class="btn-full-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Full Certificate Portfolio (PDF)</span></a>
+              <p class="lang-en">Looking for the full set of certifications including ECDL, Satellite Sciences, and others?</p>
+              <p class="lang-ar">هل تبحث عن المجموعة الكاملة من شهاداتي بما في ذلك رخصة قيادة الحاسوب (ECDL) وعلوم القمر الصناعي وغيرها؟</p>
+              <a href="ceritificate portofolio.pdf" class="btn-full-download magnetic-button" download target="_blank">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span class="lang-en">Download Full Certificate Portfolio (PDF)</span>
+                <span class="lang-ar">تحميل معرض الشهادات كاملاً (PDF)</span>
+              </a>
             </div>
           </div>
           <div class="credentials-cards-col">
             <div class="certificates-grid">
-              <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_24_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Marketing Diploma</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">Professional Diploma in Digital Marketing</h3><p class="cert-card-issuer">BSA (Business Studies Academy)</p><p class="cert-card-reason">40 hours of intensive training in Performance Marketing, content strategy, media buying, and a graduation project. Holds significant corporate value.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
-              <div class="certificate-glass-card reveal-card border-cyan" data-img="certificates/photo_23_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Corporate Award</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">1st Enterprise Loyalty Award</h3><p class="cert-card-issuer">Concentrix / Boost Mobile</p><p class="cert-card-reason">Official recognition for real-world excellence in churn reduction, customer retention, sales consulting, and lifetime value optimization.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
-              <div class="certificate-glass-card reveal-card border-purple" data-img="certificates/photo_1_2026-06-14_15-50-39.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Trainer Diploma</span><span class="cert-year">2024</span></div><h3 class="cert-card-title">Certified Corporate Trainer (CCT)</h3><p class="cert-card-issuer">CTCHD / Dr. Ibrahim Elfiky</p><p class="cert-card-reason">Demonstrated competence in corporate onboarding, leadership alignment, speech delivery, and executive communication structures.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
-              <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_fwd.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Tech Credential</span><span class="cert-year">2020</span></div><h3 class="cert-card-title">Digital Marketing Challenger Track</h3><p class="cert-card-issuer">Egypt FWD — Udacity + ITIDA</p><p class="cert-card-reason">Government-backed international credential focusing on digital analytics, target personas, social media funnels, and marketing metrics.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+              <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_24_2026-06-14_15-50-40.jpg">
+                <div class="cert-glow"></div>
+                <div class="cert-card-header">
+                  <span class="cert-type-tag lang-en">Marketing Diploma</span>
+                  <span class="cert-type-tag lang-ar">دبلوم تسويق</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-card-title">
+                  <span class="lang-en">Professional Diploma in Digital Marketing</span>
+                  <span class="lang-ar">دبلوم احترافي في التسويق الرقمي</span>
+                </h3>
+                <p class="cert-card-issuer">BSA (Business Studies Academy)</p>
+                <p class="cert-card-reason">
+                  <span class="lang-en">40 hours of intensive training in Performance Marketing, content strategy, media buying, and a graduation project. Holds significant corporate value.</span>
+                  <span class="lang-ar">٤٠ ساعة تدريبية مكثفة في تسويق الأداء (Performance Marketing)، استراتيجية المحتوى، الشراء الإعلاني للميديا، ومشروع التخرج. ذو قيمة عالية في قطاع الشركات.</span>
+                </p>
+                <span class="cert-view-prompt lang-en">Click to View Certificate</span>
+                <span class="cert-view-prompt lang-ar">انقر لعرض الشهادة</span>
+              </div>
+              <div class="certificate-glass-card reveal-card border-cyan" data-img="certificates/photo_23_2026-06-14_15-50-40.jpg">
+                <div class="cert-glow"></div>
+                <div class="cert-card-header">
+                  <span class="cert-type-tag lang-en">Corporate Award</span>
+                  <span class="cert-type-tag lang-ar">جائزة مؤسسية</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-card-title">
+                  <span class="lang-en">1st Enterprise Loyalty Award</span>
+                  <span class="lang-ar">جائزة الولاء للمؤسسات الأولى</span>
+                </h3>
+                <p class="cert-card-issuer">Concentrix / Boost Mobile</p>
+                <p class="cert-card-reason">
+                  <span class="lang-en">Official recognition for real-world excellence in churn reduction, customer retention, sales consulting, and lifetime value optimization.</span>
+                  <span class="lang-ar">تكريم رسمي للتميز الاستثنائي في تقليل معدل إلغاء الخدمات (Churn)، الاحتفاظ بالعملاء، استشارات المبيعات، وتحسين القيمة الدائمة للعميل.</span>
+                </p>
+                <span class="cert-view-prompt lang-en">Click to View Certificate</span>
+                <span class="cert-view-prompt lang-ar">انقر لعرض الشهادة</span>
+              </div>
+              <div class="certificate-glass-card reveal-card border-purple" data-img="certificates/photo_1_2026-06-14_15-50-39.jpg">
+                <div class="cert-glow"></div>
+                <div class="cert-card-header">
+                  <span class="cert-type-tag lang-en">Trainer Diploma</span>
+                  <span class="cert-type-tag lang-ar">دبلوم تدريب</span>
+                  <span class="cert-year">2024</span>
+                </div>
+                <h3 class="cert-card-title">
+                  <span class="lang-en">Certified Corporate Trainer (CCT)</span>
+                  <span class="lang-ar">مدرب شركات معتمد (CCT)</span>
+                </h3>
+                <p class="cert-card-issuer">CTCHD / Dr. Ibrahim Elfiky</p>
+                <p class="cert-card-reason">
+                  <span class="lang-en">Demonstrated competence in corporate onboarding, leadership alignment, speech delivery, and executive communication structures.</span>
+                  <span class="lang-ar">إثبات الكفاءة في عمليات تدريب وتهيئة الموظفين الجدد، التوجيه القيادي، الخطابة العامة، وبنية التواصل التنفيذي.</span>
+                </p>
+                <span class="cert-view-prompt lang-en">Click to View Certificate</span>
+                <span class="cert-view-prompt lang-ar">انقر لعرض الشهادة</span>
+              </div>
+              <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_fwd.jpg">
+                <div class="cert-glow"></div>
+                <div class="cert-card-header">
+                  <span class="cert-type-tag lang-en">Tech Credential</span>
+                  <span class="cert-type-tag lang-ar">اعتماد تكنولوجي</span>
+                  <span class="cert-year">2020</span>
+                </div>
+                <h3 class="cert-card-title">
+                  <span class="lang-en">Digital Marketing Challenger Track</span>
+                  <span class="lang-ar">مسار تحدي التسويق الرقمي</span>
+                </h3>
+                <p class="cert-card-issuer">Egypt FWD — Udacity + ITIDA</p>
+                <p class="cert-card-reason">
+                  <span class="lang-en">Government-backed international credential focusing on digital analytics, target personas, social media funnels, and marketing metrics.</span>
+                  <span class="lang-ar">اعتماد دولي مدعوم حكومياً يركز على التحليلات الرقمية، تحديد شخصية المستهدف، أقماع التسويق الرقمي، ومقاييس الأداء التسويقي.</span>
+                </p>
+                <span class="cert-view-prompt lang-en">Click to View Certificate</span>
+                <span class="cert-view-prompt lang-ar">انقر لعرض الشهادة</span>
+              </div>
             </div>
           </div>
         </div>
@@ -345,40 +836,125 @@
       <div class="section-divider" aria-hidden="true"></div>
 
       <section id="contact" class="content-section">
-        <div class="eyebrow-split"><span class="line"></span><span class="text">CONTACT</span></div>
-        <h2 class="split-reveal-heading">Let's <em>Connect</em></h2>
-        <p class="section-lead">Ready to collaborate on brand strategy, retention operations, or content campaigns? Get in touch today.</p>
+        <div class="eyebrow-split">
+          <span class="line"></span>
+          <span class="text lang-en">CONTACT</span>
+          <span class="text lang-ar">تواصل معي</span>
+        </div>
+        <h2 class="split-reveal-heading">
+          <span class="lang-en">Let's <em>Connect</em></span>
+          <span class="lang-ar">لنكن على <em>اتصال</em></span>
+        </h2>
+        <p class="section-lead">
+          <span class="lang-en">Ready to collaborate on brand strategy, retention operations, or content campaigns? Get in touch today.</span>
+          <span class="lang-ar">هل أنت مستعد للتعاون في استراتيجيات العلامات التجارية، عمليات الاحتفاظ بالعملاء، أو حملات المحتوى؟ تواصل معي اليوم.</span>
+        </p>
         <div class="contact-grid">
           <div class="contact-details reveal-card">
-            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="info"><span class="label">Email</span><a href="mailto:abdelrahman.abdelhafez10@gmail.com" target="_blank" class="val link-effect">abdelrahman.abdelhafez10@gmail.com</a></div></div>
-            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="info"><span class="label">Phone</span><a href="tel:+201157265599" target="_blank" class="val link-effect">+20 115 726 5599</a></div></div>
-            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="info"><span class="label">WhatsApp</span><a href="https://wa.me/201157265599" target="_blank" class="val link-effect">Message on WhatsApp</a></div></div>
-            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="info"><span class="label">Location</span><span class="val">6th of October City, Giza, Egypt</span></div></div>
-            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="info"><span class="label">Availability</span><span class="val">Cairo · Zayed · Smart Village · Maadi · Remote</span></div></div>
-            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><div class="info"><span class="label">Resume</span><a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="val link-effect">Download CV (PDF)</a></div></div>
+            <div class="detail-item">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="info">
+                <span class="label lang-en">Email</span><span class="label lang-ar">البريد الإلكتروني</span>
+                <a href="mailto:abdelrahman.abdelhafez10@gmail.com" target="_blank" class="val link-effect">abdelrahman.abdelhafez10@gmail.com</a>
+              </div>
+            </div>
+            <div class="detail-item">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+              <div class="info">
+                <span class="label lang-en">Phone</span><span class="label lang-ar">الهاتف</span>
+                <a href="tel:+201157265599" target="_blank" class="val link-effect">+20 115 726 5599</a>
+              </div>
+            </div>
+            <div class="detail-item">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+              <div class="info">
+                <span class="label">WhatsApp</span>
+                <a href="https://wa.me/201157265599" target="_blank" class="val link-effect">
+                  <span class="lang-en">Message on WhatsApp</span>
+                  <span class="lang-ar">مراسلة عبر واتساب</span>
+                </a>
+              </div>
+            </div>
+            <div class="detail-item">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div class="info">
+                <span class="label lang-en">Location</span><span class="label lang-ar">الموقع</span>
+                <span class="val lang-en">6th of October City, Giza, Egypt</span>
+                <span class="val lang-ar">مدينة السادس من أكتوبر، الجيزة، مصر</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+              <div class="info">
+                <span class="label lang-en">Availability</span><span class="label lang-ar">مناطق العمل</span>
+                <span class="val lang-en">Cairo · Zayed · Smart Village · Maadi · Remote</span>
+                <span class="val lang-ar">القاهرة · الشيخ زايد · القرية الذكية · المعادي · العمل عن بعد</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+              <div class="info">
+                <span class="label lang-en">Resume</span><span class="label lang-ar">السيرة الذاتية</span>
+                <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="val link-effect">
+                  <span class="lang-en">Download CV (PDF)</span>
+                  <span class="lang-ar">تحميل السيرة الذاتية (PDF)</span>
+                </a>
+              </div>
+            </div>
           </div>
           <div class="contact-form-card reveal-card">
             <div class="form-content-area">
-              <h3 class="form-title">Send a Transmission</h3>
-              <p class="form-desc">Typically responding within 24 hours.</p>
+              <h3 class="form-title">
+                <span class="lang-en">Send a Transmission</span>
+                <span class="lang-ar">أرسل رسالة</span>
+              </h3>
+              <p class="form-desc">
+                <span class="lang-en">Typically responding within 24 hours.</span>
+                <span class="lang-ar">غالباً ما يتم الرد خلال ٢٤ ساعة.</span>
+              </p>
               <form id="contact-form" action="https://formsubmit.co/abdelrahman.abdelhafez10@gmail.com" method="POST">
                 <!-- Hidden settings for formsubmit -->
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio!">
                 
-                <div class="form-group"><label for="name">Your Name</label><input type="text" id="name" name="name" placeholder="Enter your name" required /></div>
-                <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" placeholder="your@email.com" required /></div>
-                <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea></div>
-                <button type="submit" class="btn-submit-form magnetic-button"><span>Send Message</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+                <div class="form-group">
+                  <label for="name" class="lang-en">Your Name</label>
+                  <label for="name" class="lang-ar">اسمك الكريم</label>
+                  <input type="text" id="name" name="name" placeholder="Your Name" required />
+                </div>
+                <div class="form-group">
+                  <label for="email" class="lang-en">Email Address</label>
+                  <label for="email" class="lang-ar">البريد الإلكتروني</label>
+                  <input type="email" id="email" name="email" placeholder="your@email.com" required />
+                </div>
+                <div class="form-group">
+                  <label for="message" class="lang-en">Message</label>
+                  <label for="message" class="lang-ar">نص الرسالة</label>
+                  <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit-form magnetic-button">
+                  <span class="lang-en">Send Message</span>
+                  <span class="lang-ar">إرسال الرسالة</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
               </form>
             </div>
             <div class="form-success-state" style="display: none;">
               <div class="success-icon-wrap">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
-              <h3 class="success-title">Transmission Received!</h3>
-              <p class="success-desc">Thank you, <strong id="success-username">Friend</strong>. Your inquiry has been routed successfully. Abdelrahman will contact you within 24 hours.</p>
-              <button class="btn-reset-form magnetic-button"><span>Send another transmission</span></button>
+              <h3 class="success-title">
+                <span class="lang-en">Transmission Received!</span>
+                <span class="lang-ar">تم استلام الرسالة بنجاح!</span>
+              </h3>
+              <p class="success-desc">
+                <span class="lang-en">Thank you, <strong id="success-username">Friend</strong>. Your inquiry has been routed successfully. Abdelrahman will contact you within 24 hours.</span>
+                <span class="lang-ar">شكراً لك، <strong id="success-username-ar">صديقي</strong>. تم إرسال رسالتك بنجاح، وسيتواصل معك عبد الرحمن خلال ٢٤ ساعة.</span>
+              </p>
+              <button class="btn-reset-form magnetic-button">
+                <span class="lang-en">Send another transmission</span>
+                <span class="lang-ar">إرسال رسالة أخرى</span>
+              </button>
             </div>
           </div>
         </div>
@@ -389,18 +965,213 @@
 
   <footer class="footer-system">
     <div class="footer-inner">
-      <p class="copyright">&copy; 2026 Abdelrahman Mohammed Abdelhafez. All rights reserved.</p>
-      <p class="tagline">Built with strategy &amp; precision.</p>
+      <p class="copyright">
+        <span class="lang-en">&copy; 2026 Abdelrahman Mohammed Abdelhafez. All rights reserved.</span>
+        <span class="lang-ar">&copy; ٢٠٢٦ عبد الرحمن محمد عبد الحافظ. جميع الحقوق محفوظة.</span>
+      </p>
+      <p class="tagline">
+        <span class="lang-en">Built with strategy &amp; precision.</span>
+        <span class="lang-ar">بُني بالتخطيط الاستراتيجي والدقة.</span>
+      </p>
     </div>
   </footer>
 
   <div class="lightbox-modal" id="cert-lightbox" aria-hidden="true"><div class="lightbox-overlay"></div><button class="lightbox-close" aria-label="Close Lightbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="lightbox-content-box"><img src="" alt="Certificate Enlarged" class="lightbox-img" /></div></div>
 
-  <div class="project-drawer" id="drawer-kyoko" aria-hidden="true"><div class="drawer-overlay"></div><div class="drawer-panel"><button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="drawer-inner"><div class="drawer-header"><span class="drawer-badge">Flagship Project</span><h3 class="drawer-title">Kyoko Gifts — Full Marketing Plan</h3><p class="drawer-meta">2026 · Gift &amp; E-commerce · Cairo, Egypt</p></div><div class="drawer-body"><p class="drawer-intro-desc">Built a comprehensive marketing plan for an Egyptian gifting brand covering brand positioning, customer research, content planning, marketing funnels, and growth-focused KPIs.</p><div class="drawer-tags-list"><span>Business Model Canvas</span><span>Blue Ocean Strategy</span><span>Buyer Personas</span><span>Meta &amp; TikTok Ads</span><span>KPI Framework</span></div><div class="drawer-highlights-section"><h4 class="section-sub-title">Strategic Highlights</h4><div class="highlight-cards-row"><div class="highlight-mini-card"><h5>Strategy Framework</h5><p>Business Model Canvas, brand identity system, dual SWOT, 5 SMART goals, competitive positioning, and Blue Ocean differentiation.</p></div><div class="highlight-mini-card"><h5>Customer Intelligence</h5><p>2 buyer personas, 4Ps marketing mix, Push &amp; Pull strategy, customer journey mapping across all funnel stages.</p></div><div class="highlight-mini-card"><h5>Growth &amp; Performance</h5><p>Ad copy, content pillars, online sales funnel, moderation guide, and a 6-category KPI measurement framework.</p></div></div></div><div class="drawer-cta-center"><a href="kyoko marketing plan.pdf" class="btn-drawer-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Full Marketing Plan (PDF)</span></a></div></div></div></div></div>
+  <!-- Drawers -->
+  <div class="project-drawer" id="drawer-kyoko" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel">
+      <button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Flagship Project</span>
+          <span class="drawer-badge lang-ar">المشروع الرئيسي</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">Kyoko Gifts — Full Marketing Plan</span>
+            <span class="lang-ar">هدايا كيوكو — خطة تسويقية متكاملة</span>
+          </h3>
+          <p class="drawer-meta">
+            <span class="lang-en">2026 · Gift &amp; E-commerce · Cairo, Egypt</span>
+            <span class="lang-ar">٢٠٢٦ · الهدايا والتجارة الإلكترونية · القاهرة، مصر</span>
+          </p>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Built a comprehensive marketing plan for an Egyptian gifting brand covering brand positioning, customer research, content planning, marketing funnels, and growth-focused KPIs.</span>
+            <span class="lang-ar">إعداد خطة تسويق شاملة لبراند هدايا مصري تغطي تموضع العلامة التجارية، دراسة سلوك العملاء، تخطيط المحتوى، أقماع التسويق، ومؤشرات الأداء الموجهة للنمو.</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">Business Model Canvas</span><span class="lang-ar">نموذج العمل التجاري</span>
+            <span class="lang-en">Blue Ocean Strategy</span><span class="lang-ar">استراتيجية المحيط الأزرق</span>
+            <span class="lang-en">Buyer Personas</span><span class="lang-ar">شخصية المشتري</span>
+            <span class="lang-en">Meta &amp; TikTok Ads</span><span class="lang-ar">إعلانات ميتا وتيك توك</span>
+            <span class="lang-en">KPI Framework</span><span class="lang-ar">إطار مؤشرات الأداء</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Strategic Highlights</span>
+              <span class="lang-ar">أبرز النقاط الاستراتيجية</span>
+            </h4>
+            <div class="highlight-cards-row">
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Strategy Framework</h5>
+                <h5 class="lang-ar">إطار عمل الاستراتيجية</h5>
+                <p class="lang-en">Business Model Canvas, brand identity system, dual SWOT, 5 SMART goals, competitive positioning, and Blue Ocean differentiation.</p>
+                <p class="lang-ar">نموذج العمل التجاري، نظام الهوية التجارية، تحليل SWOT المزدوج، 5 أهداف SMART، التموضع التنافسي، وتمييز المحيط الأزرق.</p>
+              </div>
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Customer Intelligence</h5>
+                <h5 class="lang-ar">فهم سلوك العملاء</h5>
+                <p class="lang-en">2 buyer personas, 4Ps marketing mix, Push &amp; Pull strategy, customer journey mapping across all funnel stages.</p>
+                <p class="lang-ar">شخصيتان للمشترين، المزيج التسويقي 4Ps، استراتيجية الدفع والسحب، ورسم خرائط رحلة العميل عبر جميع مراحل القمع التسويقي.</p>
+              </div>
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Growth &amp; Performance</h5>
+                <h5 class="lang-ar">النمو والأداء</h5>
+                <p class="lang-en">Ad copy, content pillars, online sales funnel, moderation guide, and a 6-category KPI measurement framework.</p>
+                <p class="lang-ar">نصوص الإعلانات، ركائز المحتوى، قمع المبيعات الرقمي، دليل إدارة الصفحات (Moderation Guide)، وإطار قياس مؤشرات الأداء المكون من 6 فئات.</p>
+              </div>
+            </div>
+          </div>
+          <div class="drawer-cta-center">
+            <a href="kyoko marketing plan.pdf" class="btn-drawer-download magnetic-button" download target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span class="lang-en">Download Full Marketing Plan (PDF)</span>
+              <span class="lang-ar">تحميل الخطة التسويقية الكاملة (PDF)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <div class="project-drawer" id="drawer-new-direction" aria-hidden="true"><div class="drawer-overlay"></div><div class="drawer-panel"><button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="drawer-inner"><div class="drawer-header"><span class="drawer-badge">Brand Strategy</span><h3 class="drawer-title">New Direction English Academy</h3><p class="drawer-meta">2020–2022 · EdTech · Egypt (Remote)</p></div><div class="drawer-body"><p class="drawer-intro-desc">Led full brand identity creation and marketing strategy for an Egyptian EdTech startup — from logo direction and tone of voice to content campaigns and competitive analysis.</p><div class="drawer-tags-list"><span>Brand Identity</span><span>SWOT Analysis</span><span>Content Campaigns</span><span>Competitor Research</span><span>Buyer Persona</span></div><div class="drawer-highlights-section"><h4 class="section-sub-title">Strategic Highlights</h4><div class="highlight-cards-row"><div class="highlight-mini-card"><h5>Brand Foundation</h5><p>Logo direction, colour palette, tone of voice, and positioning — differentiating from established English-learning academies.</p></div><div class="highlight-mini-card"><h5>Research &amp; Strategy</h5><p>Dual SWOT analyses, buyer persona, customer journey content map, value proposition research, pricing competitor analysis.</p></div><div class="highlight-mini-card"><h5>Content Execution</h5><p>Monthly content campaigns across Facebook &amp; Instagram — editorial calendars, scheduling, community engagement, bilingual copy.</p></div></div></div><div class="drawer-cta-center"><a href="new direction plan.pdf" class="btn-drawer-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Strategy Pack (PDF)</span></a></div></div></div></div></div>
+  <div class="project-drawer" id="drawer-new-direction" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel">
+      <button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Brand Strategy</span>
+          <span class="drawer-badge lang-ar">استراتيجية العلامة التجارية</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">New Direction English Academy</span>
+            <span class="lang-ar">أكاديمية نيو دايركشن لتعليم الإنجليزية</span>
+          </h3>
+          <p class="drawer-meta">
+            <span class="lang-en">2020–2022 · EdTech · Egypt (Remote)</span>
+            <span class="lang-ar">٢٠٢٠–٢٠٢٢ · تكنولوجيا التعليم · مصر (عن بعد)</span>
+          </p>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Led full brand identity creation and marketing strategy for an Egyptian EdTech startup — from logo direction and tone of voice to content campaigns and competitive analysis.</span>
+            <span class="lang-ar">قيادة بناء الهوية الكاملة للعلامة التجارية واستراتيجية التسويق لشركة تعليمية ناشئة — من توجيه تصميم الشعار ونبرة الصوت إلى حملات المحتوى والتحليل التنافسي.</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">Brand Identity</span><span class="lang-ar">هوية العلامة التجارية</span>
+            <span class="lang-en">SWOT Analysis</span><span class="lang-ar">تحليل سوات</span>
+            <span class="lang-en">Content Campaigns</span><span class="lang-ar">حملات المحتوى</span>
+            <span class="lang-en">Competitor Research</span><span class="lang-ar">تحليل المنافسين</span>
+            <span class="lang-en">Buyer Persona</span><span class="lang-ar">شخصية المشتري</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Strategic Highlights</span>
+              <span class="lang-ar">أبرز النقاط الاستراتيجية</span>
+            </h4>
+            <div class="highlight-cards-row">
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Brand Foundation</h5>
+                <h5 class="lang-ar">أساسيات العلامة التجارية</h5>
+                <p class="lang-en">Logo direction, colour palette, tone of voice, and positioning — differentiating from established English-learning academies.</p>
+                <p class="lang-ar">توجيه تصميم الشعار، لوحة الألوان، نبرة الصوت، والتموضع — للتميز عن أكاديميات تعليم اللغة الإنجليزية الراسخة.</p>
+              </div>
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Research &amp; Strategy</h5>
+                <h5 class="lang-ar">الأبحاث والاستراتيجية</h5>
+                <p class="lang-en">Dual SWOT analyses, buyer persona, customer journey content map, value proposition research, pricing competitor analysis.</p>
+                <p class="lang-ar">تحليل SWOT المزدوج، شخصية المشتري، خريطة محتوى رحلة العميل، بحث عروض القيمة، وتحليل أسعار المنافسين.</p>
+              </div>
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Content Execution</h5>
+                <h5 class="lang-ar">تنفيذ حملات المحتوى</h5>
+                <p class="lang-en">Monthly content campaigns across Facebook &amp; Instagram — editorial calendars, scheduling, community engagement, bilingual copy.</p>
+                <p class="lang-ar">حملات المحتوى الشهرية عبر فيسبوك وإنستغرام — جداول التحرير، الجدولة، التفاعل المجتمعي، والنصوص ثنائية اللغة.</p>
+              </div>
+            </div>
+          </div>
+          <div class="drawer-cta-center">
+            <a href="new direction plan.pdf" class="btn-drawer-download magnetic-button" download target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span class="lang-en">Download Strategy Pack (PDF)</span>
+              <span class="lang-ar">تحميل حقيبة الاستراتيجية (PDF)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <div class="project-drawer" id="drawer-hosting" aria-hidden="true"><div class="drawer-overlay"></div><div class="drawer-panel"><button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="drawer-inner"><div class="drawer-header"><span class="drawer-badge">Website Audit</span><h3 class="drawer-title">HostingWDomain — UX &amp; Content Audit</h3><p class="drawer-meta">Tech / SaaS</p></div><div class="drawer-body"><p class="drawer-intro-desc">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</p><div class="drawer-tags-list"><span>UX Audit</span><span>Site Architecture</span><span>Conversion Optimization</span><span>A/B Testing</span></div><div class="drawer-highlights-section"><h4 class="section-sub-title">Strategic Highlights</h4><div class="highlight-cards-row"><div class="highlight-mini-card"><h5>Audit Scope</h5><p>Site architecture review, brand identity gap analysis, content quality assessment, landing page friction mapping.</p></div><div class="highlight-mini-card"><h5>Recommendations</h5><p>6-point execution roadmap — UX improvements, content restructuring, landing page optimization, A/B testing strategy.</p></div></div></div><div class="drawer-cta-center"><a href="HOSTING W DOMAIN REPORT.pdf" class="btn-drawer-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Audit Report (PDF)</span></a></div></div></div></div></div>
+  <div class="project-drawer" id="drawer-hosting" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel">
+      <button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Website Audit</span>
+          <span class="drawer-badge lang-ar">تدقيق المواقع الإلكترونية</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">HostingWDomain — UX &amp; Content Audit</span>
+            <span class="lang-ar">HostingWDomain — تدقيق المحتوى وتجربة المستخدم</span>
+          </h3>
+          <p class="drawer-meta">
+            <span class="lang-en">Tech / SaaS</span>
+            <span class="lang-ar">التكنولوجيا / البرمجيات كخدمة</span>
+          </p>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</span>
+            <span class="lang-ar">تدقيق منهجي لتجربة المستخدم والمحتوى لمزود خدمات استضافة ونطاقات، لتحديد فجوات الهوية التسويقية، مشكلات جودة المحتوى، ونقاط الاحتكاك التي تعيق التحويل.</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">UX Audit</span><span class="lang-ar">تدقيق تجربة المستخدم</span>
+            <span class="lang-en">Site Architecture</span><span class="lang-ar">بنية الموقع</span>
+            <span class="lang-en">Conversion Optimization</span><span class="lang-ar">تحسين التحويل</span>
+            <span class="lang-en">A/B Testing</span><span class="lang-ar">اختبارات A/B</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Strategic Highlights</span>
+              <span class="lang-ar">أبرز النقاط الاستراتيجية</span>
+            </h4>
+            <div class="highlight-cards-row">
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Audit Scope</h5>
+                <h5 class="lang-ar">نطاق التدقيق</h5>
+                <p class="lang-en">Site architecture review, brand identity gap analysis, content quality assessment, landing page friction mapping.</p>
+                <p class="lang-ar">مراجعة بنية الموقع، تحليل فجوات هوية العلامة التجارية، تقييم جودة المحتوى، ورسم خرائط نقاط الاحتكاك في صفحات الهبوط.</p>
+              </div>
+              <div class="highlight-mini-card">
+                <h5 class="lang-en">Recommendations</h5>
+                <h5 class="lang-ar">التوصيات والحلول</h5>
+                <p class="lang-en">6-point execution roadmap — UX improvements, content restructuring, landing page optimization, A/B testing strategy.</p>
+                <p class="lang-ar">خارطة طريق للتنفيذ من 6 نقاط — تحسينات تجربة المستخدم، إعادة هيكلة المحتوى، تحسين صفحات الهبوط، واستراتيجية اختبارات A/B.</p>
+              </div>
+            </div>
+          </div>
+          <div class="drawer-cta-center">
+            <a href="HOSTING W DOMAIN REPORT.pdf" class="btn-drawer-download magnetic-button" download target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span class="lang-en">Download Audit Report (PDF)</span>
+              <span class="lang-ar">تحميل تقرير التدقيق (PDF)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scroll to Top Button -->
   <button id="scroll-to-top" class="scroll-to-top-btn magnetic-button" aria-label="Scroll to top">
