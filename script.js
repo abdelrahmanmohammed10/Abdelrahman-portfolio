@@ -4,6 +4,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  let lastActiveSection = 'hero';
+
   /* ----- 1. PRELOADER SEQUENCE ----- */
   const preloader = document.getElementById('preloader');
   window.addEventListener('load', () => {
@@ -51,70 +53,182 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
 
-  /* ----- 4. CANVAS PARTICLE SYSTEM (MINIMAL STARFIELD) ----- */
-  const canvas = document.getElementById('particle-canvas');
-  if (canvas && window.innerWidth > 1024) { // Only enable on desktop for performance
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+  /* ----- 4. THREE.JS WebGL 3D SPACE SCENE ----- */
+  const canvas = document.getElementById('three-planet-canvas');
+  let scene, camera, renderer, starField;
+  let planets = [];
+  let currentCameraY = 0;
+  let targetCameraY = 0;
+  const isMobile = window.innerWidth <= 1024;
 
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+  const planetConfig = [
+    { name: 'hero', y: 0, x: 0, texture: 'javier-miranda-5qPsVqmlQOs-unsplash.jpg', size: 3.2, emissive: 0.25, color: 0xF59E0B },
+    { name: 'about', y: -12, x: -3.8, texture: 'planet-volumes-awYEQyYdHVE-unsplash.jpg', size: 2.2, color: 0x06B6D4 },
+    { name: 'work', y: -24, x: 3.8, texture: 'pexels-zelch-20337601.jpg', size: 1.8, color: 0xef4444 },
+    { name: 'campaigns', y: -36, x: -3.8, texture: 'pexels-t-keawkanok-3252323-13229275.jpg', size: 2.5, color: 0xdca876 },
+    { name: 'journey', y: -48, x: 3.8, texture: 'pexels-zelch-20337597.jpg', size: 2.0, ring: true, color: 0xdfcdb2 },
+    { name: 'credentials', y: -60, x: 3.8, texture: 'pexels-zelch-20376399.jpg', size: 1.9, color: 0xa5d6a7 },
+    { name: 'contact', y: -72, x: 0, texture: 'pexels-zelch-30596214.jpg', size: 2.2, color: 0x3f51b5 }
+  ];
+
+  if (canvas) {
+    scene = new THREE.Scene();
+    
+    // Set up camera aspect and field of view
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 9); // Z position for framing
+
+    renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true, // transparent background for style meshes
+      antialias: !isMobile,
+      powerPreference: "high-performance"
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // 1. Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.18);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    sunLight.position.set(-6, 6, 8); // Top-left rays
+    scene.add(sunLight);
+
+    // 2. Starfield (Drifting points)
+    const starCount = isMobile ? 300 : 1200;
+    const starGeometry = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(starCount * 3);
+
+    for (let i = 0; i < starCount * 3; i += 3) {
+      starPositions[i] = (Math.random() - 0.5) * 60;
+      starPositions[i + 1] = (Math.random() - 0.5) * 120;
+      starPositions[i + 2] = -Math.random() * 30 - 5;
+    }
+
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.08,
+      transparent: true,
+      opacity: 0.6,
+      sizeAttenuation: true
+    });
+    starField = new THREE.Points(starGeometry, starMaterial);
+    scene.add(starField);
+
+    // 3. Planet Builder
+    const textureLoader = new THREE.TextureLoader();
+    const isAr = document.documentElement.getAttribute('lang') === 'ar';
+
+    planetConfig.forEach((cfg) => {
+      let texture;
+      try {
+        texture = textureLoader.load(cfg.texture, undefined, undefined, (err) => {
+          console.warn("Local CORS blocked texture load. Falling back to solid color.", cfg.texture);
+        });
+      } catch (e) {
+        console.warn("Local CORS texture load error.", e);
+      }
+
+      const material = new THREE.MeshStandardMaterial({
+        roughness: 0.85,
+        metalness: 0.15,
+        color: cfg.color
+      });
+
+      if (texture) {
+        material.map = texture;
+      }
+
+      if (cfg.emissive) {
+        material.emissive = new THREE.Color(cfg.color);
+        material.emissiveIntensity = cfg.emissive;
+      }
+
+      const geometry = new THREE.SphereGeometry(cfg.size, cfg.name === 'hero' ? 64 : 32, cfg.name === 'hero' ? 64 : 32);
+      const mesh = new THREE.Mesh(geometry, material);
+
+      const group = new THREE.Group();
+      const initialX = isAr ? -cfg.x : cfg.x;
+      group.position.set(initialX, cfg.y, 0);
+      group.scale.set(0.9, 0.9, 0.9); // Inactive scale
+      group.add(mesh);
+
+      // Saturn Rings
+      if (cfg.ring) {
+        const ringGeo = new THREE.RingGeometry(cfg.size * 1.3, cfg.size * 2.0, 64);
+        const ringMat = new THREE.MeshStandardMaterial({
+          color: 0xe5c3a3,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.45,
+          roughness: 0.9
+        });
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.rotation.x = Math.PI / 2.5;
+        ringMesh.rotation.y = Math.PI / 12;
+        group.add(ringMesh);
+      }
+
+      scene.add(group);
+
+      planets.push({
+        name: cfg.name,
+        mesh: mesh,
+        group: group,
+        baseX: cfg.x,
+        baseY: cfg.y,
+        targetX: initialX
+      });
     });
 
-    class Star {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.size = Math.random() * 1.0 + 0.3; // Tiny stars
-        this.vx = (Math.random() - 0.5) * 0.08; // Very slow drift
-        this.vy = (Math.random() - 0.5) * 0.08;
-        this.alpha = Math.random() * 0.5 + 0.2; // Translucent
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // Wrap around boundaries
-        if (this.x < 0) this.x = width;
-        if (this.x > width) this.x = 0;
-        if (this.y < 0) this.y = height;
-        if (this.y > height) this.y = 0;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-        ctx.fill();
-      }
-    }
-
-    function init() {
-      particles = [];
-      const count = Math.floor((width * height) / 18000);
-      const safeCount = Math.min(Math.max(count, 40), 100);
-      for (let i = 0; i < safeCount; i++) {
-        particles.push(new Star());
-      }
-    }
-
+    // 4. Render loop with Lerp Easing
     function animate() {
-      ctx.clearRect(0, 0, width, height);
+      requestAnimationFrame(animate);
 
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
+      // Smooth camera scroll transition
+      currentCameraY += (targetCameraY - currentCameraY) * 0.045;
+      camera.position.y = currentCameraY;
+
+      // Axis rotation & swell meshes on scroll focus
+      planets.forEach(p => {
+        const rotSpeed = p.name === 'hero' ? 0.0006 : 0.0035;
+        p.mesh.rotation.y += rotSpeed;
+
+        // Animate X target transitions on language toggling
+        p.group.position.x += (p.targetX - p.group.position.x) * 0.08;
+
+        // Breathe expansion when active
+        if (p.name === lastActiveSection) {
+          p.group.scale.set(
+            THREE.MathUtils.lerp(p.group.scale.x, 1.05, 0.05),
+            THREE.MathUtils.lerp(p.group.scale.y, 1.05, 0.05),
+            THREE.MathUtils.lerp(p.group.scale.z, 1.05, 0.05)
+          );
+        } else {
+          p.group.scale.set(
+            THREE.MathUtils.lerp(p.group.scale.x, 0.9, 0.05),
+            THREE.MathUtils.lerp(p.group.scale.y, 0.9, 0.05),
+            THREE.MathUtils.lerp(p.group.scale.z, 0.9, 0.05)
+          );
+        }
+      });
+
+      if (starField) {
+        starField.rotation.y += 0.00008;
       }
 
-      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
     }
 
-    init();
     animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
   }
 
 
@@ -239,50 +353,19 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ----- 8. ACTIVE NAV LINK TRACKING & BACKGROUND PLANETS ----- */
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-spine .spine-dot, .mobile-menu .mob-link');
-  const planetElements = document.querySelectorAll('.bg-planet');
-  let lastActiveSection = '';
+  // lastActiveSection declared at DOMContentLoaded top
 
   const updateActivePlanet = (activeSec) => {
     if (activeSec === lastActiveSection) return;
     lastActiveSection = activeSec;
 
-    // Solar system mapping coordinates (Center is 1500, 1500)
-    const coordinates = {
-      'hero': { x: 1500, y: 1500, scale: 1.15 },
-      'about': { x: 1747, y: 1253, scale: 1.15 },
-      'work': { x: 1076, y: 1076, scale: 1.15 },
-      'campaigns': { x: 1925, y: 2236, scale: 1.15 },
-      'journey': { x: 722, y: 2278, scale: 1.15 },
-      'credentials': { x: 2150, y: 374, scale: 1.15 },
-      'contact': { x: 138, y: 1996, scale: 1.15 }
-    };
-
-    const coord = coordinates[activeSec] || coordinates['hero'];
-
-    // Dynamic panning based on text layout alignment (desktop only)
-    const isMobile = window.innerWidth <= 1024;
-    let xOffset = 0;
-    if (!isMobile) {
-      // Offset planet to the left (text on right) or right (text on left)
-      const rightLayoutSections = ['work', 'credentials'];
-      xOffset = rightLayoutSections.includes(activeSec) ? -280 : 280;
-    }
-
-    const panX = 1500 - coord.x + xOffset;
-    const panY = 1500 - coord.y;
-
-    // Set translation and scale variables for CSS transform panning
-    document.documentElement.style.setProperty('--pan-x', `${panX}px`);
-    document.documentElement.style.setProperty('--pan-y', `${panY}px`);
-    document.documentElement.style.setProperty('--zoom-scale', coord.scale);
-
-    // Toggle active classes on background planets
-    planetElements.forEach(p => {
-      p.classList.remove('active');
-      if (p.getAttribute('data-sec') === activeSec) {
-        p.classList.add('active');
+    // Update WebGL Camera target Y coordinate
+    if (typeof planetConfig !== 'undefined') {
+      const activeCfg = planetConfig.find(p => p.name === activeSec);
+      if (activeCfg) {
+        targetCameraY = activeCfg.y;
       }
-    });
+    }
   };
 
   let tickingScroll = false;
@@ -623,6 +706,13 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.classList.remove('active');
       }
     });
+
+    // Update Three.js targetX offsets for language toggling
+    if (typeof planets !== 'undefined' && planets && planets.length > 0) {
+      planets.forEach(p => {
+        p.targetX = lang === 'ar' ? -p.baseX : p.baseX;
+      });
+    }
 
     // Update document title based on language
     if (lang === 'ar') {
