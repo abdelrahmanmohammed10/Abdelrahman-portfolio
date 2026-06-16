@@ -231,18 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const navItems = document.querySelectorAll('.nav-spine .spine-dot, .mobile-menu .mob-link');
   // lastActiveSection declared at DOMContentLoaded top
 
-  const updateActivePlanet = (activeSec) => {
-    if (activeSec === lastActiveSection) return;
-    lastActiveSection = activeSec;
-
-    // Update WebGL Camera target Y coordinate
-    if (typeof planetConfig !== 'undefined') {
-      const activeCfg = planetConfig.find(p => p.name === activeSec);
-      if (activeCfg) {
-        targetCameraY = activeCfg.y;
-      }
-    }
-  };
 
   let tickingScroll = false;
   window.addEventListener('scroll', () => {
