@@ -1,0 +1,196 @@
+﻿/* 
+ * V3 Interplanetary Portfolio Redesign
+ * 9. Responsive Behavior Matrix 
+ */
+
+/* ----------------------------------------------------
+   MOBILE / TABLET (COMPACT MODE) <= 1024px
+   ---------------------------------------------------- */
+@media screen and (max-width: 1024px) {
+  
+  html, body {
+    height: 100%;
+    overflow: hidden; /* We use a custom slide-snap system for compact mode */
+    overscroll-behavior: none;
+  }
+
+  /* The main container holding all slides horizontally or just one active slide */
+  #slides-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+    z-index: 10;
+  }
+
+  .slide-section {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Portrait default: content at bottom */
+    padding: 0;
+  }
+
+  /* The inner content wrapper that scrolls if text is long */
+  .slide-content-wrapper {
+    width: 100%;
+    max-height: 60vh; /* Leave top 40% for the 3D Earth */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2rem;
+    box-sizing: border-box;
+    /* Soft fade at the bottom using mask */
+    mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  }
+
+  /* Hide desktop nav */
+  .desktop-nav { display: none; }
+
+  /* Prev/Next Navigation Controls */
+  .compact-nav-controls {
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .compact-nav-btn {
+    background: var(--surface-ionosphere);
+    color: var(--text-cloud-white);
+    border: 2px solid var(--accent-solar-flare);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(255, 159, 28, 0.4);
+    cursor: pointer;
+  }
+  .compact-nav-btn:active {
+    background: var(--accent-solar-flare);
+  }
+  .compact-nav-btn[disabled] {
+    opacity: 0.3;
+    pointer-events: none;
+    border-color: transparent;
+  }
+
+  /* Scroll hint (↓) */
+  .scroll-hint {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--accent-solar-flare);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    text-align: center;
+    animation: bounceHint 2s infinite;
+  }
+  .scroll-hint.visible { opacity: 1; }
+
+  @keyframes bounceHint {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -10px); }
+  }
+
+  /* --- COMPACT LANDSCAPE OVERRIDES --- */
+  @media (orientation: landscape) {
+    .slide-section {
+      flex-direction: row;
+      justify-content: flex-end; /* Content on right 60% */
+      align-items: stretch;
+    }
+    
+    .slide-content-wrapper {
+      width: 60%;
+      max-height: 100vh;
+      max-height: 100dvh;
+      padding: 2rem 4rem 2rem 2rem;
+    }
+
+    /* Move nav controls to right edge */
+    .compact-nav-controls {
+      flex-direction: column;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* --- COMPACT PORTRAIT SPECIFIC --- */
+  @media (orientation: portrait) {
+    .compact-nav-controls {
+      flex-direction: row;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+}
+
+/* ----------------------------------------------------
+   DESKTOP MODE > 1024px
+   ---------------------------------------------------- */
+@media screen and (min-width: 1025px) {
+  
+  html, body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #slides-container {
+    display: block; /* Normal stacking */
+  }
+
+  .slide-section {
+    min-height: 100vh;
+    padding: 6rem 10vw;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Content widths based on original layout */
+  .slide-content-wrapper {
+    max-width: 600px;
+  }
+
+  /* Alternate layout alignment */
+  .slide-section:nth-child(even) {
+    justify-content: flex-end;
+  }
+  .slide-section:nth-child(even) .slide-content-wrapper {
+    text-align: right;
+  }
+
+  /* Hide mobile controls */
+  .compact-nav-controls {
+    display: none;
+  }
+
+  /* Desktop Nav */
+  .desktop-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+  }
+}

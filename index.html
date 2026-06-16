@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=3.2.0" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
   <link rel="icon" type="image/png" href="logo.png" />
 
   <!-- Open Graph / Facebook / LinkedIn -->
@@ -26,11 +28,12 @@
   <meta property="twitter:image" content="https://abdelrahmanmohammed10.github.io/Abdelrahman-portfolio/logo.png">
 </head>
 <body>
-  <div id="preloader" aria-hidden="true">
-    <div class="preloader-content">
-      <div class="logo-anim"><img src="logo.png" alt="Logo" class="preloader-logo" /></div>
-      <div class="preloader-bar-wrap"><div class="preloader-bar"></div></div>
-    </div>
+  <a href="#main-content" class="skip-link">Skip to Content</a>
+  <div id="loader-ui" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#0D1321; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#F8F9FA;">
+    <div id="telescope-mask" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#0D1321; z-index:2;"></div>
+    <div id="rocket-container" style="position:relative; z-index:3; font-size:4rem; margin-bottom:2rem;">🚀</div>
+    <div style="position:relative; z-index:3; font-family:'Space Mono', monospace; font-size:1.5rem;" id="load-percent">0%</div>
+    <button id="skip-btn" style="position:relative; z-index:3; margin-top:2rem; background:transparent; border:1px solid #FF9F1C; color:#FF9F1C; padding:0.5rem 1rem; cursor:pointer; opacity:0; pointer-events:none; transition:opacity 0.3s;">Skip ▶</button>
   </div>
 
   <div class="gradient-mesh" aria-hidden="true"></div>
@@ -57,7 +60,7 @@
       </a>
       <a href="#about" class="mob-link">
         <span class="num">01</span>
-        <span class="lang-en">About</span><span class="lang-ar">نبذة عني</span>
+        <span class="lang-en">Mission Control</span><span class="lang-ar">نبذة عني</span>
       </a>
       <a href="#work" class="mob-link">
         <span class="num">02</span>
@@ -65,15 +68,15 @@
       </a>
       <a href="#campaigns" class="mob-link">
         <span class="num">03</span>
-        <span class="lang-en">Campaigns</span><span class="lang-ar">الحملات التسويقية</span>
+        <span class="lang-en">Transmissions</span><span class="lang-ar">الحملات التسويقية</span>
       </a>
       <a href="#journey" class="mob-link">
         <span class="num">04</span>
-        <span class="lang-en">Journey</span><span class="lang-ar">المسيرة المهنية</span>
+        <span class="lang-en">Flight Path</span><span class="lang-ar">المسيرة المهنية</span>
       </a>
       <a href="#credentials" class="mob-link">
         <span class="num">05</span>
-        <span class="lang-en">Credentials</span><span class="lang-ar">الشهادات والاعتمادات</span>
+        <span class="lang-en">Flight Certifications</span><span class="lang-ar">الشهادات والاعتمادات</span>
       </a>
       <a href="#contact" class="mob-link">
         <span class="num">06</span>
@@ -87,11 +90,11 @@
       <div class="spine-line"></div>
       <ul class="spine-list">
         <li><a href="#hero" class="spine-dot active" data-title-en="Home" data-title-ar="الرئيسية"></a></li>
-        <li><a href="#about" class="spine-dot" data-title-en="About" data-title-ar="نبذة عني"></a></li>
+        <li><a href="#about" class="spine-dot" data-title-en="Mission Control" data-title-ar="نبذة عني"></a></li>
         <li><a href="#work" class="spine-dot" data-title-en="Work" data-title-ar="سابقة الأعمال"></a></li>
-        <li><a href="#campaigns" class="spine-dot" data-title-en="Campaigns" data-title-ar="الحملات التسويقية"></a></li>
-        <li><a href="#journey" class="spine-dot" data-title-en="Journey" data-title-ar="المسيرة المهنية"></a></li>
-        <li><a href="#credentials" class="spine-dot" data-title-en="Credentials" data-title-ar="الشهادات والاعتمادات"></a></li>
+        <li><a href="#campaigns" class="spine-dot" data-title-en="Transmissions" data-title-ar="الحملات التسويقية"></a></li>
+        <li><a href="#journey" class="spine-dot" data-title-en="Flight Path" data-title-ar="المسيرة المهنية"></a></li>
+        <li><a href="#credentials" class="spine-dot" data-title-en="Flight Certifications" data-title-ar="الشهادات والاعتمادات"></a></li>
         <li><a href="#contact" class="spine-dot" data-title-en="Contact" data-title-ar="تواصل معي"></a></li>
       </ul>
     </nav>
@@ -108,9 +111,11 @@
       </div>
     </header>
 
-    <main class="main-content">
+    <main id="main-content" class="main-content">
+      <div id="slides-container">
 
-      <section id="hero" class="hero-section content-section">
+      <section id="hero" class="hero-section  content-section slide-section ">
+<div class="slide-content-wrapper glass-panel">
         <div class="hero-brand-header">
           <div class="logo-wrap"><img src="logo.png" alt="Logo" class="hero-logo" /></div>
           <div class="badge-status">
@@ -158,11 +163,13 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
+</section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section id="about" class="content-section">
+      <section id="about" class=" content-section slide-section ">
+<div class="slide-content-wrapper glass-panel">
         <div class="eyebrow-split">
           <span class="line"></span>
           <span class="text lang-en">ABOUT ME</span>
@@ -287,11 +294,13 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
+</section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section id="work" class="content-section section-right-layout">
+      <section id="work" class=" content-section slide-section  section-right-layout">
+<div class="slide-content-wrapper glass-panel">
         <div class="eyebrow-split">
           <span class="line"></span>
           <span class="text lang-en">FEATURED WORK</span>
@@ -405,11 +414,13 @@
             </div>
           </article>
         </div>
-      </section>
+      </div>
+</section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section id="campaigns" class="content-section">
+      <section id="campaigns" class=" content-section slide-section ">
+<div class="slide-content-wrapper glass-panel">
         <div class="eyebrow-split">
           <span class="line"></span>
           <span class="text lang-en">CAMPAIGNS</span>
@@ -563,11 +574,13 @@
             </a>
           </article>
         </div>
-      </section>
+      </div>
+</section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section id="journey" class="content-section">
+      <section id="journey" class=" content-section slide-section ">
+<div class="slide-content-wrapper glass-panel">
         <div class="eyebrow-split">
           <span class="line"></span>
           <span class="text lang-en">JOURNEY</span>
@@ -687,11 +700,13 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
+</section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section id="credentials" class="content-section section-right-layout">
+      <section id="credentials" class=" content-section slide-section  section-right-layout">
+<div class="slide-content-wrapper glass-panel">
         <div class="credentials-layout-grid">
           <div class="credentials-info-col">
             <div class="eyebrow-split">
@@ -798,11 +813,13 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
+</section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section id="contact" class="content-section">
+      <section id="contact" class=" content-section slide-section ">
+<div class="slide-content-wrapper glass-panel">
         <div class="eyebrow-split">
           <span class="line"></span>
           <span class="text lang-en">CONTACT</span>
@@ -925,8 +942,14 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
+</section>
 
+      </div> <!-- end slides-container -->
+      <div class="compact-nav-controls">
+        <button id="nav-prev" class="compact-nav-btn" aria-label="Previous section">↑</button>
+        <button id="nav-next" class="compact-nav-btn" aria-label="Next section">↓</button>
+      </div>
     </main>
   </div>
 
@@ -1148,6 +1171,15 @@
     </svg>
   </button>
 
+  <!-- Three.js & GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <script src="js/loader.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/slides.js"></script>
   <script src="script.js?v=3.2.0"></script>
 </body>
 </html>

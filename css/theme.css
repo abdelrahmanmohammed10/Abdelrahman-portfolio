@@ -1,0 +1,124 @@
+﻿/* 
+ * V3 Interplanetary Portfolio Redesign
+ * 7. Typography & Color System — Brand Palette
+ */
+
+:root {
+  /* Brand Palette */
+  --bg-magnetosphere: #0D1321;
+  --text-cloud-white: #F8F9FA;
+  --accent-solar-flare: #FF9F1C;
+  --surface-ionosphere: #274C77;
+  --highlight-aurora: #2EC4B6;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Glassmorphism Panel variables */
+  --panel-bg: rgba(13, 19, 33, 0.6);
+  --panel-blur: blur(8px);
+  --panel-radius: 16px;
+  --panel-glow: 0 0 12px var(--accent-solar-flare);
+  --panel-border: 1px solid rgba(255, 159, 28, 0.3);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-magnetosphere);
+  color: var(--text-cloud-white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  /* Dark mode scheme */
+  color-scheme: dark;
+}
+
+h1, h2, h3, h4, h5, h6, .display-font {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-top: 0;
+}
+
+.mono-font, .section-number, .timestamp {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  letter-spacing: 1px;
+}
+
+/* 8. Geometric Border / Panel Style */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border-radius: var(--panel-radius);
+  border: var(--panel-border);
+  box-shadow: var(--panel-glow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* Consistent Links & CTAs */
+a {
+  color: var(--accent-solar-flare);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover, a:focus {
+  color: var(--highlight-aurora);
+  text-shadow: 0 0 8px var(--highlight-aurora);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--accent-solar-flare);
+  border: 1px solid var(--accent-solar-flare);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255, 159, 28, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent-solar-flare);
+  color: var(--bg-magnetosphere);
+  box-shadow: 0 0 16px var(--accent-solar-flare);
+}
+
+.btn-secondary {
+  color: var(--text-cloud-white);
+  border: 1px solid var(--surface-ionosphere);
+  background: rgba(39, 76, 119, 0.2);
+}
+.btn-secondary:hover {
+  border-color: var(--highlight-aurora);
+  color: var(--highlight-aurora);
+  background: rgba(46, 196, 182, 0.1);
+}
+
+/* Utilities */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--bg-magnetosphere);
+  color: var(--accent-solar-flare);
+  padding: 8px;
+  z-index: 999999;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
