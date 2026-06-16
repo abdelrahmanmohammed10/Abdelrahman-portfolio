@@ -62,13 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const isMobile = window.innerWidth <= 1024;
 
   const planetConfig = [
-    { name: 'hero', y: 0, x: 0, texture: 'javier-miranda-5qPsVqmlQOs-unsplash.jpg', size: 3.2, emissive: 0.15, color: 0xF59E0B },
-    { name: 'about', y: -12, x: -3.8, texture: 'planet-volumes-awYEQyYdHVE-unsplash.jpg', size: 2.2, color: 0x06B6D4 },
-    { name: 'work', y: -24, x: 3.8, texture: 'pexels-zelch-20337601.jpg', size: 1.8, color: 0xef4444 },
-    { name: 'campaigns', y: -36, x: -3.8, texture: 'pexels-t-keawkanok-3252323-13229275.jpg', size: 2.5, color: 0xdca876 },
-    { name: 'journey', y: -48, x: 3.8, texture: 'pexels-zelch-20337597.jpg', size: 2.0, ring: true, color: 0xdfcdb2 },
-    { name: 'credentials', y: -60, x: 3.8, texture: 'pexels-zelch-20376399.jpg', size: 1.9, color: 0xa5d6a7 },
-    { name: 'contact', y: -72, x: 0, texture: 'pexels-zelch-30596214.jpg', size: 2.2, color: 0x3f51b5 }
+    { name: 'hero', y: 0, x: 0, texture: 'planets/javier-miranda-5qPsVqmlQOs-unsplash.jpg', size: 3.2, emissive: 0.15, color: 0xF59E0B },
+    { name: 'about', y: -12, x: -3.8, texture: 'planets/planet-volumes-awYEQyYdHVE-unsplash.jpg', size: 2.2, color: 0x06B6D4 },
+    { name: 'work', y: -24, x: 3.8, texture: 'planets/pexels-zelch-20337601.jpg', size: 1.8, color: 0xef4444 },
+    { name: 'campaigns', y: -36, x: -3.8, texture: 'planets/pexels-t-keawkanok-3252323-13229275.jpg', size: 2.5, color: 0xdca876 },
+    { name: 'journey', y: -48, x: 3.8, texture: 'planets/pexels-zelch-20337597.jpg', size: 2.0, ring: true, color: 0xdfcdb2 },
+    { name: 'credentials', y: -60, x: 3.8, texture: 'planets/pexels-zelch-20376399.jpg', size: 1.9, color: 0xa5d6a7 },
+    { name: 'contact', y: -72, x: 0, texture: 'planets/pexels-zelch-30596214.jpg', size: 2.2, color: 0x3f51b5 }
   ];
 
   if (canvas) {
