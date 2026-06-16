@@ -61,14 +61,100 @@ document.addEventListener('DOMContentLoaded', () => {
   let targetCameraY = 0;
   const isMobile = window.innerWidth <= 1024;
 
+  const getTexturePath = (filename) => {
+    if (window.location.protocol === 'file:') {
+      // Under local file protocol, load from CORS-enabled raw GitHub mapping to bypass browser blocks
+      return `https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/${filename}`;
+    }
+    return `./textures/${filename}`;
+  };
+
   const planetConfig = [
-    { name: 'hero', y: 0, x: 0, texture: 'javier-miranda-5qPsVqmlQOs-unsplash.jpg', size: 3.2, emissive: 0.25, color: 0xF59E0B },
-    { name: 'about', y: -12, x: -3.8, texture: 'planet-volumes-awYEQyYdHVE-unsplash.jpg', size: 2.2, color: 0x06B6D4 },
-    { name: 'work', y: -24, x: 3.8, texture: 'pexels-zelch-20337601.jpg', size: 1.8, color: 0xef4444 },
-    { name: 'campaigns', y: -36, x: -3.8, texture: 'pexels-t-keawkanok-3252323-13229275.jpg', size: 2.5, color: 0xdca876 },
-    { name: 'journey', y: -48, x: 3.8, texture: 'pexels-zelch-20337597.jpg', size: 2.0, ring: true, color: 0xdfcdb2 },
-    { name: 'credentials', y: -60, x: 3.8, texture: 'pexels-zelch-20376399.jpg', size: 1.9, color: 0xa5d6a7 },
-    { name: 'contact', y: -72, x: 0, texture: 'pexels-zelch-30596214.jpg', size: 2.2, color: 0x3f51b5 }
+    { 
+      name: 'hero', 
+      y: 0, 
+      x: 0, 
+      size: 3.2, 
+      color: 0xF59E0B, 
+      materialType: 'basic', 
+      map: 'sunmap.jpg' 
+    },
+    { 
+      name: 'about', 
+      y: -12, 
+      x: -3.8, 
+      size: 2.2, 
+      color: 0x06B6D4, 
+      materialType: 'phong', 
+      map: 'earthmap1k.jpg', 
+      bumpMap: 'earthbump1k.jpg', 
+      bumpScale: 0.05, 
+      specularMap: 'earthspec1k.jpg', 
+      specular: 0x444444, 
+      shininess: 25 
+    },
+    { 
+      name: 'work', 
+      y: -24, 
+      x: 3.8, 
+      size: 1.8, 
+      color: 0xef4444, 
+      materialType: 'phong', 
+      map: 'marsmap1k.jpg', 
+      bumpMap: 'marsbump1k.jpg', 
+      bumpScale: 0.03, 
+      shininess: 12 
+    },
+    { 
+      name: 'campaigns', 
+      y: -36, 
+      x: -3.8, 
+      size: 2.5, 
+      color: 0xdca876, 
+      materialType: 'standard', 
+      map: 'jupitermap.jpg', 
+      roughness: 0.8, 
+      metalness: 0.1 
+    },
+    { 
+      name: 'journey', 
+      y: -48, 
+      x: 3.8, 
+      size: 2.0, 
+      color: 0xdfcdb2, 
+      materialType: 'standard', 
+      map: 'saturnmap.jpg', 
+      roughness: 0.85, 
+      metalness: 0.1, 
+      ring: { 
+        innerRadiusMultiplier: 1.3, 
+        outerRadiusMultiplier: 2.3, 
+        colorMap: 'saturnringcolor.jpg', 
+        patternMap: 'saturnringpattern.gif' 
+      } 
+    },
+    { 
+      name: 'credentials', 
+      y: -60, 
+      x: 3.8, 
+      size: 1.9, 
+      color: 0xa5d6a7, 
+      materialType: 'standard', 
+      map: 'uranusmap.jpg', 
+      roughness: 0.8, 
+      metalness: 0.1 
+    },
+    { 
+      name: 'contact', 
+      y: -72, 
+      x: 0, 
+      size: 2.2, 
+      color: 0x3f51b5, 
+      materialType: 'standard', 
+      map: 'neptunemap.jpg', 
+      roughness: 0.8, 
+      metalness: 0.1 
+    }
   ];
 
   if (canvas) {
@@ -88,10 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // 1. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.18);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.16);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.0);
     sunLight.position.set(-6, 6, 8); // Top-left rays
     scene.add(sunLight);
 
@@ -122,28 +208,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const isAr = document.documentElement.getAttribute('lang') === 'ar';
 
     planetConfig.forEach((cfg) => {
-      let texture;
-      try {
-        texture = textureLoader.load(cfg.texture, undefined, undefined, (err) => {
-          console.warn("Local CORS blocked texture load. Falling back to solid color.", cfg.texture);
+      // Create material with fallback color first
+      let material;
+
+      if (cfg.materialType === 'basic') {
+        material = new THREE.MeshBasicMaterial({
+          color: cfg.color
         });
-      } catch (e) {
-        console.warn("Local CORS texture load error.", e);
-      }
+        if (cfg.map) {
+          material.map = textureLoader.load(getTexturePath(cfg.map), () => {
+            material.color.setHex(0xffffff); // Remove fallback tint once loaded
+            material.needsUpdate = true;
+          }, undefined, (err) => {
+            console.warn("Failed to load basic texture:", cfg.map);
+          });
+        }
+      } else if (cfg.materialType === 'phong') {
+        material = new THREE.MeshPhongMaterial({
+          color: cfg.color,
+          bumpScale: cfg.bumpScale || 0.05,
+          shininess: cfg.shininess || 30
+        });
 
-      const material = new THREE.MeshStandardMaterial({
-        roughness: 0.85,
-        metalness: 0.15,
-        color: cfg.color
-      });
+        if (cfg.map) {
+          material.map = textureLoader.load(getTexturePath(cfg.map), () => {
+            material.color.setHex(0xffffff);
+            material.needsUpdate = true;
+          });
+        }
+        if (cfg.bumpMap) {
+          material.bumpMap = textureLoader.load(getTexturePath(cfg.bumpMap), () => {
+            material.needsUpdate = true;
+          });
+        }
+        if (cfg.specularMap) {
+          material.specularMap = textureLoader.load(getTexturePath(cfg.specularMap), () => {
+            material.specular = new THREE.Color(cfg.specular || 0x111111);
+            material.needsUpdate = true;
+          });
+        }
+      } else {
+        // PBR Standard Material
+        material = new THREE.MeshStandardMaterial({
+          color: cfg.color,
+          roughness: cfg.roughness !== undefined ? cfg.roughness : 0.8,
+          metalness: cfg.metalness !== undefined ? cfg.metalness : 0.1
+        });
 
-      if (texture) {
-        material.map = texture;
-      }
-
-      if (cfg.emissive) {
-        material.emissive = new THREE.Color(cfg.color);
-        material.emissiveIntensity = cfg.emissive;
+        if (cfg.map) {
+          material.map = textureLoader.load(getTexturePath(cfg.map), () => {
+            material.color.setHex(0xffffff);
+            material.needsUpdate = true;
+          });
+        }
+        if (cfg.bumpMap) {
+          material.bumpMap = textureLoader.load(getTexturePath(cfg.bumpMap), () => {
+            material.needsUpdate = true;
+          });
+        }
       }
 
       const geometry = new THREE.SphereGeometry(cfg.size, cfg.name === 'hero' ? 64 : 32, cfg.name === 'hero' ? 64 : 32);
@@ -157,14 +279,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Saturn Rings
       if (cfg.ring) {
-        const ringGeo = new THREE.RingGeometry(cfg.size * 1.3, cfg.size * 2.0, 64);
+        const innerRad = cfg.size * cfg.ring.innerRadiusMultiplier;
+        const outerRad = cfg.size * cfg.ring.outerRadiusMultiplier;
+        const thetaSegments = 64;
+        const phiSegments = 8;
+        
+        const ringGeo = new THREE.RingGeometry(innerRad, outerRad, thetaSegments, phiSegments);
+        
+        // Radial UV mapping (U = radius from inner to outer, V = angle around circle)
+        const uvs = ringGeo.attributes.uv;
+        let uvIndex = 0;
+        for (let j = 0; j <= phiSegments; j++) {
+          const u = j / phiSegments;
+          for (let i = 0; i <= thetaSegments; i++) {
+            const v = i / thetaSegments;
+            uvs.setXY(uvIndex, u, v);
+            uvIndex++;
+          }
+        }
+        uvs.needsUpdate = true;
+
         const ringMat = new THREE.MeshStandardMaterial({
-          color: 0xe5c3a3,
-          side: THREE.DoubleSide,
+          color: 0xe5c3a3, // Fallback ring color
           transparent: true,
-          opacity: 0.45,
-          roughness: 0.9
+          side: THREE.DoubleSide,
+          roughness: 0.8,
+          metalness: 0.1
         });
+
+        ringMat.map = textureLoader.load(getTexturePath(cfg.ring.colorMap), () => {
+          ringMat.color.setHex(0xffffff);
+          ringMat.needsUpdate = true;
+        });
+
+        ringMat.alphaMap = textureLoader.load(getTexturePath(cfg.ring.patternMap), () => {
+          ringMat.needsUpdate = true;
+        });
+
         const ringMesh = new THREE.Mesh(ringGeo, ringMat);
         ringMesh.rotation.x = Math.PI / 2.5;
         ringMesh.rotation.y = Math.PI / 12;
