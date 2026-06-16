@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=3.2.0" />
   <link rel="icon" type="image/png" href="logo.png" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Open Graph / Facebook / LinkedIn -->
   <meta property="og:type" content="website">
@@ -44,7 +43,52 @@
     <button class="lang-btn" data-lang="ar">AR</button>
   </div>
 
-  <canvas id="three-planet-canvas" class="bg-planet-stage" aria-hidden="true"></canvas>
+  <div class="bg-planet-stage" aria-hidden="true">
+    <div class="solar-system">
+      <!-- Sun (Hero Section) -->
+      <div class="bg-planet active" data-sec="hero">
+        <div class="planet-sphere" style="background-image: url('planets/javier-miranda-5qPsVqmlQOs-unsplash.jpg');"></div>
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow gold-glow"></div>
+      </div>
+      <!-- About Section -->
+      <div class="bg-planet" data-sec="about">
+        <div class="planet-sphere" style="background-image: url('planets/planet-volumes-awYEQyYdHVE-unsplash.jpg');"></div>
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow cyan-glow"></div>
+      </div>
+      <!-- Work Section -->
+      <div class="bg-planet" data-sec="work">
+        <div class="planet-sphere" style="background-image: url('planets/pexels-zelch-20337601.jpg');"></div>
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow orange-glow"></div>
+      </div>
+      <!-- Campaigns Section -->
+      <div class="bg-planet" data-sec="campaigns">
+        <div class="planet-sphere" style="background-image: url('planets/pexels-t-keawkanok-3252323-13229275.jpg');"></div>
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow gold-glow"></div>
+      </div>
+      <!-- Journey Section -->
+      <div class="bg-planet" data-sec="journey">
+        <div class="planet-sphere" style="background-image: url('planets/pexels-zelch-20337597.jpg');"></div>
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow gold-cyan-glow"></div>
+      </div>
+      <!-- Credentials Section -->
+      <div class="bg-planet" data-sec="credentials">
+        <div class="planet-sphere" style="background-image: url('planets/pexels-zelch-20376399.jpg');"></div>
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow purple-glow"></div>
+      </div>
+      <!-- Contact Section -->
+      <div class="bg-planet" data-sec="contact">
+        <div class="planet-sphere" style="background-image: url('planets/pexels-zelch-30596214.jpg');"></div>
+        <div class="planet-shadow-overlay"></div>
+        <div class="planet-glow cyan-glow"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="mobile-nav-overlay" id="mobile-nav-overlay">
     <button class="mobile-close" id="mobile-close" aria-label="Close Menu">

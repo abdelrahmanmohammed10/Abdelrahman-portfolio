@@ -1461,7 +1461,7 @@ button, input, textarea {
   color: var(--bg-primary);
 }
 
-/* ----- 12c. BACKGROUND WEBGL 3D PLANETS CANVAS ----- */
+/* ----- 12c. BACKGROUND PLANETS STAGE ----- */
 .bg-planet-stage {
   position: fixed;
   top: 0;
@@ -1471,7 +1471,130 @@ button, input, textarea {
   z-index: -3; /* Behind text (z-index 1) but above mesh (z-index -5) and particles (z-index -4) */
   pointer-events: none;
   overflow: hidden;
+}
+
+.solar-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3000px;
+  height: 3000px;
+  /* Transform pans and zooms centered on the active planet coordinates */
+  transform: translate(calc(-50% + var(--pan-x, 0px)), calc(-50% + var(--pan-y, 0px))) scale(var(--zoom-scale, 1.15));
+  transform-origin: center center;
+  transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bg-planet {
+  position: absolute;
+  width: 580px;
+  height: 580px;
+  transform: translate(-50%, -50%) scale(0.9);
+  pointer-events: none;
+  opacity: 0.03; /* Faintly visible in the background when inactive */
+  transition: opacity 2.2s ease-in-out, transform 2.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bg-planet.active {
+  opacity: 0.22; /* Faint focused planet opacity for readable overlay text */
+  transform: translate(-50%, -50%) scale(1.1);
+  z-index: 2;
+}
+
+/* Planet Absolute Coordinates in Solar System (Center is 1500, 1500) */
+.bg-planet[data-sec="hero"] {
+  left: 1500px;
+  top: 1500px;
+  width: 650px;
+  height: 650px;
+}
+.bg-planet[data-sec="about"] {
+  left: 1747px;
+  top: 1253px;
+}
+.bg-planet[data-sec="work"] {
+  left: 1076px;
+  top: 1076px;
+}
+.bg-planet[data-sec="campaigns"] {
+  left: 1925px;
+  top: 2236px;
+}
+.bg-planet[data-sec="journey"] {
+  left: 722px;
+  top: 2278px;
+}
+.bg-planet[data-sec="credentials"] {
+  left: 2150px;
+  top: 374px;
+}
+.bg-planet[data-sec="contact"] {
+  left: 138px;
+  top: 1996px;
+}
+
+.planet-sphere {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
   display: block;
+  filter: brightness(0.85) contrast(1.1);
+  mix-blend-mode: screen; /* drops out the black background completely */
+}
+
+.planet-shadow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* High-end space shading: left-lit, fading to absolute black on the right to blend into space */
+  background: radial-gradient(circle at 35% 35%, transparent 22%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.95) 72%, #000000 88%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.planet-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(30px);
+  animation: glowBreathe 10s ease-in-out infinite alternate;
+}
+
+@keyframes glowBreathe {
+  0% { opacity: 0.25; transform: translate(-50%, -50%) scale(0.96); }
+  100% { opacity: 0.50; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+.cyan-glow {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.16) 0%, rgba(6, 182, 212, 0.03) 55%, transparent 70%);
+}
+
+.purple-glow {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.16) 0%, rgba(124, 58, 237, 0.03) 55%, transparent 70%);
+}
+
+.gold-glow {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0.03) 55%, transparent 70%);
+}
+
+.orange-glow {
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.14) 0%, rgba(239, 68, 68, 0.03) 55%, transparent 70%);
+}
+
+.gold-cyan-glow {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(245, 158, 11, 0.08) 45%, transparent 70%);
 }
 
 /* ----- 13. FOOTER ----- */
@@ -2193,6 +2316,25 @@ button, input, textarea {
     width: 100vw;
     left: 0;
     right: 0;
+  }
+
+  .solar-system {
+    /* Scale down the orbit system and shift it up slightly on mobile for header alignment */
+    transform: translate(calc(-50% + var(--pan-x, 0px) * 0.65), calc(-50% + var(--pan-y, 0px) * 0.65 - 120px)) scale(calc(var(--zoom-scale, 1.15) * 0.6));
+    transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bg-planet {
+    width: 420px;
+    height: 420px;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.03; /* Faintly visible in the background when inactive */
+    transition: opacity 2.2s ease-in-out, transform 2.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bg-planet.active {
+    opacity: 0.14; /* Focused planet opacity for readable overlay text on mobile */
+    transform: translate(-50%, -50%) scale(1.1);
   }
   
   /* Performance override for mobile - remove expensive blurs */

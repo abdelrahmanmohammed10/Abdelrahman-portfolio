@@ -53,221 +53,59 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
 
-  /* ----- 4. THREE.JS WebGL 3D SPACE SCENE ----- */
-  const canvas = document.getElementById('three-planet-canvas');
-  let scene, camera, renderer, starField;
-  let planets = [];
-  let currentCameraY = 0;
-  let targetCameraY = 0;
+  /* ----- 4. DYNAMIC BACKGROUND PLANETS (SOLAR SYSTEM) ----- */
+  const planetStage = document.querySelector('.bg-planet-stage');
+  const solarSystem = document.querySelector('.solar-system');
+  const planetElements = document.querySelectorAll('.bg-planet');
   const isMobile = window.innerWidth <= 1024;
 
-  const planetConfig = [
-    { name: 'hero', y: 0, x: 0, texture: 'planets/javier-miranda-5qPsVqmlQOs-unsplash.jpg', size: 3.2, emissive: 0.15, color: 0xF59E0B },
-    { name: 'about', y: -12, x: -3.8, texture: 'planets/planet-volumes-awYEQyYdHVE-unsplash.jpg', size: 2.2, color: 0x06B6D4 },
-    { name: 'work', y: -24, x: 3.8, texture: 'planets/pexels-zelch-20337601.jpg', size: 1.8, color: 0xef4444 },
-    { name: 'campaigns', y: -36, x: -3.8, texture: 'planets/pexels-t-keawkanok-3252323-13229275.jpg', size: 2.5, color: 0xdca876 },
-    { name: 'journey', y: -48, x: 3.8, texture: 'planets/pexels-zelch-20337597.jpg', size: 2.0, ring: true, color: 0xdfcdb2 },
-    { name: 'credentials', y: -60, x: 3.8, texture: 'planets/pexels-zelch-20376399.jpg', size: 1.9, color: 0xa5d6a7 },
-    { name: 'contact', y: -72, x: 0, texture: 'planets/pexels-zelch-30596214.jpg', size: 2.2, color: 0x3f51b5 }
-  ];
+  const updateActivePlanet = (activeSec, force = false) => {
+    if (activeSec === lastActiveSection && !force) return;
+    lastActiveSection = activeSec;
 
-  if (canvas) {
-    scene = new THREE.Scene();
-    
-    // Set up camera aspect and field of view
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 9); // Z position for framing
+    // Solar system mapping coordinates (Center is 1500, 1500)
+    const coordinates = {
+      'hero': { x: 1500, y: 1500, scale: 1.15 },
+      'about': { x: 1747, y: 1253, scale: 1.15 },
+      'work': { x: 1076, y: 1076, scale: 1.15 },
+      'campaigns': { x: 1925, y: 2236, scale: 1.15 },
+      'journey': { x: 722, y: 2278, scale: 1.15 },
+      'credentials': { x: 2150, y: 374, scale: 1.15 },
+      'contact': { x: 138, y: 1996, scale: 1.15 }
+    };
 
-    renderer = new THREE.WebGLRenderer({
-      canvas: canvas,
-      alpha: true,
-      antialias: !isMobile,
-      powerPreference: "high-performance"
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const coord = coordinates[activeSec] || coordinates['hero'];
 
-    // 1. Lighting (Soft ambient rays for smooth planetary shading)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.18);
-    scene.add(ambientLight);
-
-    const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
-    sunLight.position.set(-6, 6, 8); // Top-left rays
-    scene.add(sunLight);
-
-    // 2. Starfield (Drifting dust points)
-    const starCount = isMobile ? 300 : 1200;
-    const starGeometry = new THREE.BufferGeometry();
-    const starPositions = new Float32Array(starCount * 3);
-
-    for (let i = 0; i < starCount * 3; i += 3) {
-      starPositions[i] = (Math.random() - 0.5) * 60;
-      starPositions[i + 1] = (Math.random() - 0.5) * 120;
-      starPositions[i + 2] = -Math.random() * 30 - 5;
+    // Dynamic panning based on text layout alignment (desktop only)
+    let xOffset = 0;
+    if (!isMobile) {
+      const lang = document.documentElement.getAttribute('lang') || 'en';
+      const rightLayoutSections = ['work', 'credentials'];
+      const isRightLayout = rightLayoutSections.includes(activeSec);
+      if (lang === 'ar') {
+        xOffset = isRightLayout ? 280 : -280;
+      } else {
+        xOffset = isRightLayout ? -280 : 280;
+      }
     }
 
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.08,
-      transparent: true,
-      opacity: 0.5,
-      sizeAttenuation: true
+    const panX = 1500 - coord.x + xOffset;
+    const panY = 1500 - coord.y;
+
+    // Set translation and scale variables for CSS transform panning
+    document.documentElement.style.setProperty('--pan-x', `${panX}px`);
+    document.documentElement.style.setProperty('--pan-y', `${panY}px`);
+    document.documentElement.style.setProperty('--zoom-scale', coord.scale);
+
+    // Toggle active classes on background planets
+    planetElements.forEach(p => {
+      if (p.getAttribute('data-sec') === activeSec) {
+        p.classList.add('active');
+      } else {
+        p.classList.remove('active');
+      }
     });
-    starField = new THREE.Points(starGeometry, starMaterial);
-    scene.add(starField);
-
-    // 3. Planet Builder
-    const textureLoader = new THREE.TextureLoader();
-    const isAr = document.documentElement.getAttribute('lang') === 'ar';
-
-    planetConfig.forEach((cfg) => {
-      // Set up material with initial fallback configurations
-      const material = new THREE.MeshStandardMaterial({
-        color: cfg.color,
-        roughness: 0.8,
-        metalness: 0.2,
-        transparent: true,
-        opacity: 0.08 // Faded background blend by default
-      });
-
-      // Attempt to load the texture mapping safely
-      try {
-        textureLoader.load(cfg.texture, 
-          (tex) => {
-            material.map = tex;
-            material.needsUpdate = true;
-          },
-          undefined,
-          (err) => {
-            console.warn("Failed to load texture for planet:", cfg.name, err);
-          }
-        );
-      } catch (e) {
-        console.warn("Texture loading exception:", e);
-      }
-
-      if (cfg.emissive) {
-        material.emissive = new THREE.Color(cfg.color);
-        material.emissiveIntensity = cfg.emissive;
-      }
-
-      const geometry = new THREE.SphereGeometry(cfg.size, cfg.name === 'hero' ? 64 : 32, cfg.name === 'hero' ? 64 : 32);
-      const mesh = new THREE.Mesh(geometry, material);
-
-      const group = new THREE.Group();
-      const initialX = isAr ? -cfg.x : cfg.x;
-      // Start in a receded Z position deep in space
-      group.position.set(initialX, cfg.y, -3.5);
-      group.scale.set(0.85, 0.85, 0.85);
-      group.add(mesh);
-
-      // Saturn Rings
-      if (cfg.ring) {
-        const ringGeo = new THREE.RingGeometry(cfg.size * 1.3, cfg.size * 2.2, 64);
-        const ringMat = new THREE.MeshStandardMaterial({
-          color: 0xdfcdb2,
-          side: THREE.DoubleSide,
-          transparent: true,
-          opacity: 0.1, // Faded rings
-          roughness: 0.9,
-          metalness: 0.1
-        });
-
-        try {
-          textureLoader.load('saturnringcolor.jpg', (ringTex) => {
-            ringMat.map = ringTex;
-            ringMat.needsUpdate = true;
-          });
-        } catch (e) {
-          console.warn("Saturn ring texture load failed:", e);
-        }
-
-        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-        ringMesh.rotation.x = Math.PI / 2.5;
-        ringMesh.rotation.y = Math.PI / 12;
-        group.add(ringMesh);
-        
-        group.userData.ringMaterial = ringMat;
-      }
-
-      scene.add(group);
-
-      planets.push({
-        name: cfg.name,
-        mesh: mesh,
-        group: group,
-        material: material,
-        baseX: cfg.x,
-        baseY: cfg.y,
-        targetX: initialX,
-        size: cfg.size
-      });
-    });
-
-    // 4. Render loop with Lerp Easing & Zoom Transitions
-    function animate() {
-      requestAnimationFrame(animate);
-
-      // Smooth camera scroll transition
-      currentCameraY += (targetCameraY - currentCameraY) * 0.045;
-      camera.position.y = currentCameraY;
-
-      // Axis rotation & active swell/fade/depth zoom transitions on scroll focus
-      planets.forEach(p => {
-        // Slow continuous rotation
-        const rotSpeed = p.name === 'hero' ? 0.0006 : 0.0035;
-        p.mesh.rotation.y += rotSpeed;
-
-        // Animate X target transitions on language toggling
-        p.group.position.x += (p.targetX - p.group.position.x) * 0.08;
-
-        if (p.name === lastActiveSection) {
-          // ACTIVE PLANET transition targets
-          p.group.scale.set(
-            THREE.MathUtils.lerp(p.group.scale.x, 1.15, 0.045),
-            THREE.MathUtils.lerp(p.group.scale.y, 1.15, 0.045),
-            THREE.MathUtils.lerp(p.group.scale.z, 1.15, 0.045)
-          );
-          // Bring active planet closer (Z zoom)
-          p.group.position.z = THREE.MathUtils.lerp(p.group.position.z, 1.5, 0.045);
-          // Increase opacity to highlight active planet
-          p.material.opacity = THREE.MathUtils.lerp(p.material.opacity, 0.32, 0.045);
-          if (p.group.userData.ringMaterial) {
-            p.group.userData.ringMaterial.opacity = THREE.MathUtils.lerp(p.group.userData.ringMaterial.opacity, 0.22, 0.045);
-          }
-        } else {
-          // INACTIVE PLANETS transition targets
-          p.group.scale.set(
-            THREE.MathUtils.lerp(p.group.scale.x, 0.85, 0.045),
-            THREE.MathUtils.lerp(p.group.scale.y, 0.85, 0.045),
-            THREE.MathUtils.lerp(p.group.scale.z, 0.85, 0.045)
-          );
-          // Push inactive planets back into the background
-          p.group.position.z = THREE.MathUtils.lerp(p.group.position.z, -3.5, 0.045);
-          // Reduce opacity to blend into the background
-          p.material.opacity = THREE.MathUtils.lerp(p.material.opacity, 0.06, 0.045);
-          if (p.group.userData.ringMaterial) {
-            p.group.userData.ringMaterial.opacity = THREE.MathUtils.lerp(p.group.userData.ringMaterial.opacity, 0.04, 0.045);
-          }
-        }
-      });
-
-      if (starField) {
-        starField.rotation.y += 0.00008;
-      }
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  }
+  };
 
 
   /* ----- 5. MAGNETIC HOVER EFFECT ----- */
@@ -745,11 +583,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Update Three.js targetX offsets for language toggling
-    if (typeof planets !== 'undefined' && planets && planets.length > 0) {
-      planets.forEach(p => {
-        p.targetX = lang === 'ar' ? -p.baseX : p.baseX;
-      });
+    // Update active planet layout offset
+    if (typeof updateActivePlanet === 'function') {
+      updateActivePlanet(lastActiveSection, true);
     }
 
     // Update document title based on language
