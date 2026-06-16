@@ -594,13 +594,13 @@ document.addEventListener('DOMContentLoaded', () => {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
       
-      // Realism: Most stars are tiny, a few are larger
+      // Powerful Reality: More larger stars, higher base visibility
       const sizeRand = Math.random();
-      if (sizeRand > 0.95) this.z = Math.random() * 1.5 + 1.0; // large
-      else if (sizeRand > 0.7) this.z = Math.random() * 0.8 + 0.5; // medium
-      else this.z = Math.random() * 0.4 + 0.1; // tiny
+      if (sizeRand > 0.90) this.z = Math.random() * 2.0 + 1.5; // huge
+      else if (sizeRand > 0.60) this.z = Math.random() * 1.2 + 0.8; // medium
+      else this.z = Math.random() * 0.6 + 0.3; // small
 
-      this.baseAlpha = Math.random() * 0.6 + 0.2;
+      this.baseAlpha = Math.random() * 0.7 + 0.3;
       this.alpha = this.baseAlpha;
       
       // Color assignment
@@ -619,9 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Scroll boost
       this.y += scrollSpeed * this.z * 0.5;
       
-      // Twinkle effect
+      // Powerful Twinkle effect
       this.twinklePhase += this.twinkleSpeed;
-      let twinkle = Math.sin(this.twinklePhase) * 0.3;
+      let twinkle = Math.sin(this.twinklePhase) * 0.5;
       
       // Mouse repulsion
       let dx = this.x - mouse.x;
@@ -644,8 +644,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     draw() {
+      // Dynamic pulsing size based on twinkle
+      let currentZ = Math.max(0.1, this.z + (Math.sin(this.twinklePhase) * 0.3));
+
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.z, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, currentZ, 0, Math.PI * 2);
       
       // Convert hex to rgb for alpha support, assuming hex strings from array
       let r, g, b;
@@ -657,9 +660,9 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.alpha})`;
       ctx.fill();
       
-      // Glow effect for bigger stars
-      if (this.z > 1.0) {
-        ctx.shadowBlur = this.z * 4;
+      // Powerful Glow effect
+      if (this.z > 0.8) {
+        ctx.shadowBlur = this.z * 8;
         ctx.shadowColor = this.color;
       } else {
         ctx.shadowBlur = 0;
