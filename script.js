@@ -626,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.z, 0, Math.PI * 2);
-      ctx.fillStyle = \gba(255, 255, 255, \)\;
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
       ctx.fill();
       
       // Glow effect for bigger stars
