@@ -55,21 +55,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ----- 4. THREE.JS WebGL 3D SPACE SCENE ----- */
   const canvas = document.getElementById('three-planet-canvas');
-  let scene, camera, renderer, starField, ribbonMesh, ribbonGeometry, originalPositions;
+  let scene, camera, renderer, starField;
   let planets = [];
   let currentCameraY = 0;
   let targetCameraY = 0;
   const isMobile = window.innerWidth <= 1024;
-  const clock = new THREE.Clock();
 
   const planetConfig = [
-    { name: 'hero', y: 0, x: 0 },
-    { name: 'about', y: -12, x: -3.8 },
-    { name: 'work', y: -24, x: 3.8 },
-    { name: 'campaigns', y: -36, x: -3.8 },
-    { name: 'journey', y: -48, x: 3.8 },
-    { name: 'credentials', y: -60, x: 3.8 },
-    { name: 'contact', y: -72, x: 0 }
+    { name: 'hero', y: 0, x: 0, texture: 'javier-miranda-5qPsVqmlQOs-unsplash.jpg', size: 3.2, emissive: 0.15, color: 0xF59E0B },
+    { name: 'about', y: -12, x: -3.8, texture: 'planet-volumes-awYEQyYdHVE-unsplash.jpg', size: 2.2, color: 0x06B6D4 },
+    { name: 'work', y: -24, x: 3.8, texture: 'pexels-zelch-20337601.jpg', size: 1.8, color: 0xef4444 },
+    { name: 'campaigns', y: -36, x: -3.8, texture: 'pexels-t-keawkanok-3252323-13229275.jpg', size: 2.5, color: 0xdca876 },
+    { name: 'journey', y: -48, x: 3.8, texture: 'pexels-zelch-20337597.jpg', size: 2.0, ring: true, color: 0xdfcdb2 },
+    { name: 'credentials', y: -60, x: 3.8, texture: 'pexels-zelch-20376399.jpg', size: 1.9, color: 0xa5d6a7 },
+    { name: 'contact', y: -72, x: 0, texture: 'pexels-zelch-30596214.jpg', size: 2.2, color: 0x3f51b5 }
   ];
 
   if (canvas) {
@@ -88,15 +87,15 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // 1. Lighting (Soft ambient rays to light the metallic ribbon)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
+    // 1. Lighting (Soft ambient rays for smooth planetary shading)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.18);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    sunLight.position.set(-6, 6, 8);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    sunLight.position.set(-6, 6, 8); // Top-left rays
     scene.add(sunLight);
 
-    // 2. Starfield (Slow drifting dust points)
+    // 2. Starfield (Drifting dust points)
     const starCount = isMobile ? 300 : 1200;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
@@ -112,89 +111,101 @@ document.addEventListener('DOMContentLoaded', () => {
       color: 0xffffff,
       size: 0.08,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.5,
       sizeAttenuation: true
     });
     starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
 
-    // 3. Flowing 3D Gradient Aura Ribbon Builder
-    // Create a vertical ribbon spanning from y = 10 to y = -80 in world space
-    const width = 3.0;
-    const height = 90.0;
-    const widthSegs = 10;
-    const heightSegs = 100;
-    
-    ribbonGeometry = new THREE.PlaneGeometry(width, height, widthSegs, heightSegs);
-    
-    // Map vertex colors based on Y coordinate (Gold -> Cyan -> Red -> Purple -> Gold)
-    const colors = [];
-    const colorGold = new THREE.Color(0xF59E0B);
-    const colorCyan = new THREE.Color(0x06B6D4);
-    const colorRed = new THREE.Color(0xef4444);
-    const colorPurple = new THREE.Color(0x7C3AED);
-    
-    const posAttr = ribbonGeometry.attributes.position;
-    for (let i = 0; i < posAttr.count; i++) {
-      const y = posAttr.getY(i); // Ranges from -45 to 45 (height/2)
-      const t = (45 - y) / 90;   // Normalized 0 (top) to 1 (bottom)
-      
-      let c = new THREE.Color();
-      if (t < 0.2) {
-        c.copy(colorGold);
-      } else if (t < 0.4) {
-        const r = (t - 0.2) / 0.2;
-        c.lerpColors(colorGold, colorCyan, r);
-      } else if (t < 0.55) {
-        const r = (t - 0.4) / 0.15;
-        c.lerpColors(colorCyan, colorRed, r);
-      } else if (t < 0.75) {
-        const r = (t - 0.55) / 0.2;
-        c.lerpColors(colorRed, colorPurple, r);
-      } else {
-        const r = (t - 0.75) / 0.25;
-        c.lerpColors(colorPurple, colorGold, r);
-      }
-      colors.push(c.r, c.g, c.b);
-    }
-    ribbonGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    
-    const ribbonMat = new THREE.MeshStandardMaterial({
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.16,
-      side: THREE.DoubleSide,
-      roughness: 0.18,
-      metalness: 0.85
-    });
-    
-    ribbonMesh = new THREE.Mesh(ribbonGeometry, ribbonMat);
-    // Offset position to cover the vertical scroll spine
-    ribbonMesh.position.set(0, -35, -1.2);
-    scene.add(ribbonMesh);
-    
-    // Cache original vertex positions for wave deformations
-    originalPositions = posAttr.array.slice();
-
-    // 4. Create dummy groups to maintain compatibility with layout shifting & scroll systems
+    // 3. Planet Builder
+    const textureLoader = new THREE.TextureLoader();
     const isAr = document.documentElement.getAttribute('lang') === 'ar';
+
     planetConfig.forEach((cfg) => {
-      const dummyGroup = new THREE.Group();
+      // Set up material with initial fallback configurations
+      const material = new THREE.MeshStandardMaterial({
+        color: cfg.color,
+        roughness: 0.8,
+        metalness: 0.2,
+        transparent: true,
+        opacity: 0.08 // Faded background blend by default
+      });
+
+      // Attempt to load the texture mapping safely
+      try {
+        textureLoader.load(cfg.texture, 
+          (tex) => {
+            material.map = tex;
+            material.needsUpdate = true;
+          },
+          undefined,
+          (err) => {
+            console.warn("Failed to load texture for planet:", cfg.name, err);
+          }
+        );
+      } catch (e) {
+        console.warn("Texture loading exception:", e);
+      }
+
+      if (cfg.emissive) {
+        material.emissive = new THREE.Color(cfg.color);
+        material.emissiveIntensity = cfg.emissive;
+      }
+
+      const geometry = new THREE.SphereGeometry(cfg.size, cfg.name === 'hero' ? 64 : 32, cfg.name === 'hero' ? 64 : 32);
+      const mesh = new THREE.Mesh(geometry, material);
+
+      const group = new THREE.Group();
       const initialX = isAr ? -cfg.x : cfg.x;
-      dummyGroup.position.set(initialX, cfg.y, 0);
-      scene.add(dummyGroup);
-      
+      // Start in a receded Z position deep in space
+      group.position.set(initialX, cfg.y, -3.5);
+      group.scale.set(0.85, 0.85, 0.85);
+      group.add(mesh);
+
+      // Saturn Rings
+      if (cfg.ring) {
+        const ringGeo = new THREE.RingGeometry(cfg.size * 1.3, cfg.size * 2.2, 64);
+        const ringMat = new THREE.MeshStandardMaterial({
+          color: 0xdfcdb2,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.1, // Faded rings
+          roughness: 0.9,
+          metalness: 0.1
+        });
+
+        try {
+          textureLoader.load('saturnringcolor.jpg', (ringTex) => {
+            ringMat.map = ringTex;
+            ringMat.needsUpdate = true;
+          });
+        } catch (e) {
+          console.warn("Saturn ring texture load failed:", e);
+        }
+
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.rotation.x = Math.PI / 2.5;
+        ringMesh.rotation.y = Math.PI / 12;
+        group.add(ringMesh);
+        
+        group.userData.ringMaterial = ringMat;
+      }
+
+      scene.add(group);
+
       planets.push({
         name: cfg.name,
-        mesh: new THREE.Mesh(), // Dummy mesh reference
-        group: dummyGroup,
+        mesh: mesh,
+        group: group,
+        material: material,
         baseX: cfg.x,
         baseY: cfg.y,
-        targetX: initialX
+        targetX: initialX,
+        size: cfg.size
       });
     });
 
-    // 5. Render loop with Lerp Easing & Wave Animations
+    // 4. Render loop with Lerp Easing & Zoom Transitions
     function animate() {
       requestAnimationFrame(animate);
 
@@ -202,29 +213,44 @@ document.addEventListener('DOMContentLoaded', () => {
       currentCameraY += (targetCameraY - currentCameraY) * 0.045;
       camera.position.y = currentCameraY;
 
-      // Animate ribbon wave deformation
-      if (ribbonGeometry && originalPositions) {
-        const time = clock.getElapsedTime() * 0.5;
-        const pos = ribbonGeometry.attributes.position;
-        for (let i = 0; i < pos.count; i++) {
-          const idx = i * 3;
-          const origX = originalPositions[idx];
-          const origY = originalPositions[idx + 1];
-          
-          // Organic ribbon waves (Z and X axes)
-          const zWave = Math.sin(origY * 0.12 + time) * 0.65;
-          const xWave = Math.cos(origY * 0.08 + time) * 0.35;
-          
-          pos.setX(i, origX + xWave);
-          pos.setZ(i, zWave);
-        }
-        pos.needsUpdate = true;
-        ribbonGeometry.computeVertexNormals();
-      }
-
-      // Smooth dummy groups translation for language layout transitions (prevents warnings)
+      // Axis rotation & active swell/fade/depth zoom transitions on scroll focus
       planets.forEach(p => {
+        // Slow continuous rotation
+        const rotSpeed = p.name === 'hero' ? 0.0006 : 0.0035;
+        p.mesh.rotation.y += rotSpeed;
+
+        // Animate X target transitions on language toggling
         p.group.position.x += (p.targetX - p.group.position.x) * 0.08;
+
+        if (p.name === lastActiveSection) {
+          // ACTIVE PLANET transition targets
+          p.group.scale.set(
+            THREE.MathUtils.lerp(p.group.scale.x, 1.15, 0.045),
+            THREE.MathUtils.lerp(p.group.scale.y, 1.15, 0.045),
+            THREE.MathUtils.lerp(p.group.scale.z, 1.15, 0.045)
+          );
+          // Bring active planet closer (Z zoom)
+          p.group.position.z = THREE.MathUtils.lerp(p.group.position.z, 1.5, 0.045);
+          // Increase opacity to highlight active planet
+          p.material.opacity = THREE.MathUtils.lerp(p.material.opacity, 0.32, 0.045);
+          if (p.group.userData.ringMaterial) {
+            p.group.userData.ringMaterial.opacity = THREE.MathUtils.lerp(p.group.userData.ringMaterial.opacity, 0.22, 0.045);
+          }
+        } else {
+          // INACTIVE PLANETS transition targets
+          p.group.scale.set(
+            THREE.MathUtils.lerp(p.group.scale.x, 0.85, 0.045),
+            THREE.MathUtils.lerp(p.group.scale.y, 0.85, 0.045),
+            THREE.MathUtils.lerp(p.group.scale.z, 0.85, 0.045)
+          );
+          // Push inactive planets back into the background
+          p.group.position.z = THREE.MathUtils.lerp(p.group.position.z, -3.5, 0.045);
+          // Reduce opacity to blend into the background
+          p.material.opacity = THREE.MathUtils.lerp(p.material.opacity, 0.06, 0.045);
+          if (p.group.userData.ringMaterial) {
+            p.group.userData.ringMaterial.opacity = THREE.MathUtils.lerp(p.group.userData.ringMaterial.opacity, 0.04, 0.045);
+          }
+        }
       });
 
       if (starField) {
