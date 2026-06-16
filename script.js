@@ -72,209 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
     targetMouseY = (e.clientY / window.innerHeight) * 2 - 1;
   });
 
-  const vertexShader = `
-    varying vec3 vNormal;
-    varying vec3 vLocalNormal;
-    varying vec3 vViewPosition;
-
-    void main() {
-      vNormal = normalize(normalMatrix * normal);
-      vLocalNormal = normalize(position);
-      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-      vViewPosition = -mvPosition.xyz;
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `;
-
-  const fragmentShader = `
-    uniform sampler2D map;
-    uniform float hasTexture;
-    uniform vec3 fallbackColor;
-    uniform vec3 lightDirection;
-    uniform vec3 glowColor;
-    uniform float opacity;
-    uniform float isSun;
-    uniform float textureScale;
-    varying vec3 vNormal;
-    varying vec3 vLocalNormal;
-    varying vec3 vViewPosition;
-
-    void main() {
-      vec3 localN = normalize(vLocalNormal);
-      vec2 uv = localN.xy * textureScale + 0.5;
-      
-      vec4 texColor = vec4(fallbackColor, 1.0);
-      if (hasTexture > 0.5) {
-        texColor = texture2D(map, uv);
-      }
-      
-      float alpha = 1.0;
-      if (hasTexture > 0.5) {
-        float brightness = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
-        alpha = smoothstep(0.015, 0.12, brightness);
-      }
-      
-      float distFromCenter = length(localN.xy);
-      float edgeFade = smoothstep(1.0, 0.85, distFromCenter);
-      
-      vec3 normal = normalize(vNormal);
-      vec3 lightDir = normalize(lightDirection);
-      
-      float dotNL = dot(normal, lightDir);
-      float diffuse = max(dotNL, 0.0);
-      
-      vec3 litColor = texColor.rgb;
-      float lightingAlphaFactor = 1.0;
-      if (isSun < 0.5) {
-        // Soft terminator lighting
-        litColor = texColor.rgb * (diffuse * 0.95 + 0.05);
-        // Fade out the shadowed side to make it transparent
-        lightingAlphaFactor = smoothstep(-0.05, 0.35, diffuse);
-      }
-      
-      vec3 viewDir = normalize(vViewPosition);
-      float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 3.5);
-      vec3 glow = glowColor * fresnel * 0.7;
-      if (isSun < 0.5) {
-        glow *= smoothstep(-0.1, 0.3, diffuse);
-      }
-      
-      vec3 finalColor = litColor + glow;
-      float finalAlpha = texColor.a * alpha * edgeFade * lightingAlphaFactor * opacity;
-      
-      gl_FragColor = vec4(finalColor, finalAlpha);
-    }
-  `;
-
-  const loadTextureBypassCORS = (url, onLoad) => {
-    const texture = new THREE.Texture();
-    const img = new Image();
-    img.onload = () => {
-      texture.image = img;
-      
-      // Setup NPOT WebGL 1.0 compatibility and optimize upload speed
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      texture.wrapS = THREE.ClampToEdgeWrapping;
-      texture.wrapT = THREE.ClampToEdgeWrapping;
-      texture.generateMipmaps = false;
-      
-      texture.needsUpdate = true;
-      if (onLoad) onLoad(texture);
-    };
-    img.onerror = (err) => {
-      console.warn("Failed to load local texture:", url, err);
-    };
-    img.src = url;
-    return texture;
-  };
-
-  const createPlaceholderTexture = () => {
-    const data = new Uint8Array([255, 255, 255, 255]);
-    const texture = new THREE.DataTexture(data, 1, 1, THREE.RGBAFormat);
-    texture.needsUpdate = true;
-    return texture;
-  };
-
   const planetConfig = [
-    {
-      name: 'hero',
-      y: 0,
-      x: 0,
-      size: 2.2,
-      color: 0xF59E0B,
-      glowColor: 0xF59E0B,
-      texture: 'planets/javier-miranda-5qPsVqmlQOs-unsplash.jpg',
-      isSun: 1.0,
-      textureScale: 0.48,
-      tiltX: 0.1,
-      tiltZ: 0.1,
-      rotSpeed: 0.0012
-    },
-    {
-      name: 'about',
-      y: -12,
-      x: 4.2,
-      size: 1.7,
-      color: 0x06B6D4,
-      glowColor: 0x06B6D4,
-      texture: 'planets/planet-volumes-awYEQyYdHVE-unsplash.jpg',
-      isSun: 0.0,
-      textureScale: 0.47,
-      tiltX: 0.35,
-      tiltZ: 0.15,
-      rotSpeed: 0.003
-    },
-    {
-      name: 'work',
-      y: -24,
-      x: -4.2,
-      size: 1.6,
-      color: 0xef4444,
-      glowColor: 0xef4444,
-      texture: 'planets/pexels-zelch-20337601.jpg',
-      isSun: 0.0,
-      textureScale: 0.47,
-      tiltX: 0.2,
-      tiltZ: 0.25,
-      rotSpeed: 0.004
-    },
-    {
-      name: 'campaigns',
-      y: -36,
-      x: 4.2,
-      size: 1.8,
-      color: 0xF59E0B,
-      glowColor: 0xF59E0B,
-      texture: 'planets/pexels-t-keawkanok-3252323-13229275.jpg',
-      isSun: 0.0,
-      textureScale: 0.47,
-      tiltX: 0.15,
-      tiltZ: 0.1,
-      rotSpeed: 0.0035
-    },
-    {
-      name: 'journey',
-      y: -48,
-      x: 4.2,
-      size: 1.6,
-      color: 0x06B6D4,
-      glowColor: 0x06B6D4,
-      texture: 'planets/pexels-zelch-20337597.jpg',
-      isSun: 0.0,
-      textureScale: 0.47,
-      tiltX: 0.4,
-      tiltZ: 0.2,
-      rotSpeed: 0.003
-    },
-    {
-      name: 'credentials',
-      y: -60,
-      x: -4.2,
-      size: 1.7,
-      color: 0x7C3AED,
-      glowColor: 0x7C3AED,
-      texture: 'planets/pexels-zelch-20376399.jpg',
-      isSun: 0.0,
-      textureScale: 0.47,
-      tiltX: 0.3,
-      tiltZ: 0.3,
-      rotSpeed: 0.0025
-    },
-    {
-      name: 'contact',
-      y: -72,
-      x: 4.2,
-      size: 1.8,
-      color: 0x06B6D4,
-      glowColor: 0x06B6D4,
-      texture: 'planets/pexels-zelch-30596214.jpg',
-      isSun: 0.0,
-      textureScale: 0.47,
-      tiltX: 0.25,
-      tiltZ: 0.15,
-      rotSpeed: 0.0035
-    }
+    { name: 'hero', y: 0, x: 0, size: 2.2, model: 'glb/earth.glb', rotSpeed: 0.0012, tiltX: 0.1, tiltZ: 0.1 },
+    { name: 'about', y: -12, x: 4.2, size: 1.7, model: 'glb/mars.glb', rotSpeed: 0.003, tiltX: 0.35, tiltZ: 0.15 },
+    { name: 'work', y: -24, x: -4.2, size: 1.6, model: 'glb/jupiter.glb', rotSpeed: 0.004, tiltX: 0.2, tiltZ: 0.25 },
+    { name: 'campaigns', y: -36, x: 4.2, size: 1.8, model: 'glb/mercury.glb', rotSpeed: 0.0035, tiltX: 0.15, tiltZ: 0.1 },
+    { name: 'journey', y: -48, x: 4.2, size: 1.6, model: 'glb/pluto.glb', rotSpeed: 0.003, tiltX: 0.4, tiltZ: 0.2 },
+    { name: 'credentials', y: -60, x: -4.2, size: 1.7, model: 'glb/of_planes_and_satellites.glb', rotSpeed: 0.0025, tiltX: 0.3, tiltZ: 0.3 },
+    { name: 'contact', y: -72, x: 4.2, size: 1.8, model: 'glb/earth.glb', rotSpeed: 0.0035, tiltX: 0.25, tiltZ: 0.15 }
   ];
 
   const updateActivePlanet = (activeSec, force = false) => {
@@ -309,9 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // Light Source (top-left directional lighting)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
     directionalLight.position.set(-5, 5, 5);
     scene.add(directionalLight);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
 
     // Starfield Points
     const starCount = isMobile ? 250 : 800;
@@ -333,60 +141,87 @@ document.addEventListener('DOMContentLoaded', () => {
     starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
 
-    // Build Planets
+    // Build Planets using GLTFLoader
+    const gltfLoader = new THREE.GLTFLoader();
+
     planetConfig.forEach((cfg) => {
-      const placeholder = createPlaceholderTexture();
-      
-      const uniforms = {
-        map: { value: placeholder },
-        hasTexture: { value: 0.0 },
-        fallbackColor: { value: new THREE.Color(cfg.color) },
-        lightDirection: { value: directionalLight.position.clone().normalize() },
-        glowColor: { value: new THREE.Color(cfg.glowColor) },
-        opacity: { value: 0.03 },
-        isSun: { value: cfg.isSun },
-        textureScale: { value: cfg.textureScale }
-      };
-
-      const material = new THREE.ShaderMaterial({
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
-        uniforms: uniforms,
-        transparent: true,
-        depthWrite: false, // Prevents clipping with stars and alpha blending issues
-        side: THREE.FrontSide
-      });
-
-      const geometry = new THREE.SphereGeometry(cfg.size, 48, 48);
-      const mesh = new THREE.Mesh(geometry, material);
-      
-      // Apply Tilt
-      mesh.rotation.x = cfg.tiltX;
-      mesh.rotation.z = cfg.tiltZ;
-
       const group = new THREE.Group();
       const lang = document.documentElement.getAttribute('lang') || 'en';
       const initialX = isMobile ? 0.0 : (lang === 'ar' ? -cfg.x : cfg.x);
       group.position.set(initialX, cfg.y, 0);
-      group.add(mesh);
+      
+      // Apply Tilt
+      group.rotation.x = cfg.tiltX;
+      group.rotation.z = cfg.tiltZ;
       scene.add(group);
 
-      // Async load texture bypass CORS
-      loadTextureBypassCORS(cfg.texture, (texture) => {
-        uniforms.map.value = texture;
-        uniforms.hasTexture.value = 1.0;
-      });
-
-      planets.push({
+      const pObj = {
         name: cfg.name,
-        mesh: mesh,
         group: group,
-        material: material,
         baseX: cfg.x,
         targetX: initialX,
         currentScale: 0.88,
-        currentOpacity: 0.03,
-        rotSpeed: cfg.rotSpeed
+        currentOpacity: 0.0, // Start invisible
+        rotSpeed: cfg.rotSpeed,
+        materials: []
+      };
+      planets.push(pObj);
+
+      gltfLoader.load(cfg.model, (gltf) => {
+        try {
+          // Auto-scale model to fit desired size
+          gltf.scene.updateMatrixWorld(true);
+          const box = new THREE.Box3().setFromObject(gltf.scene);
+          const size = box.getSize(new THREE.Vector3());
+          const maxDim = Math.max(size.x, size.y, size.z);
+          
+          if (maxDim > 0) {
+            const scale = (cfg.size * 2) / maxDim; 
+            gltf.scene.scale.set(scale, scale, scale);
+            
+            // Center model in its local group
+            const center = box.getCenter(new THREE.Vector3());
+            gltf.scene.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+          }
+
+          // Make materials transparent and allow opacity fading
+          gltf.scene.traverse((child) => {
+            if (child.isMesh && child.material) {
+              if (Array.isArray(child.material)) {
+                child.material = child.material.map(m => {
+                  const cm = m.clone();
+                  cm.transparent = true;
+                  cm.opacity = pObj.currentOpacity;
+                  cm.depthWrite = false;
+                  cm.needsUpdate = true;
+                  pObj.materials.push(cm);
+                  return cm;
+                });
+              } else {
+                child.material = child.material.clone();
+                child.material.transparent = true;
+                child.material.opacity = pObj.currentOpacity;
+                child.material.depthWrite = false;
+                child.material.needsUpdate = true;
+                pObj.materials.push(child.material);
+              }
+            }
+          });
+
+          group.add(gltf.scene);
+        } catch (e) {
+          console.error('Error processing model', e);
+          const errDiv = document.createElement('div');
+          errDiv.style.cssText = 'position:fixed; top:10px; left:10px; z-index:99999; background:red; color:white; padding:10px; border-radius:5px;';
+          errDiv.innerText = 'Model Processing Error: ' + e.message;
+          document.body.appendChild(errDiv);
+        }
+      }, undefined, (error) => {
+        console.warn(`Failed to load ${cfg.model}`, error);
+        const errDiv = document.createElement('div');
+        errDiv.style.cssText = 'position:fixed; top:50px; left:10px; z-index:99999; background:darkred; color:white; padding:10px; border-radius:5px;';
+        errDiv.innerText = 'GLTF Load Error (' + cfg.model + '): ' + (error.message || 'CORS or File not found');
+        document.body.appendChild(errDiv);
       });
     });
 
@@ -409,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update planets scale, rotation and opacity
       planets.forEach(p => {
         // Continuous axial rotation in local space
-        p.mesh.rotateY(p.rotSpeed);
+        p.group.rotateY(p.rotSpeed);
 
         // Glide group position horizontally to clear text cards
         p.group.position.x += (p.targetX - p.group.position.x) * 0.05;
@@ -420,9 +255,15 @@ document.addEventListener('DOMContentLoaded', () => {
         p.currentScale += (targetScale - p.currentScale) * 0.05;
         p.group.scale.set(p.currentScale, p.currentScale, p.currentScale);
 
-        const targetOpacity = isActive ? (p.name === 'hero' ? 0.28 : 0.22) : 0.03;
+        const targetOpacity = isActive ? (p.name === 'hero' ? 0.9 : 0.55) : 0.0;
         p.currentOpacity += (targetOpacity - p.currentOpacity) * 0.05;
-        p.material.uniforms.opacity.value = p.currentOpacity;
+        
+        p.materials.forEach(mat => {
+          mat.opacity = p.currentOpacity;
+        });
+
+        // Optimization: hide completely transparent groups to save draw calls
+        p.group.visible = p.currentOpacity > 0.02;
       });
 
       if (starField) {
