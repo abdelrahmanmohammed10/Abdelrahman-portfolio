@@ -521,11 +521,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // Update document title based on language
+    // Update document title and placeholders based on language
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+    
     if (lang === 'ar') {
-      document.title = 'عبد الرحمن عبد الحافظ — مخطط واستراتيجي تسويق رقمي';
+      document.title = 'عبد الرحمن عبد الحافظ | استراتيجي تسويق رقمي';
+      if (nameInput) nameInput.placeholder = 'اسمك بالكامل';
+      if (emailInput) emailInput.placeholder = 'بريدك الإلكتروني';
+      if (messageInput) messageInput.placeholder = 'قولي أكتر عن مشروعك...';
     } else {
-      document.title = 'Abdelrahman Abdelhafez — Digital Marketing Strategist';
+      document.title = 'Abdelrahman Abdelhafez | Digital Marketing Strategist';
+      if (nameInput) nameInput.placeholder = 'Your Name';
+      if (emailInput) emailInput.placeholder = 'your@email.com';
+      if (messageInput) messageInput.placeholder = 'Tell me about your project...';
     }
   };
 
@@ -666,6 +676,20 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.shadowColor = this.color;
       } else {
         ctx.shadowBlur = 0;
+      }
+      
+      // Diffraction spikes (starfish arms) for the largest, brightest stars
+      if (this.z > 1.8 && this.alpha > 0.4) {
+        let spikeSize = currentZ * 5;
+        ctx.shadowBlur = 0; // Disable shadow for sharp lines
+        ctx.beginPath();
+        ctx.moveTo(this.x - spikeSize, this.y);
+        ctx.lineTo(this.x + spikeSize, this.y);
+        ctx.moveTo(this.x, this.y - spikeSize);
+        ctx.lineTo(this.x, this.y + spikeSize);
+        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${this.alpha * 0.4})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
       }
     }
   }
