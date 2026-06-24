@@ -30,8 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(THEME_KEY, theme);
   };
 
-  // Restore saved preference (default = dark)
-  const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+  // Restore saved preference (default = dark, force dark on fresh session load)
+  let savedTheme = localStorage.getItem(THEME_KEY);
+  if (!sessionStorage.getItem('themeInitialized')) {
+    savedTheme = 'dark';
+    sessionStorage.setItem('themeInitialized', 'true');
+  } else {
+    savedTheme = savedTheme || 'dark';
+  }
   applyTheme(savedTheme);
 
   const toggleTheme = () => {
