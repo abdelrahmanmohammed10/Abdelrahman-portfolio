@@ -54,14 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let lenis;
   if (window.Lenis) {
     lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth easeOutExpo
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
+      lerp: 0.1, // Snappy linear interpolation (standard default)
+      wheelMultiplier: 1.15, // Slightly boost wheel response
       infinite: false,
     });
 

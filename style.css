@@ -38,7 +38,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto !important; /* Required for Lenis smooth scroll compatibility */
   scrollbar-width: thin;
   scrollbar-color: var(--color-cyan) var(--bg-primary);
 }
@@ -3112,15 +3112,14 @@ html[lang="en"] .spine-dot::after {
    PHASE 3: MOBILE & DESKTOP UX ENHANCEMENTS
    ============================================================ */
 
-/* 1. Desktop Scroll Snapping */
+/* 1. Desktop Scroll Snapping (Disabled for Lenis compatibility) */
 @media (min-width: 1025px) {
   html {
-    scroll-snap-type: y proximity;
+    scroll-snap-type: none !important;
   }
   .content-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-    scroll-margin-top: 40px;
+    scroll-snap-align: none !important;
+    scroll-margin-top: 0 !important;
   }
 }
 
