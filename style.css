@@ -3237,30 +3237,30 @@ html[lang="ar"] .project-card-peek {
 
 /* ----- CUSTOM PROPERTIES ----- */
 html[data-theme="light"] {
-  --bg-primary: #e9f2f8;
-  --bg-card: rgba(255, 255, 255, 0.96);
-  --bg-card-hover: rgba(255, 255, 255, 0.99);
-  --border-color: rgba(39, 76, 119, 0.22);
-  --border-hover: rgba(8, 102, 92, 0.6);
-  --color-gold: #7a5100;
-  --color-cyan: #08665c;
-  --color-cyan-rgb: 8, 102, 92;
-  --color-purple: #1e3d61;
-  --color-violet: #5b21b6;
-  --color-violet-rgb: 91, 33, 182;
-  --text-primary: #0a0f1a;
-  --text-muted: #1e293b;
-  --text-dark: #172e4a;
-  scrollbar-color: #1e3d61 #e9f2f8;
+  --bg-primary: #f1f6fa;
+  --bg-card: rgba(255, 255, 255, 0.97);
+  --bg-card-hover: rgba(255, 255, 255, 1.0);
+  --border-color: rgba(30, 61, 97, 0.25);
+  --border-hover: rgba(5, 74, 67, 0.7);
+  --color-gold: #614100;
+  --color-cyan: #054a43;
+  --color-cyan-rgb: 5, 74, 67;
+  --color-purple: #0f2237;
+  --color-violet: #44158f;
+  --color-violet-rgb: 68, 21, 143;
+  --text-primary: #000000;
+  --text-muted: #111827;
+  --text-dark: #030712;
+  scrollbar-color: #0f2237 #f1f6fa;
 }
 
 /* SCROLLBAR */
-html[data-theme="light"] ::-webkit-scrollbar-track { background: #e9f2f8; }
-html[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(30, 61, 97, 0.45); }
+html[data-theme="light"] ::-webkit-scrollbar-track { background: #f1f6fa; }
+html[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(15, 34, 55, 0.5); }
 
 /* BODY */
-html[data-theme="light"] body { background-color: #e9f2f8; color: #0a0f1a; }
-html[data-theme="light"] ::selection { background-color: rgba(30, 61, 97, 0.2); color: #0a0f1a; }
+html[data-theme="light"] body { background-color: transparent; color: #000000; }
+html[data-theme="light"] ::selection { background-color: rgba(15, 34, 55, 0.25); color: #000000; }
 
 /* ----- REALISTIC SKY GRADIENT (no orange) ----- */
 html[data-theme="light"] .gradient-mesh {
@@ -3304,7 +3304,7 @@ html[data-theme="light"] .cloud {
   height: 190px;
   top: 8%;
   left: -340px;
-  opacity: 0.55;
+  opacity: 0.88;
   --cloud-scale: 1;
   animation: driftCloud 110s linear infinite;
 }
@@ -3314,7 +3314,7 @@ html[data-theme="light"] .cloud {
   height: 150px;
   top: 32%;
   left: -280px;
-  opacity: 0.45;
+  opacity: 0.78;
   --cloud-scale: 0.8;
   animation: driftCloud 150s linear infinite;
   animation-delay: -35s;
@@ -3325,7 +3325,7 @@ html[data-theme="light"] .cloud {
   height: 210px;
   top: 58%;
   left: -380px;
-  opacity: 0.5;
+  opacity: 0.82;
   --cloud-scale: 1.1;
   animation: driftCloud 130s linear infinite;
   animation-delay: -70s;
@@ -3336,7 +3336,7 @@ html[data-theme="light"] .cloud {
   height: 170px;
   top: 82%;
   left: -300px;
-  opacity: 0.4;
+  opacity: 0.72;
   --cloud-scale: 0.9;
   animation: driftCloud 175s linear infinite;
   animation-delay: -120s;
