@@ -50,6 +50,61 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', toggleTheme);
   });
 
+  /* ----- 1b. LENIS SMOOTH SCROLL INITIALIZATION ----- */
+  let lenis;
+  if (window.Lenis) {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth easeOutExpo
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    // Synchronize Lenis scrolling with ScrollTrigger
+    lenis.on('scroll', () => {
+      if (window.ScrollTrigger) {
+        ScrollTrigger.update();
+      }
+    });
+
+    // Add Lenis to GSAP's tick loop
+    if (window.gsap) {
+      window.gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      // Disable lagSmoothing in GSAP to prevent visual jumps during smooth scroll
+      window.gsap.ticker.lagSmoothing(0);
+    } else {
+      // Fallback requestAnimationFrame loop if GSAP isn't loaded
+      const step = (time) => {
+        lenis.raf(time);
+        requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    // Connect page navigations (skip links, menu links) to Lenis scroll target
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          lenis.scrollTo(target, {
+            offset: -80, // match header offset
+            duration: 1.2
+          });
+        }
+      });
+    });
+  }
+
 
   const preloader = document.getElementById('preloader');
   
@@ -734,10 +789,14 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ----- 13. SCROLL TO TOP CLICK FUNCTIONALITY ----- */
   if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
     });
   }
 
