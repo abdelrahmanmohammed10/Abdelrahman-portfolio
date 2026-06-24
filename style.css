@@ -3381,8 +3381,7 @@ html[data-theme="light"] .gradient-mesh {
 
 html[data-theme="light"] .cloud {
   display: block;
-  opacity: 0.35 !important;
-  mix-blend-mode: overlay;
+  mix-blend-mode: normal !important;
 }
 
 .cloud-1 {
