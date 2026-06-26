@@ -1152,7 +1152,7 @@ button, input, textarea {
 
 .project-card-meta {
   font-size: 0.85rem;
-  color: var(--text-dark);
+  color: var(--text-muted);
   margin-bottom: 20px;
 }
 
@@ -1252,8 +1252,8 @@ button, input, textarea {
 
 .post-obj {
   font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-dark);
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 .post-caption {
@@ -1451,8 +1451,8 @@ button, input, textarea {
 
 .cert-year {
   font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-dark);
+  font-weight: 700;
+  color: var(--color-gold);
 }
 
 .cert-card-title {
@@ -1472,7 +1472,7 @@ button, input, textarea {
 
 .cert-card-reason {
   font-size: 0.85rem;
-  color: var(--text-dark);
+  color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: 24px;
 }
@@ -1601,7 +1601,7 @@ button, input, textarea {
 
 .detail-item .label {
   font-size: 0.75rem;
-  color: var(--text-dark);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 4px;
@@ -1634,7 +1634,7 @@ button, input, textarea {
 
 .form-desc {
   font-size: 0.85rem;
-  color: var(--text-dark);
+  color: var(--text-muted);
   margin-bottom: 30px;
 }
 
@@ -1903,7 +1903,7 @@ button, input, textarea {
   align-items: center;
   max-width: 1600px;
   margin: 0 auto;
-  color: var(--text-dark);
+  color: var(--text-muted);
   font-size: 0.85rem;
 }
 
@@ -2111,7 +2111,7 @@ button, input, textarea {
 
 .drawer-meta {
   font-size: 0.85rem;
-  color: var(--text-dark);
+  color: var(--text-muted);
   margin-bottom: 30px;
 }
 
@@ -3675,7 +3675,7 @@ html[data-theme="light"] .floating-lang-toggle { background: rgba(255, 255, 255,
 html[data-theme="light"] .floating-lang-toggle button { color: var(--text-muted); }
 html[data-theme="light"] .floating-lang-toggle button.active { color: var(--color-purple); text-shadow: none; font-weight: 800; }
 html[data-theme="light"] .floating-lang-toggle button:hover { color: var(--text-primary); }
-html[data-theme="light"] .floating-lang-toggle .sep { color: rgba(30, 61, 97, 0.25); }
+html[data-theme="light"] .floating-lang-toggle .sep { color: #64748b; }
 html[data-theme="light"] .floating-lang-toggle .theme-sep { color: var(--border-color); }
 html[data-theme="light"] .theme-toggle-btn { color: var(--text-muted); }
 html[data-theme="light"] .theme-toggle-btn:hover { color: var(--color-gold); }
@@ -3684,7 +3684,7 @@ html[data-theme="light"] .theme-toggle-btn:hover { color: var(--color-gold); }
 html[data-theme="light"] .mobile-header { background: rgba(255, 255, 255, 0.94) !important; border-color: var(--border-color) !important; box-shadow: 0 4px 20px rgba(30, 61, 97, 0.05) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; }
 html[data-theme="light"] .mobile-lang-toggle button { color: var(--text-muted); }
 html[data-theme="light"] .mobile-lang-toggle button.active { color: var(--color-purple); }
-html[data-theme="light"] .mobile-lang-toggle .sep { color: rgba(30, 61, 97, 0.25); }
+html[data-theme="light"] .mobile-lang-toggle .sep { color: #64748b; }
 html[data-theme="light"] .burger span { background-color: var(--text-primary); }
 html[data-theme="light"] .burger { background: rgba(255, 255, 255, 0.65); border-color: var(--border-color); }
 html[data-theme="light"] .header-section-title { color: var(--color-purple); }
