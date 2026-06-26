@@ -41,15 +41,7 @@
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
-      <!-- Cloud Asset Definitions -->
-      <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#ffffff" />
-        <stop offset="70%" stop-color="#f4f9fd" />
-        <stop offset="100%" stop-color="#d5e8f5" />
-      </linearGradient>
-      <filter id="cloudBlur" x="-30%" y="-30%" width="160%" height="160%">
-        <feGaussianBlur stdDeviation="6" />
-      </filter>
+
     </defs>
   </svg>
 
@@ -73,22 +65,7 @@
   </div>
 
   <div class="gradient-mesh" aria-hidden="true">
-    <!-- Cloud 1 (Cumulus Type A) -->
-    <svg class="cloud cloud-1" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 50,150 L 350,150 A 40,40 0 0,0 330,110 A 50,50 0 0,0 260,70 A 65,65 0 0,0 140,80 A 45,45 0 0,0 50,150 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
-    </svg>
-    <!-- Cloud 2 (Cumulus Type B) -->
-    <svg class="cloud cloud-2" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 30,140 L 370,140 A 35,35 0 0,0 340,105 A 45,45 0 0,0 270,75 A 55,55 0 0,0 150,70 A 40,40 0 0,0 80,105 A 30,30 0 0,0 30,140 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
-    </svg>
-    <!-- Cloud 3 (Cumulus Type C) -->
-    <svg class="cloud cloud-3" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 40,160 L 360,160 A 40,40 0 0,0 330,120 A 55,55 0 0,0 260,75 A 70,70 0 0,0 130,75 A 50,50 0 0,0 60,120 A 40,40 0 0,0 40,160 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
-    </svg>
-    <!-- Cloud 4 (Cumulus Type A Clone) -->
-    <svg class="cloud cloud-4" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 50,150 L 350,150 A 40,40 0 0,0 330,110 A 50,50 0 0,0 260,70 A 65,65 0 0,0 140,80 A 45,45 0 0,0 50,150 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
-    </svg>
+    <!-- Clouds are now dynamically drawn and animated on the background canvas for smooth performance and mouse interaction -->
   </div>
   <div class="cursor-spotlight" aria-hidden="true"></div>
 
@@ -227,7 +204,7 @@
           <div class="hero-right-col animate-fadeInRight">
             <p class="hero-bio">
               <span class="lang-en">I turn digital marketing data into clear, actionable growth strategies. No guesswork, no corporate fluff | just results.</span>
-              <span class="lang-ar">ببني استراتيجيات تسويق مبنية على أرقام وحقائق، مش مجرد تخمين | عشان نساعد علامتك التجارية تنمو وتحقق نتائج ملموسة.</span>
+              <span class="lang-ar">أقوم بتحويل بيانات التسويق الرقمي إلى استراتيجيات نمو واضحة وقابلة للتنفيذ؛ بعيداً عن التخمينات والمصطلحات المعقدة — لتحقيق نتائج حقيقية وملموسة.</span>
             </p>
             <div class="hero-cta-row">
               <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="btn-cv-download magnetic-button">
@@ -307,7 +284,7 @@
                 <span class="lang-ar">المهارات والقدرات</span>
               </h3>
               <div class="skills-grid">
-                <div class="skill-category reveal-card">
+                <div class="skill-category reveal-card" data-drawer="drawer-toolkit-strategy">
                   <div class="category-header">
                     <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
                     <h4 class="lang-en">Strategy &amp; Planning</h4>
@@ -322,7 +299,7 @@
                     <span class="tag lang-en">BMC</span><span class="tag lang-ar">مخطط نموذج العمل التجاري</span>
                   </div>
                 </div>
-                <div class="skill-category reveal-card">
+                <div class="skill-category reveal-card" data-drawer="drawer-toolkit-content">
                   <div class="category-header">
                     <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
                     <h4 class="lang-en">Content &amp; Copywriting</h4>
@@ -336,7 +313,7 @@
                     <span class="tag lang-en">Content Audits</span><span class="tag lang-ar">تدقيق وتقييم المحتوى</span>
                   </div>
                 </div>
-                <div class="skill-category reveal-card">
+                <div class="skill-category reveal-card" data-drawer="drawer-toolkit-growth">
                   <div class="category-header">
                     <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
                     <h4 class="lang-en">Growth &amp; Analytics</h4>
@@ -349,7 +326,7 @@
                     <span class="tag lang-en">CRO</span><span class="tag lang-ar">تحسين معدل التحويل</span>
                   </div>
                 </div>
-                <div class="skill-category reveal-card">
+                <div class="skill-category reveal-card" data-drawer="drawer-toolkit-tools">
                   <div class="category-header">
                     <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
                     <h4 class="lang-en">Digital Tools</h4>
@@ -364,7 +341,7 @@
                     <span class="tag"><span class="lang-en">Office 365</span><span class="lang-ar">حزمة أوفيس ٣٦٥</span></span>
                   </div>
                 </div>
-                <div class="skill-category reveal-card">
+                <div class="skill-category reveal-card" data-drawer="drawer-toolkit-leadership">
                   <div class="category-header">
                     <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
                     <h4 class="lang-en">Leadership</h4>
@@ -560,18 +537,18 @@
               <span class="post-num lang-ar">البوست الأول</span>
               <span class="post-obj">
                 <span class="lang-en">Awareness / Launch</span>
-                <span class="lang-ar">الوعي بالإطلاق</span>
+                <span class="lang-ar">إطلاق وزيادة الوعي بالعلامة</span>
               </span>
             </div>
             <p class="post-caption">
               <span class="lang-en">This post introduces the brand's core value proposition, highlighting how 'New Direction' solves common student frustrations in English learning through a personalized 'Needs Analysis'.</span>
-              <span class="lang-ar" dir="rtl">البوست ده بيعرض القيمة الأساسية للعلامة التجارية، وبيوضح إزاي أكاديمية نيو دايركشن بتحل مشاكل وإحباطات الطلاب في تعلم اللغة الإنجليزية عن طريق تقديم تحليل مخصص لاحتياجاتهم.</span>
+              <span class="lang-ar" dir="rtl">يعرف هذا المنشور بالقيمة الفريدة للعلامة التجارية، ويسلط الضوء على كيفية معالجة أكاديمية "نيو دايركشن" للصعوبات الشائعة التي تواجه الطلاب في تعلم الإنجليزية عبر تقديم "تحليل مخصص للاحتياجات".</span>
             </p>
             <div class="campaign-meta">
               <strong class="lang-en">Objective:</strong>
               <strong class="lang-ar">الهدف:</strong>
               <span class="lang-en">Building initial awareness + defining the brand's tone of voice.</span>
-              <span class="lang-ar">بناء الوعي المبدئي للعلامة التجارية وتأسيس نبرة صوت مميزة وجذابة.</span>
+              <span class="lang-ar">بناء الوعي المبدئي وتحديد نبرة صوت العلامة التجارية.</span>
             </div>
             <a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/109443580892907/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
               <span class="lang-en">View original post</span>
@@ -590,13 +567,13 @@
             </div>
             <p class="post-caption">
               <span class="lang-en">A highly engaging, humorous post that tackles the fear of speaking English in high-pressure situations, such as job interviews, using relatable cultural references to drive engagement.</span>
-              <span class="lang-ar" dir="rtl">بوست فكاهي وبسيط بيناقش رهبة وخوف التحدث بالإنجليزية في المقابلات الشخصية، واستخدمت فيه إيفيهات وتفاصيل قريبة من ثقافة الشارع المصري عشان يحقق تفاعل عالي.</span>
+              <span class="lang-ar" dir="rtl">منشور تفاعلي بأسلوب فكاهي يتناول رهبة التحدث باللغة الإنجليزية في المواقف الرسمية مثل مقابلات العمل، مع الاستعانة بإشارات ثقافية مألوفة لتعزيز التفاعل الطبيعي.</span>
             </p>
             <div class="campaign-meta">
               <strong class="lang-en">Objective:</strong>
               <strong class="lang-ar">الهدف:</strong>
               <span class="lang-en">Increasing Saves and Shares as early trust indicators.</span>
-              <span class="lang-ar">زيادة معدلات حفظ ومشاركة البوست كدليل على تفاعل وثقة الجمهور في المحتوى.</span>
+              <span class="lang-ar">زيادة معدلات الحفظ والمشاركة كعناصر أولية لقياس مستوى الثقة والتفاعل.</span>
             </div>
             <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/194898819014049/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
               <span class="lang-en">View original post</span>
@@ -615,13 +592,13 @@
             </div>
             <p class="post-caption">
               <span class="lang-en">A storytelling-driven post designed to build emotional connection. It uses relatable, casual storytelling about hanging out with friends to subtly introduce the importance of English fluency in social situations.</span>
-              <span class="lang-ar" dir="rtl">بوست بيعتمد على أسلوب الحكي والقصص عشان يخلق تواصل قوي مع الناس. بيحكي موقف بسيط عن الخروج مع الأصحاب عشان يوضح أهمية طلاقة الإنجليزية في المواقف الاجتماعية بشكل غير مباشر.</span>
+              <span class="lang-ar" dir="rtl">منشور يعتمد على قوة السرد القصصي لبناء رابط عاطفي مع الجمهور؛ حيث يسرد موقفاً واقعياً ومألوفاً للتأكيد بشكل غير مباشر على أهمية طلاقة الإنجليزية في المواقف الاجتماعية.</span>
             </p>
             <div class="campaign-meta">
               <strong class="lang-en">Objective:</strong>
               <strong class="lang-ar">الهدف:</strong>
               <span class="lang-en">Addressing pain points to drive emotional connection and comments.</span>
-              <span class="lang-ar">لمس نقاط الألم والاحتياجات عند الجمهور عشان نشجعهم يتفاعلوا ويكتبوا تجاربهم في التعليقات.</span>
+              <span class="lang-ar">استهدف النقاط الأكثر تأثيراً لدى الجمهور لتحفيز التواصل والتفاعل عبر التعليقات.</span>
             </div>
             <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/402849314885664/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
               <span class="lang-en">View original post</span>
@@ -640,13 +617,13 @@
             </div>
             <p class="post-caption">
               <span class="lang-en">An educational yet entertaining post highlighting the quirks of English pronunciation (like silent letters in 'queue' or 'tsunami'). This lighthearted content is highly shareable and designed to increase organic reach.</span>
-              <span class="lang-ar" dir="rtl">بوست خفيف يجمع بين التعليم والترفيه، بيوضح غرائب نطق بعض الكلمات الإنجليزية. المحتوى ده سريع الانتشار وقابل للمشاركة ومصمم لزيادة الوصول المجاني.</span>
+              <span class="lang-ar" dir="rtl">منشور تعليمي ترفيهي يبرز مفارقات نطق بعض الكلمات الإنجليزية، وهو مصمم خصيصاً ليكون سريع الانتشار والمشاركة بهدف توسيع نطاق الوصول الطبيعي.</span>
             </p>
             <div class="campaign-meta">
               <strong class="lang-en">Objective:</strong>
               <strong class="lang-ar">الهدف:</strong>
               <span class="lang-en">Educating users about services through a non-salesy dialogue.</span>
-              <span class="lang-ar">نعرف الجمهور بخدمات الأكاديمية بطريقة لطيفة وحوارية بعيدة عن أسلوب البيع المباشر المزعج.</span>
+              <span class="lang-ar">توعية المتابعين بالخدمات التعليمية من خلال أسلوب حواري شيق وبعيد عن النبرة البيعية المباشرة.</span>
             </div>
             <a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/397460562091206/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
               <span class="lang-en">View original post</span>
@@ -665,13 +642,13 @@
             </div>
             <p class="post-caption">
               <span class="lang-en">A direct, conversion-focused post that clearly outlines the unique selling points (USPs) of New Direction, specifically highlighting the tailored assessment process that personalizes the learning journey.</span>
-              <span class="lang-ar" dir="rtl">بوست بيوضح نقاط القوة والميزات التنافسية لـ نيو دايركشن، وبيركز بشكل أساسي على عملية تحديد المستوى والتقييم المخصص اللي بيخلي رحلة كل طالب فريدة ومناسبة ليه.</span>
+              <span class="lang-ar" dir="rtl">منشور مباشر يستعرض المزايا التنافسية للأكاديمية، ويركز على ميزة التقييم المخصص وتحديد المستوى الفردي لتصميم رحلة تعلم متكاملة تناسب كل طالب.</span>
             </p>
             <div class="campaign-meta">
               <strong class="lang-en">Objective:</strong>
               <strong class="lang-ar">الهدف:</strong>
               <span class="lang-en">Boosting engagement while gathering audience intelligence.</span>
-              <span class="lang-ar">تنشيط التفاعل على الصفحة وفهم آراء واحتياجات المتابعين لاستغلالها في خطط المحتوى الجاية.</span>
+              <span class="lang-ar">تحفيز التفاعل مع جمع البيانات لتحليل احتياجات الجمهور واستخدامها في تطوير خطط المحتوى القادمة.</span>
             </div>
             <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/111795970657668/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
               <span class="lang-en">View original post</span>
@@ -690,13 +667,13 @@
             </div>
             <p class="post-caption">
               <span class="lang-en">A short, confident brand awareness post designed to reinforce community spirit and brand pride using popular slang and the official campaign hashtags.</span>
-              <span class="lang-ar" dir="rtl">بوست بيع مباشر قصير بلهجة واثقة وقريبة، مكتوب بلغة شبابية دارجة لتعزيز روح الانتماء للكيان وحث الجمهور على التسجيل الفوري.</span>
+              <span class="lang-ar" dir="rtl">منشور حاسم بلهجة واثقة ومباشرة لتعزيز الانتماء لمجتمع الأكاديمية وحث المهتمين على اتخاذ قرار التسجيل الفوري بالاعتماد على الهشتاجات الرسمية للحملة.</span>
             </p>
             <div class="campaign-meta">
               <strong class="lang-en">Objective:</strong>
               <strong class="lang-ar">الهدف:</strong>
               <span class="lang-en">Preparing the audience to transition from Awareness to Consideration.</span>
-              <span class="lang-ar">تحفيز الجمهور المستهدف لسرعة الحجز والاشتراك الفعلي، وتحويلهم من مرحلة التفكير لمرحلة الشراء.</span>
+              <span class="lang-ar">تهيئة الجمهور المستهدف للتحول الفعلي من مرحلة الوعي إلى مرحلة اتخاذ قرار الشراء والاشتراك.</span>
             </div>
             <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/411974437306485/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
               <span class="lang-en">View original post</span>
@@ -731,7 +708,7 @@
               <div class="timeline-content">
                 <h3 class="timeline-role">
                   <span class="lang-en">Customer Retention &amp; Sales Specialist</span>
-                  <span class="lang-ar">أخصائي المبيعات والاحتفاظ بالعملاء</span>
+                  <span class="lang-ar">أخصائي مبيعات واستبقاء العملاء</span>
                 </h3>
                 <span class="timeline-company">
                   <span class="lang-en">Concentrix (Boost Mobile by Dish Technologies) · Cairo</span>
@@ -739,7 +716,7 @@
                 </span>
                 <div class="timeline-body">
                   <p class="lang-en">Awarded the 1st Enterprise Loyalty Award (2026) for top-tier retention performance. I consulted high-risk accounts, resolved critical conflicts, and built retention plays to drive client loyalty.</p>
-                  <p class="lang-ar">أخدت جايزة التميز الأولى في الحفاظ على العملاء (٢٠٢٦) بعد ما حققت أعلى نسب استبقاء عملاء في الشركة. وبشتغل على بناء علاقة قوية مع العملاء وزيادة قيمتهم الدائمة من خلال حل المشكلات ووضع خطط تخليهم يفضلوا معانا لأطول فترة.</p>
+                  <p class="lang-ar">حاصل على جائزة التميز الأولى في ولاء واستبقاء العملاء (٢٠٢٦) كأفضل مقدم أداء على حساب Boost Mobile. توليت إدارة الحسابات ذات الاحتمالية العالية للمغادرة، وحل النزاعات الحرجة، وبناء استراتيجيات مخصصة لتعزيز الولاء للمؤسسة.</p>
                 </div>
               </div>
             </div>
@@ -752,7 +729,7 @@
               <div class="timeline-content">
                 <h3 class="timeline-role">
                   <span class="lang-en">Customer Service Ambassador</span>
-                  <span class="lang-ar">سفير خدمة العملاء</span>
+                  <span class="lang-ar">أخصائي علاقات ودعم العملاء</span>
                 </h3>
                 <span class="timeline-company">
                   <span class="lang-en">Tabby Technologies (Fintech / BNPL) · Cairo</span>
@@ -760,7 +737,7 @@
                 </span>
                 <div class="timeline-body">
                   <p class="lang-en">Mapped and analyzed digital buyer behaviors. Restructured and simplified self-service support content to systematically reduce repeat contacts.</p>
-                  <p class="lang-ar">قدرت أفهم سلوك المشترين في التجارة الإلكترونية بشكل عميق. طوّرت ونسّقت محتوى الأسئلة الشائعة والدعم الذاتي عشان أسهّل على العميل الوصول للمعلومة وأقلل رسايل الشكاوى المتكررة.</p>
+                  <p class="lang-ar">قمت بتحليل ورسم خرائط سلوك المشترين الرقميين لتطوير تجاربهم الاستهلاكية. عملت على إعادة هيكلة وتبسيط محتوى الدعم والأسئلة الشائعة لتقليل معدلات تكرار الشكاوى بنظام الدعم الذاتي.</p>
                 </div>
               </div>
             </div>
@@ -773,7 +750,7 @@
               <div class="timeline-content">
                 <h3 class="timeline-role">
                   <span class="lang-en">Digital Marketer</span>
-                  <span class="lang-ar">مسوق رقمي</span>
+                  <span class="lang-ar">أخصائي تسويق رقمي</span>
                 </h3>
                 <span class="timeline-company">
                   <span class="lang-en">New Direction English Academy · Remote</span>
@@ -781,7 +758,7 @@
                 </span>
                 <div class="timeline-body">
                   <p class="lang-en">Established the brand positioning, visual voice, and monthly acquisition campaigns. Created long-term strategy playbooks outlining customer personas and purchase journeys.</p>
-                  <p class="lang-ar">بنيت الهوية الكاملة للعلامة التجارية وتموضعها في السوق وحددت نبرة الصوت اللي بتتكلم بيها، مع إدارة حملات التواصل الاجتماعي الإبداعية شهرياً. وضعت استراتيجيات تسويقية طويلة المدى بتشمل تحديد شخصية العميل المستهدف ورسم رحلة شرائه بالكامل.</p>
+                  <p class="lang-ar">توليت تأسيس وبناء الهوية البصرية للعلامة التجارية ونبرة صوتها وتموضعها التسويقي في قطاع EdTech بمصر. خططت وأدرت حملات النشر الشهرية على وسائل التواصل الاجتماعي مع وضع استراتيجيات طويلة المدى لتحديد شخصيات المشترين وخرائط رحلة الشراء.</p>
                 </div>
               </div>
             </div>
@@ -794,7 +771,7 @@
               <div class="timeline-content">
                 <h3 class="timeline-role">
                   <span class="lang-en">Website Editor &amp; Content Coordinator</span>
-                  <span class="lang-ar">محرر موقع ومنسق محتوى</span>
+                  <span class="lang-ar">مسؤول تحرير المواقع الإلكترونية وتنسيق المحتوى</span>
                 </h3>
                 <span class="timeline-company">
                   <span class="lang-en">Fine Stone (UnionAire Group) · Egypt</span>
@@ -802,7 +779,7 @@
                 </span>
                 <div class="timeline-body">
                   <p class="lang-en">Managed and optimized product positioning on the Odoo CMS. Maintained content calendars and optimized layouts to boost search traffic conversions.</p>
-                  <p class="lang-ar">كنت مسؤول عن إدارة وتنسيق محتوى المنتجات والخدمات على موقع الشركة باستخدام نظام أودو. ساهمت في تحسين نسب المبيعات وإعداد جداول نشر المحتوى التسويقي الرقمي.</p>
+                  <p class="lang-ar">أدرت وحسنت صفحات هبوط المنتجات على نظام إدارة المحتوى Odoo لتحسين تجربة المستخدم. صغت الأوصاف التسويقية للمنتجات بما يتناسب مع نبرة صوت العلامة لتعزيز الظهور العضوي على محركات البحث وتحسين معدلات التحويل.</p>
                 </div>
               </div>
             </div>
@@ -815,7 +792,7 @@
               <div class="timeline-content">
                 <h3 class="timeline-role">
                   <span class="lang-en">Marketing Team Lead (Volunteer)</span>
-                  <span class="lang-ar">مسؤول وقائد فريق التسويق المتطوع</span>
+                  <span class="lang-ar">قائد فريق التسويق (عمل تطوعي)</span>
                 </h3>
                 <span class="timeline-company">
                   <span class="lang-en">Resala Charity · Zagazig</span>
@@ -823,7 +800,7 @@
                 </span>
                 <div class="timeline-body">
                   <p class="lang-en">Led an 8-member marketing team to coordinate and launch community fundraising events. Awarded the official Resala Public Speaking Championship.</p>
-                  <p class="lang-ar">قُدت فريق تسويق فيه أكتر من ٨ أعضاء ونظّمنا فعاليات مجتمعية ناجحة. وأخدت جائزة رسمية في مهارات التقديم والتحدث أمام الجمهور.</p>
+                  <p class="lang-ar">قدت فريق تسويق مكون من 8 أعضاء لتنسيق وإطلاق فعاليات جمع التبرعات المجتمعية. فزت ببطولة جمعية رسالة الرسمية للإلقاء والتحدث أمام الجمهور.</p>
                 </div>
               </div>
             </div>
@@ -1090,7 +1067,7 @@
   <!-- Drawers -->
   <div class="project-drawer" id="drawer-kyoko" aria-hidden="true">
     <div class="drawer-overlay"></div>
-    <div class="drawer-panel">
+    <div class="drawer-panel" data-lenis-prevent>
       <button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       <div class="drawer-inner">
         <div class="drawer-header">
@@ -1157,7 +1134,7 @@
 
   <div class="project-drawer" id="drawer-new-direction" aria-hidden="true">
     <div class="drawer-overlay"></div>
-    <div class="drawer-panel">
+    <div class="drawer-panel" data-lenis-prevent>
       <button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       <div class="drawer-inner">
         <div class="drawer-header">
@@ -1224,7 +1201,7 @@
 
   <div class="project-drawer" id="drawer-hosting" aria-hidden="true">
     <div class="drawer-overlay"></div>
-    <div class="drawer-panel">
+    <div class="drawer-panel" data-lenis-prevent>
       <button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       <div class="drawer-inner">
         <div class="drawer-header">
@@ -1276,6 +1253,252 @@
               <span class="lang-en">Download Audit Report (PDF)</span>
               <span class="lang-ar">تحميل تقرير التدقيق المتكامل</span>
             </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Toolkit Strategy & Planning Drawer -->
+  <div class="project-drawer" id="drawer-toolkit-strategy" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel" data-lenis-prevent>
+      <button class="drawer-close" aria-label="Close Toolkit Details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Toolkit &bull; Frameworks</span>
+          <span class="drawer-badge lang-ar">المهارات &bull; الأطر الاستراتيجية</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">Strategy &amp; Planning</span>
+            <span class="lang-ar">الاستراتيجية والتخطيط</span>
+          </h3>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Formulating end-to-end marketing and corporate strategies, establishing product-market fit, mapping competitor strengths, and defining clear customer journeys.</span>
+            <span class="lang-ar">بناء وتطوير الاستراتيجيات التسويقية المتكاملة للشركات، تحديد المزايا التنافسية في السوق، تحليل نقاط قوة وضعف المنافسين، ورسم خرائط رحلة العميل لزيادة معدلات التحويل.</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">SWOT Analysis</span><span class="lang-ar">تحليل سوات الاستراتيجي</span>
+            <span class="lang-en">SMART Goals</span><span class="lang-ar">صياغة الأهداف الذكية</span>
+            <span class="lang-en">4Ps Mix</span><span class="lang-ar">المزيج التسويقي 4Ps</span>
+            <span class="lang-en">Blue Ocean Strategy</span><span class="lang-ar">استراتيجية المحيط الأزرق</span>
+            <span class="lang-en">Buyer Personas</span><span class="lang-ar">تحديد شخصية العميل</span>
+            <span class="lang-en">Business Model Canvas (BMC)</span><span class="lang-ar">مخطط نموذج العمل التجاري</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Strategic Applications</span>
+              <span class="lang-ar">التطبيق العملي والخبرات</span>
+            </h4>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Strategic Alignment</h5>
+              <h5 class="lang-ar">المواءمة الاستراتيجية للأهداف</h5>
+              <p class="lang-en">Aligning digital marketing initiatives directly with corporate viability, budgeting, and long-term commercial goals.</p>
+              <p class="lang-ar">ربط مبادرات التسويق الرقمي مباشرة بالجدوى التجارية للشركة، وإعداد الميزانيات، وتحقيق الأهداف التجارية طويلة الأجل.</p>
+            </div>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Blue Ocean Positioning</h5>
+              <h5 class="lang-ar">التمركز التسويقي في المحيط الأزرق</h5>
+              <p class="lang-en">Analyzing competitors to discover underserved niches, allowing campaigns to focus on high-value, low-friction audiences.</p>
+              <p class="lang-ar">تحليل المنافسين لاستكشاف الفرص غير المستغلة، مما يسمح للحملات بالتركيز على الجماهير ذات القيمة العالية والابتعاد عن التنافس الضار.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolkit Content & Copywriting Drawer -->
+  <div class="project-drawer" id="drawer-toolkit-content" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel" data-lenis-prevent>
+      <button class="drawer-close" aria-label="Close Toolkit Details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Toolkit &bull; Communication</span>
+          <span class="drawer-badge lang-ar">المهارات &bull; التواصل التسويقي</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">Content &amp; Copywriting</span>
+            <span class="lang-ar">المحتوى وكتابة الإعلانات</span>
+          </h3>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Crafting high-converting bilingual copy, designing structured content calendars, mapping message matrices, and auditing content quality across all touchpoints.</span>
+            <span class="lang-ar">صياغة نصوص إعلانية محفزة للتحويل باللغتين العربية والإنجليزية، تصميم وإدارة جداول نشر المحتوى المتكاملة، وتدقيق جودة المحتوى الرقمي لرفع كفاءة الجذب التسويقي.</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">Bilingual Copywriting</span><span class="lang-ar">كتابة نصوص ثنائية اللغة</span>
+            <span class="lang-en">Content Calendars</span><span class="lang-ar">جدولة وتخطيط المحتوى</span>
+            <span class="lang-en">Hero/Hub/Hygiene</span><span class="lang-ar">هيكلة وتصنيف المحتوى</span>
+            <span class="lang-en">Brand Voice</span><span class="lang-ar">تحديد نبرة صوت العلامة</span>
+            <span class="lang-en">Content Audits</span><span class="lang-ar">تدقيق وتقييم المحتوى</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Key Expertise</span>
+              <span class="lang-ar">أبرز مجالات التميز</span>
+            </h4>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Bilingual Conversion Copy</h5>
+              <h5 class="lang-ar">النصوص الإعلانية المحفزة على التحويل</h5>
+              <p class="lang-en">Balancing emotional hooks and logical benefits in both English and Arabic so that marketing campaigns resonate natively in GCC and international markets.</p>
+              <p class="lang-ar">الموازنة بين المحفزات العاطفية والمزايا المنطقية باللغتين العربية والإنجليزية لضمان وصول الرسالة التسويقية بشكل محلي ومؤثر في السوق المصري والخليجي والعالمي.</p>
+            </div>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Content Quality Audits</h5>
+              <h5 class="lang-ar">تقييم وتدقيق جودة المحتوى</h5>
+              <p class="lang-en">Reviewing existing content pipelines to remove fluff, correct brand messaging alignment, and increase conversion cues.</p>
+              <p class="lang-ar">مراجعة وتقييم قنوات المحتوى الرقمي لإزالة الحشو والتكرار، ضبط اتساق الرسائل التسويقية مع هوية العلامة التجارية، وتطوير محفزات اتخاذ إجراء الشراء (CTAs).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolkit Growth & Analytics Drawer -->
+  <div class="project-drawer" id="drawer-toolkit-growth" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel" data-lenis-prevent>
+      <button class="drawer-close" aria-label="Close Toolkit Details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Toolkit &bull; Performance</span>
+          <span class="drawer-badge lang-ar">المهارات &bull; الأداء والنمو</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">Growth &amp; Analytics</span>
+            <span class="lang-ar">النمو والتحليلات</span>
+          </h3>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Measuring digital marketing effectiveness, defining KPI frameworks, tracking landing page behaviors, and mapping competitor traffic channels to maximize acquisition ROI.</span>
+            <span class="lang-ar">قياس فاعلية التسويق الرقمي بدقة، تحديد أطر ومؤشرات الأداء الرئيسية (KPIs)، تحليل سلوك المستخدم في صفحات الهبوط، ودراسة قنوات المنافسين لرفع عائد الاستثمار الإعلاني (ROAS).</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">KPI Frameworks</span><span class="lang-ar">أطر قياس الأداء الرئيسية</span>
+            <span class="lang-en">Meta Insights</span><span class="lang-ar">تحليلات منصات ميتا</span>
+            <span class="lang-en">Competitor Analysis</span><span class="lang-ar">دراسة وتحليل المنافسين</span>
+            <span class="lang-en">CRO</span><span class="lang-ar">تحسين معدل التحويل</span>
+            <span class="lang-en">Customer Retention</span><span class="lang-ar">استبقاء العملاء وولائهم</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Growth Focus Areas</span>
+              <span class="lang-ar">مجالات التركيز لنمو الشركات</span>
+            </h4>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Conversion Rate Optimization (CRO)</h5>
+              <h5 class="lang-ar">تحسين معدلات التحويل</h5>
+              <p class="lang-en">Analyzing scroll maps, heatmaps, and user recordings to streamline sign-ups, checkouts, and CTA responses.</p>
+              <p class="lang-ar">تحليل خرائط التمرير والخرائط الحرارية لتجربة المستخدم وتسجيلات سلوك الزوار لتسهيل خطوات التسجيل والدفع وتفعيل أزرار الدعوة لاتخاذ إجراء (CTAs).</p>
+            </div>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Actionable KPI Metrics</h5>
+              <h5 class="lang-ar">مؤشرات الأداء القابلة للتنفيذ</h5>
+              <p class="lang-en">Focusing budget allocations on key revenue drivers like Customer Lifetime Value (LTV) and Cost Per Acquisition (CPA) instead of vanity stats.</p>
+              <p class="lang-ar">توجيه الميزانيات التسويقية نحو مؤشرات النمو الأساسية مثل القيمة الدائمة للعميل (LTV) وتكلفة الاستحواذ (CPA) بدلاً من المقاييس المظهرية غير المجدية (Vanity Metrics).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolkit Digital Tools Drawer -->
+  <div class="project-drawer" id="drawer-toolkit-tools" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel" data-lenis-prevent>
+      <button class="drawer-close" aria-label="Close Toolkit Details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Toolkit &bull; Tools</span>
+          <span class="drawer-badge lang-ar">المهارات &bull; الأدوات الرقمية</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">Digital Tools Stack</span>
+            <span class="lang-ar">الأدوات الرقمية والتقنية</span>
+          </h3>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Professional execution of paid advertising campaigns, graphics generation, content management system updates, and leveraging modern AI workflows.</span>
+            <span class="lang-ar">إدارة الحملات الإعلانية الممولة باحترافية، تصميم المواد الإبداعية السريعة، إدارة وتحديث مواقع الويب عبر منصات CMS، وتوظيف أدوات الذكاء الاصطناعي لرفع الكفاءة التشغيلية.</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">Meta Ads Manager</span><span class="lang-ar">مدير إعلانات ميتا</span>
+            <span class="lang-en">TikTok Ads Manager</span><span class="lang-ar">مدير إعلانات تيك توك</span>
+            <span class="lang-en">Canva Suite</span><span class="lang-ar">منصة كانفا للتصميم</span>
+            <span class="lang-en">Odoo CMS</span><span class="lang-ar">نظام أودو لإدارة المواقع</span>
+            <span class="lang-en">AI Productivity</span><span class="lang-ar">أدوات الذكاء الاصطناعي</span>
+            <span class="lang-en">Office 365</span><span class="lang-ar">حزمة مايكروسوفت أوفيس</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Core Technical Competency</span>
+              <span class="lang-ar">القدرات التقنية الأساسية</span>
+            </h4>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Paid Performance Buying</h5>
+              <h5 class="lang-ar">إدارة الإعلانات الممولة والأداء</h5>
+              <p class="lang-en">Structuring ad accounts, setting up tracking events, split-testing visual creatives, and optimizing audiences for scale on Meta and TikTok.</p>
+              <p class="lang-ar">هيكلة الحسابات الإعلانية، إعداد أدوات التتبع الرقمي والـ Pixels، إجراء اختبارات مقارنة الأداء (A/B Testing)، وتحسين استهداف الجماهير للتوسع على منصات ميتا وتيك توك.</p>
+            </div>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">CMS & Landing Page Admin</h5>
+              <h5 class="lang-ar">إدارة المحتوى وصفحات الهبوط</h5>
+              <p class="lang-en">Publishing campaigns, updating layouts, and updating promotional banners inside Odoo CMS structure natively.</p>
+              <p class="lang-ar">نشر وتحديث صفحات الهبوط، تعديل وتصميم الهياكل البرمجية البسيطة للمواقع، وتحديث البانرات الترويجية داخل نظام أودو بالكامل.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolkit Leadership Drawer -->
+  <div class="project-drawer" id="drawer-toolkit-leadership" aria-hidden="true">
+    <div class="drawer-overlay"></div>
+    <div class="drawer-panel" data-lenis-prevent>
+      <button class="drawer-close" aria-label="Close Toolkit Details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <span class="drawer-badge lang-en">Toolkit &bull; Management</span>
+          <span class="drawer-badge lang-ar">المهارات &bull; القيادة والتدريب</span>
+          <h3 class="drawer-title">
+            <span class="lang-en">Leadership &amp; Training</span>
+            <span class="lang-ar">القيادة والتدريب</span>
+          </h3>
+        </div>
+        <div class="drawer-body">
+          <p class="drawer-intro-desc">
+            <span class="lang-en">Leading agile cross-functional marketing teams, coaching corporate groups, speaking in public venues, and managing high-stakes client relationships in both English and Arabic.</span>
+            <span class="lang-ar">قيادة فرق التسويق متعددة التخصصات، تقديم برامج تدريبية معتمدة للشركات، مهارات الإلقاء والتحدث العام، وإدارة العلاقات رفيعة المستوى مع العملاء الاستراتيجيين باللغتين العربية والإنجليزية.</span>
+          </p>
+          <div class="drawer-tags-list">
+            <span class="lang-en">Team Lead (8+)</span><span class="lang-ar">إدارة وقيادة الفرق (8+ أعضاء)</span>
+            <span class="lang-en">Corporate Trainer</span><span class="lang-ar">مدرب شركات معتمد</span>
+            <span class="lang-en">Public Speaking</span><span class="lang-ar">الخطابة والتحدث العام</span>
+            <span class="lang-en">Bilingual Negotiation</span><span class="lang-ar">التفاوض وإدارة النقاش ثنائي اللغة</span>
+          </div>
+          <div class="drawer-highlights-section">
+            <h4 class="section-sub-title">
+              <span class="lang-en">Leadership Accomplishments</span>
+              <span class="lang-ar">إنجازات قيادية وتدريبية</span>
+            </h4>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Cross-Functional Team Lead</h5>
+              <h5 class="lang-ar">إدارة الفرق التسويقية المتكاملة</h5>
+              <p class="lang-en">Directly managed teams of designers, media buyers, and writers. Run sprints, manage bottlenecks, and align creative outputs with delivery schedules.</p>
+              <p class="lang-ar">الإشراف المباشر على المصممين ومسؤولي شراء المساحات الإعلانية (Media Buyers) والكتّاب؛ لإدارة المهام وتجنب الاختناقات التشغيلية ومواءمة المخرجات الإبداعية مع الجداول الزمنية.</p>
+            </div>
+            <div class="highlight-mini-card">
+              <h5 class="lang-en">Certified Corporate Coaching</h5>
+              <h5 class="lang-ar">التدريب والتمكين المؤسسي</h5>
+              <p class="lang-en">Trained teams of corporate professionals on marketing fundamentals, client acquisition funnels, and digital tools usage.</p>
+              <p class="lang-ar">تدريب وتأهيل الكوادر المهنية بالشركات على أساسيات التسويق الرقمي، بناء قنوات الاستحواذ، واستخدام الأدوات الرقمية لتحسين الإنتاجية وتطوير الأداء.</p>
+            </div>
           </div>
         </div>
       </div>

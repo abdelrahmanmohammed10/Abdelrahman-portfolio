@@ -327,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let cachedTimelineHeight = 0;
   let cachedDocHeight = 0;
   let cachedSections = [];
+  let spineDotOffsets = [];
 
   const cacheTimelineGeometry = () => {
     if (timeline) {
@@ -361,15 +362,24 @@ document.addEventListener('DOMContentLoaded', () => {
     cachedDocHeight = document.documentElement.scrollHeight - window.innerHeight;
   };
 
+  const cacheSpineDotOffsets = () => {
+    if (spineDots.length > 0) {
+      spineDotOffsets = spineDots.map(dot => ({
+        element: dot,
+        offsetTop: dot.offsetTop
+      }));
+    }
+  };
+
   // Nav spine active line dynamic height updates
   const updateSpineActiveLine = () => {
     const activeLine = document.getElementById('nav-spine-active-line');
-    if (activeLine && spineDots.length > 0) {
-      const firstDot = spineDots[0];
-      const activeDot = spineDots.find(dot => dot.classList.contains('active'));
-      if (activeDot) {
-        activeLine.style.top = (firstDot.offsetTop + 4) + 'px';
-        activeLine.style.height = (activeDot.offsetTop - firstDot.offsetTop) + 'px';
+    if (activeLine && spineDotOffsets.length > 0) {
+      const firstDotOffset = spineDotOffsets[0].offsetTop;
+      const activeDotObj = spineDotOffsets.find(d => d.element.classList.contains('active'));
+      if (activeDotObj) {
+        activeLine.style.top = (firstDotOffset + 4) + 'px';
+        activeLine.style.height = (activeDotObj.offsetTop - firstDotOffset) + 'px';
       }
     }
   };
@@ -378,9 +388,13 @@ document.addEventListener('DOMContentLoaded', () => {
   cacheTimelineGeometry();
   cacheSectionsGeometry();
   cacheDocHeight();
+  cacheSpineDotOffsets();
 
   // Set initial line position after dynamic offsets render
-  setTimeout(updateSpineActiveLine, 200);
+  setTimeout(() => {
+    cacheSpineDotOffsets();
+    updateSpineActiveLine();
+  }, 200);
 
   let tickingScroll = false;
   window.addEventListener('scroll', () => {
@@ -555,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----- 10. PROJECT DRAWERS ----- */
-  const projectCards = document.querySelectorAll('.project-glass-card');
+  const projectCards = document.querySelectorAll('.project-glass-card, .skill-category');
   const drawers = document.querySelectorAll('.project-drawer');
 
   projectCards.forEach(card => {
@@ -749,10 +763,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const glassCards = document.querySelectorAll('.project-glass-card, .certificate-glass-card, .campaign-glass-card');
   
   glassCards.forEach(card => {
+    let rect = null;
+    
+    card.addEventListener('mouseenter', () => {
+      if (window.innerWidth <= 1024) return;
+      rect = card.getBoundingClientRect();
+    });
+    
     card.addEventListener('mousemove', (e) => {
       if (window.innerWidth <= 1024) return; // Disable tilt on mobile/tablets for smooth scrolling
+      if (!rect) rect = card.getBoundingClientRect(); // Fallback if enter didn't fire properly
 
-      const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
@@ -772,6 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     card.addEventListener('mouseleave', () => {
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      rect = null;
     });
   });
 
@@ -957,31 +979,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initLanguage();
 
 
-  /* === NEW INTERSECTION OBSERVER FOR MICRO-REVEALS === */
-  // Select all major sections, cards, and paragraphs to reveal
-  const elementsToReveal = document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card, .eyebrow-split');
-  
-  elementsToReveal.forEach((el) => {
-    el.classList.add('reveal');
-  });
-
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-  document.querySelectorAll('.reveal').forEach(el => {
-    revealObserver.observe(el);
-  });
-
   // Project cards peek hover details are handled via native CSS now.
 
   /* ============================================================
-     STARRY NIGHT INTERACTIVE ENGINE (2D Canvas)
+     STARRY NIGHT & CLOUD FIELD INTERACTIVE ENGINE (2D Canvas)
      ============================================================ */
   const canvas = document.getElementById('three-planet-canvas');
   if (canvas) {
@@ -989,14 +990,38 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let width, height;
     let stars = [];
+    let clouds = [];
     const numStars = window.innerWidth > 768 ? 400 : 150;
+    const numClouds = 48; // Increased cloud count for better density
 
+    // Preload cloud images for light mode
+    const cloudImages = [];
+    const cloudSources = ['cloud-flat-1.png', 'cloud-flat-2.png', 'cloud-flat-3.png'];
+    let cloudsLoaded = false;
+    let loadedCount = 0;
+
+    cloudSources.forEach(src => {
+      const img = new Image();
+      // Attach onload callback BEFORE setting src to guarantee it fires for cached assets
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === cloudSources.length) {
+          cloudsLoaded = true;
+        }
+      };
+      img.onerror = () => {
+        console.warn(`Failed to load cloud image: ${src}`);
+      };
+      img.src = src;
+      cloudImages.push(img);
+    });
     
     // Palette for realistic stars
     const starColors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FF9F1C', '#2EC4B6', '#274C77'];
     
-    // Mouse interaction
+    // Mouse interaction with interpolation for organic, fluid lag
     let mouse = { x: -1000, y: -1000 };
+    let targetMouse = { x: -1000, y: -1000 };
     let scrollSpeed = 0;
     let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
 
@@ -1058,15 +1083,19 @@ document.addEventListener('DOMContentLoaded', () => {
         this.twinklePhase += this.twinkleSpeed;
         let twinkle = Math.sin(this.twinklePhase) * 0.5;
         
-        // Mouse repulsion
+        // Mouse repulsion (optimized squared distance check to prevent lag)
         let dx = this.x - mouse.x;
         let dy = this.y - mouse.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          let force = (150 - dist) / 150;
-          this.x -= (dx / dist) * force * 2;
-          this.y -= (dy / dist) * force * 2;
-          this.alpha = Math.min(1, this.baseAlpha + force + twinkle);
+        let distSq = dx * dx + dy * dy;
+        const maxDist = 150;
+        if (distSq < maxDist * maxDist) {
+          let dist = Math.sqrt(distSq);
+          if (dist > 0) {
+            let force = (maxDist - dist) / maxDist;
+            this.x -= (dx / dist) * force * 2;
+            this.y -= (dy / dist) * force * 2;
+            this.alpha = Math.min(1, this.baseAlpha + force + twinkle);
+          }
         } else {
           this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + twinkle));
         }
@@ -1110,15 +1139,170 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    class CloudParticle {
+      constructor() {
+        this.reset(true);
+      }
 
+      reset(randomY = false) {
+        // Spawn randomly across width plus horizontal margins
+        this.x = Math.random() * (width + 800) - 400;
+        // Spawn vertically: randomly on start, or offscreen top on reset
+        this.y = randomY ? Math.random() * height : -400;
+        
+        // Depth scale (z): 0.35 (background layer) to 1.15 (foreground layer)
+        this.z = Math.random() * 0.8 + 0.35;
+        
+        // Pick one of the loaded cloud images
+        this.imgIndex = Math.floor(Math.random() * cloudSources.length);
+        
+        // Size based on depth (increased size for a more voluminous feel)
+        this.baseWidth = 550 + Math.random() * 350; // Increased size to make clouds appear more
+        this.width = this.baseWidth * this.z;
+        this.height = this.width * 0.55; // Maintain aspect ratio
+        
+        // Opacity: increased base visibility for highly defined volumetric clouds
+        this.baseAlpha = (Math.random() * 0.12 + 0.82) * (this.z * 0.2 + 0.8); // Increased cloud prominence
+        this.alpha = this.baseAlpha;
+        
+        // Slow atmospheric drift speeds (drifts rightward and slightly downward)
+        this.vx = (0.03 + Math.random() * 0.05) * this.z;
+        this.vy = (0.01 + Math.random() * 0.02) * this.z;
+        
+        // Offset for mouse repulsion
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.scaleX = 1;
+        this.scaleY = 1;
+        this.lastTargetX = 0;
+        this.lastTargetY = 0;
+        
+        // Volumetric breath cycle phase
+        this.breathPhase = Math.random() * Math.PI * 2;
+        this.breathSpeed = Math.random() * 0.005 + 0.002;
+      }
+
+      update() {
+        // Apply normal drift
+        this.x += this.vx;
+        this.y += this.vy;
+        
+        // Gentle vertical floating wave oscillation (adds floating realism)
+        this.y += Math.sin(this.breathPhase * 0.5) * 0.06 * this.z;
+        
+        // Parallax scroll reaction
+        this.y += scrollSpeed * this.z * 0.22;
+        
+        // Mouse repulsion (optimized squared distance check)
+        const cx = this.x + this.width / 2;
+        const cy = this.y + this.height / 2;
+        
+        const dx = cx - mouse.x;
+        const dy = cy - mouse.y;
+        const distSq = dx * dx + dy * dy;
+        const maxDist = 380; // Wider repulsion radius
+        
+        let targetOffsetX = 0;
+        let targetOffsetY = 0;
+        let targetScaleX = 1;
+        let targetScaleY = 1;
+        let targetAlpha = this.baseAlpha;
+        
+        if (distSq < maxDist * maxDist) {
+          const dist = Math.sqrt(distSq);
+          if (dist > 0) {
+            const force = (maxDist - dist) / maxDist;
+            
+            // Push cloud away from mouse: slower, smoother push values
+            targetOffsetX = (dx / dist) * force * 110 * this.z;
+            targetOffsetY = (dy / dist) * force * 75 * this.z;
+            
+            // Squash and stretch aspect ratio to organically reshape the cloud itself
+            const angle = Math.atan2(dy, dx);
+            const stretchAmount = force * 0.24; // Up to 24% morph for more visual personality
+            targetScaleX = 1.0 - stretchAmount * Math.cos(2 * angle);
+            targetScaleY = 1.0 + stretchAmount * Math.cos(2 * angle);
+            
+            // Soft opacity boost when interacting with mouse to highlight shape
+            targetAlpha = Math.min(1.0, this.baseAlpha + force * 0.18);
+          }
+        }
+        
+        // Smoothly interpolate current values towards targets on every frame using a premium spring-like lerp
+        const speedFactor = 0.026; // Organic atmospheric damping
+        this.offsetX += (targetOffsetX - this.offsetX) * speedFactor;
+        this.offsetY += (targetOffsetY - this.offsetY) * speedFactor;
+        this.scaleX += (targetScaleX - this.scaleX) * speedFactor;
+        this.scaleY += (targetScaleY - this.scaleY) * speedFactor;
+        this.alpha += (targetAlpha - this.alpha) * speedFactor;
+        
+        // Breathing cycle
+        this.breathPhase += this.breathSpeed;
+        
+        // Wrap around screen boundaries in all directions
+        if (this.x - this.width > width) {
+          this.x = -this.width;
+          this.y = Math.random() * height;
+        } else if (this.x + this.width < 0) {
+          this.x = width;
+          this.y = Math.random() * height;
+        }
+        if (this.y - this.height > height) {
+          this.y = -this.height;
+          this.x = Math.random() * (width + 200) - 100;
+        } else if (this.y + this.height < 0) {
+          this.y = height;
+          this.x = Math.random() * (width + 200) - 100;
+        }
+      }
+
+      draw() {
+        const img = cloudImages[this.imgIndex];
+        if (img && img.complete && img.naturalWidth > 0) {
+          ctx.save();
+          // Apply subtle breathing opacity fluctuation
+          const breathAlpha = Math.sin(this.breathPhase) * 0.03;
+          ctx.globalAlpha = Math.max(0.1, Math.min(1.0, this.alpha + breathAlpha));
+          
+          // Organic, slow shape morphing (independent of mouse)
+          const morphX = 1 + Math.sin(this.breathPhase) * 0.09;
+          const morphY = 1 + Math.cos(this.breathPhase * 0.75) * 0.09;
+          
+          // Draw image centered with offset and dynamic scales
+          const drawW = this.width * morphX * this.scaleX;
+          const drawH = this.height * morphY * this.scaleY;
+          
+          // Subtle drop shadow for 3D volumetric depth
+          ctx.shadowColor = 'rgba(30, 61, 97, 0.04)';
+          ctx.shadowBlur = 25;
+          ctx.shadowOffsetY = 12;
+          
+          ctx.drawImage(
+            img, 
+            this.x + this.offsetX - (drawW - this.width) / 2, 
+            this.y + this.offsetY - (drawH - this.height) / 2, 
+            drawW, 
+            drawH
+          );
+          ctx.restore();
+        }
+      }
+    }
 
     function init() {
       resize();
+      
+      // Initialize Stars
       stars = [];
       for (let i = 0; i < numStars; i++) {
         stars.push(new Star());
       }
-
+      
+      // Initialize Clouds
+      clouds = [];
+      for (let i = 0; i < numClouds; i++) {
+        clouds.push(new CloudParticle());
+      }
     }
 
     let isTabVisible = true;
@@ -1136,10 +1320,34 @@ document.addEventListener('DOMContentLoaded', () => {
       
       try {
         ctx.clearRect(0, 0, width, height);
-        stars.forEach(star => {
-          star.update();
-          star.draw();
-        });
+        
+        // Smoothly interpolate mouse coordinates for a beautifully damped interaction lag!
+        if (targetMouse.x === -1000) {
+          mouse.x += (targetMouse.x - mouse.x) * 0.08;
+          mouse.y += (targetMouse.y - mouse.y) * 0.08;
+          if (Math.abs(mouse.x - targetMouse.x) < 1) {
+            mouse.x = -1000;
+            mouse.y = -1000;
+          }
+        } else {
+          mouse.x += (targetMouse.x - mouse.x) * 0.08;
+          mouse.y += (targetMouse.y - mouse.y) * 0.08;
+        }
+        
+        // Read active theme
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        
+        if (isLight) {
+          clouds.forEach(cloud => {
+            cloud.update();
+            cloud.draw();
+          });
+        } else {
+          stars.forEach(star => {
+            star.update();
+            star.draw();
+          });
+        }
         
         scrollSpeed *= 0.9;
         requestAnimationFrame(animate);
@@ -1158,6 +1366,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cacheTimelineGeometry();
         cacheSectionsGeometry();
         cacheDocHeight();
+        cacheSpineDotOffsets();
+        updateSpineActiveLine();
       }, 200);
     });
     
@@ -1167,18 +1377,26 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
         document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
       }
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      targetMouse.x = e.clientX;
+      targetMouse.y = e.clientY;
+      if (mouse.x === -1000) {
+        mouse.x = targetMouse.x;
+        mouse.y = targetMouse.y;
+      }
     }, { passive: true });
 
     window.addEventListener('mouseout', () => {
-      mouse.x = -1000;
-      mouse.y = -1000;
+      targetMouse.x = -1000;
+      targetMouse.y = -1000;
     });
     
     window.addEventListener('touchmove', (e) => {
-      mouse.x = e.touches[0].clientX;
-      mouse.y = e.touches[0].clientY;
+      targetMouse.x = e.touches[0].clientX;
+      targetMouse.y = e.touches[0].clientY;
+      if (mouse.x === -1000) {
+        mouse.x = targetMouse.x;
+        mouse.y = targetMouse.y;
+      }
     }, { passive: true });
     
     init();
