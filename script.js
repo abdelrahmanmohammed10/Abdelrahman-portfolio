@@ -1015,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let stars = [];
     let clouds = [];
     const numStars = window.innerWidth > 768 ? 400 : 150;
-    const numClouds = 48; // Increased cloud count for better density
+    const numClouds = window.innerWidth > 768 ? 48 : 12; // Scaled down cloud count on mobile to prevent overdraw lag
 
     // Preload cloud images for light mode
     const cloudImages = [];
@@ -1300,10 +1300,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const drawW = this.width * morphX * this.scaleX;
           const drawH = this.height * morphY * this.scaleY;
           
-          // Subtle drop shadow for 3D volumetric depth
-          ctx.shadowColor = 'rgba(30, 61, 97, 0.04)';
-          ctx.shadowBlur = 25;
-          ctx.shadowOffsetY = 12;
+          // Subtle drop shadow disabled to resolve mobile scroll lag and maximize performance
           
           ctx.drawImage(
             img, 
