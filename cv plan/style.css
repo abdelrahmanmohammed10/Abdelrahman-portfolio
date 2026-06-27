@@ -969,6 +969,155 @@ button, input, textarea {
   margin-top: 8px;
 }
 
+/* ----- MARKETING FUNNEL ----- */
+.funnel-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.funnel-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.funnel-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.funnel-container {
+  max-width: 320px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.funnel-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.funnel-group {
+  outline: none;
+}
+
+.funnel-stage {
+  stroke-width: 1.5;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.funnel-text {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 800;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  fill: var(--text-muted);
+}
+
+.funnel-text.lang-ar {
+  font-size: 12px;
+}
+
+/* Funnel Hover/Active States */
+.funnel-group:hover .funnel-stage,
+.funnel-group.active .funnel-stage {
+  fill-opacity: 0.35;
+  stroke-width: 2.5;
+}
+
+.funnel-group:hover .funnel-text,
+.funnel-group.active .funnel-text {
+  fill: var(--text-primary);
+  font-size: 12px;
+}
+
+.funnel-group:hover .funnel-text.lang-ar,
+.funnel-group.active .funnel-text.lang-ar {
+  font-size: 13px;
+}
+
+.funnel-group[data-stage="awareness"]:hover .funnel-stage,
+.funnel-group[data-stage="awareness"].active .funnel-stage {
+  stroke: var(--color-cyan);
+  filter: drop-shadow(0 0 12px rgba(46, 196, 182, 0.5));
+}
+
+.funnel-group[data-stage="consideration"]:hover .funnel-stage,
+.funnel-group[data-stage="consideration"].active .funnel-stage {
+  stroke: var(--color-gold);
+  filter: drop-shadow(0 0 12px rgba(255, 159, 28, 0.5));
+}
+
+.funnel-group[data-stage="conversion"]:hover .funnel-stage,
+.funnel-group[data-stage="conversion"].active .funnel-stage {
+  stroke: var(--color-cyan);
+  filter: drop-shadow(0 0 12px rgba(46, 196, 182, 0.5));
+}
+
+.funnel-group[data-stage="retention"]:hover .funnel-stage,
+.funnel-group[data-stage="retention"].active .funnel-stage {
+  stroke: var(--color-gold);
+  filter: drop-shadow(0 0 12px rgba(255, 159, 28, 0.5));
+}
+
+/* Funnel Tag Highlighting */
+.skills-grid .tag {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skills-grid .tag.highlight-funnel {
+  background: rgba(var(--color-cyan-rgb), 0.16) !important;
+  border-color: var(--color-cyan) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 0 12px rgba(var(--color-cyan-rgb), 0.25) !important;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.skills-grid .tag.highlight-funnel-gold {
+  background: rgba(255, 159, 28, 0.16) !important;
+  border-color: var(--color-gold) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 0 12px rgba(255, 159, 28, 0.25) !important;
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* Light Theme Overrides */
+html[data-theme="light"] .funnel-wrapper {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: var(--border-color);
+  box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05);
+}
+
+html[data-theme="light"] .funnel-title {
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .funnel-subtitle {
+  color: var(--text-muted);
+}
+
+html[data-theme="light"] .funnel-text {
+  fill: var(--text-muted);
+}
+
+html[data-theme="light"] .funnel-group:hover .funnel-text,
+html[data-theme="light"] .funnel-group.active .funnel-text {
+  fill: var(--text-primary);
+}
+
 /* Skills showcase */
 .skills-showcase {
   margin-top: 80px;

@@ -1428,5 +1428,67 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
     animate();
   }
+
+  // Phase 3: Interactive Marketing Funnel
+  const funnelGroups = document.querySelectorAll('.funnel-group');
+  const allTags = document.querySelectorAll('.skills-grid .tag');
+
+  funnelGroups.forEach(group => {
+    group.addEventListener('mouseenter', () => {
+      const stage = group.getAttribute('data-stage');
+      
+      funnelGroups.forEach(g => g.classList.remove('active'));
+      group.classList.add('active');
+
+      allTags.forEach(tag => {
+        if (tag.getAttribute('data-funnel') === stage) {
+          tag.classList.add(stage === 'consideration' || stage === 'retention' ? 'highlight-funnel-gold' : 'highlight-funnel');
+        } else {
+          tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
+          tag.style.opacity = '0.3';
+        }
+      });
+    });
+
+    group.addEventListener('mouseleave', () => {
+      group.classList.remove('active');
+      allTags.forEach(tag => {
+        tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
+        tag.style.opacity = '';
+      });
+    });
+    
+    group.addEventListener('click', (e) => {
+      const isAlreadyActive = group.classList.contains('active');
+      
+      funnelGroups.forEach(g => g.classList.remove('active'));
+      allTags.forEach(tag => {
+        tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
+        tag.style.opacity = '';
+      });
+
+      if (!isAlreadyActive) {
+        group.classList.add('active');
+        const stage = group.getAttribute('data-stage');
+        allTags.forEach(tag => {
+          if (tag.getAttribute('data-funnel') === stage) {
+            tag.classList.add(stage === 'consideration' || stage === 'retention' ? 'highlight-funnel-gold' : 'highlight-funnel');
+          } else {
+            tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
+            tag.style.opacity = '0.3';
+          }
+        });
+        e.stopPropagation();
+      }
+    });
+  });
+
+  document.addEventListener('click', () => {
+    funnelGroups.forEach(g => g.classList.remove('active'));
+    allTags.forEach(tag => {
+      tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
+      tag.style.opacity = '';
+    });
+  });
 });
 
