@@ -1469,22 +1469,22 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["experience", "work", "job", "career", "history", "employer", "employ", "company", "role", "concentrix", "tabby", "fine stone", "resala", "خبرة", "عمل", "وظيفة", "وظائف", "سابق", "خبرات"],
-            response: "I have over 4 years of experience in digital marketing and customer retention:<br>• <strong>Concentrix (Boost Mobile account):</strong> Customer Service Ambassador (Aug 2025-Present) - Awarded the 1st Enterprise Loyalty Award (2026) for excellence in customer retention.<br>• <strong>Tabby Technologies Egypt (Fintech/BNPL):</strong> Customer Service Ambassador (Apr 2025-Aug 2025) - Restructured FAQ support guides and analyzed digital buyer behavior.<br>• <strong>New Direction Academy (EdTech):</strong> Digital Marketer (Sep 2020-May 2022) - Led brand launch strategy, Facebook/Instagram campaigns, and SWOT analysis.<br>• <strong>Fine Stone (UnionAire Group):</strong> Website Editor & Digital Content Coordinator (Jul 2019-Feb 2020) - Landing page optimizations on Odoo CMS and SEO metrics tracking."
+            response: "I have over 5 years of experience in digital marketing and customer retention:<br>• <strong>Concentrix (Boost Mobile account):</strong> Sales & Retention Consultant (Aug 2025-Present) - Awarded the 1st Enterprise Loyalty Award (2026) for ranking #1 company-wide in sales conversion and churn reduction.<br>• <strong>Tabby Technologies Egypt (Fintech/BNPL):</strong> Customer Service & E-commerce Experience Specialist (Apr 2025-Aug 2025) - Restructured FAQ support guides and analyzed digital buyer behavior to reduce repeat contact.<br>• <strong>New Direction Academy (EdTech):</strong> Digital Marketer & Brand Strategist (Sep 2020-May 2022) - Led brand launch strategy, Facebook/Instagram campaigns, and dual SWOT analyses.<br>• <strong>Fine Stone (UnionAire Group):</strong> Website Editor & Digital Content Coordinator (Jul 2019-Feb 2020) - Landing page optimizations on Odoo CMS and SEO metrics tracking."
           },
           {
             name: "concentrix",
             keywords: ["concentrix", "loyalty", "retention", "boost mobile", "dish", "كونسنتريكس", "ولاء"],
-            response: "At Concentrix (handling the Boost Mobile account by Dish Technologies from Aug 2025-Present), I resolve critical billing, technical, and mobile plan issues. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for my outstanding performance in customer retention, churn reduction, and maintaining high customer satisfaction metrics."
+            response: "At Concentrix (handling the Boost Mobile account by Dish Technologies from Aug 2025-Present as a Sales & Retention Consultant), I resolve critical billing, technical, and mobile plan issues. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for ranking #1 company-wide in sales conversion and churn reduction, and maintaining top-tier customer satisfaction metrics."
           },
           {
             name: "tabby",
             keywords: ["tabby", "fintech", "bnpl", "customer service", "ambassador", "تابي"],
-            response: "At Tabby Technologies Egypt (BNPL Fintech startup located at The Greek Campus, Cairo from Apr 2025-Aug 2025), I supported customers through BNPL payment journeys, mapped user support friction points, and restructured self-service guides to systematically decrease support contact recurrence."
+            response: "At Tabby Technologies Egypt (BNPL Fintech startup located at The Greek Campus, Cairo from Apr 2025-Aug 2025 as a Customer Service & E-commerce Experience Specialist), I supported customers through BNPL payment journeys, mapped user support friction points, and applied copywriting to restructure guides and decrease support contact recurrence."
           },
           {
             name: "projects",
             keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain", "مشاريع", "مشروع", "اعمال", "موقع"],
-            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive marketing strategy covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, Blue Ocean strategy, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
+            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive marketing playbook covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, Blue Ocean strategy, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
           },
           {
             name: "kyoko",
@@ -1494,7 +1494,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "new_direction",
             keywords: ["new direction", "academy", "english", "edtech", "نيو دايركشن", "اكاديمية"],
-            response: "For <strong>New Direction Academy</strong> (EdTech, Sep 2020-May 2022), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
+            response: "For <strong>New Direction Academy</strong> (EdTech, Sep 2020-May 2022 as a Digital Marketer & Brand Strategist), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
           },
           {
             name: "hosting",
@@ -1518,7 +1518,7 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           {
             name: "volunteer",
-            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagازيج", "عمل تطوعي", "جمعية", "رسالة"],
+            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagazig", "عمل تطوعي", "جمعية", "رسالة"],
             response: "I served as a **Marketing Team Lead** (May 2019 - Oct 2022) at Anwar Resala Zagazig (Resala Charity). I led a team of 8+ members, built awareness campaigns for community initiatives, trained members on content creation, and won the **Presentation & Public Speaking Competition Award**."
           },
           {
@@ -1596,17 +1596,17 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["خبرة", "عمل", "وظيفة", "تاريخ", "سيرة", "شركة", "دور", "كونسنتريكس", "تابي", "فاين ستون", "رسالة", "experience", "work", "job"],
-            response: "لدي أكثر من 4 سنوات من الخبرة المهنية في التسويق الرقمي والاحتفاظ بالعملاء (Retention):<br>• <strong>كونسنتريكس (Boost Mobile):</strong> ممثل خدمة العملاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026).<br>• <strong>تابي (التقنية المالية):</strong> ممثل خدمة العملاء (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المستخدمين وتطوير أدلة الدعم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
+            response: "لدي أكثر من 5 سنوات من الخبرة المهنية في التسويق الرقمي والاحتفاظ بالعملاء (Retention):<br>• <strong>كونسنتريكس (Boost Mobile):</strong> مستشار مبيعات واستبقاء العملاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026).<br>• <strong>تابي (التقنية المالية):</strong> أخصائي خدمة العملاء وتجربة التجارة الإلكترونية (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المشترين وتطوير تجربة المستخدم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي ومخطط استراتيجي للعلامة التجارية (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
           },
           {
             name: "concentrix",
             keywords: ["كونسنتريكس", "ولاء", "احتفاظ", "خدمة", "مبيعات", "جوائز", "جائزة", "concentrix", "loyalty"],
-            response: "في شركة كونسنتريكس (إدارة حساب بوست موبايل التابع لشركة ديش تكنولوجيز من أغسطس ٢٠٢٥ حتى الآن)، أقوم بحل مشكلات الحسابات المعرضة للإلغاء. حصلت على <strong>جائزة الولاء الأولى على مستوى المؤسسة (٢٠٢٦)</strong> لتميزي في خفض معدلات تسرب العملاء والاحتفاظ بهم."
+            response: "في شركة كونسنتريكس (مستشار مبيعات واستبقاء العملاء لحساب بوست موبايل التابع لشركة ديش تكنولوجيز من أغسطس ٢٠٢٥ حتى الآن)، حصلت على <strong>جائزة الولاء الأولى على مستوى المؤسسة (٢٠٢٦)</strong> لتميزي في خفض معدلات تسرب العملاء والاحتفاظ بهم وتحقيق الصدارة في المبيعات."
           },
           {
             name: "tabby",
             keywords: ["تابي", "تقنية", "مالية", "تقسيط", "فنتك", "عملاء", "دعم", "tabby"],
-            response: "في شركة تابي مصر (رائدة التقنية المالية والشراء الآن والدفع لاحقاً في الحرم اليوناني بالقاهرة من أبريل ٢٠٢٥ إلى أغسطس ٢٠٢٥)، قمت بمساعدة العملاء خلال رحلات الدفع وإعادة تنظيم أدلة المساعدة الذاتية لتقليل استفسارات الدعم."
+            response: "في شركة تابي مصر (أخصائي خدمة العملاء وتجربة التجارة الإلكترونية في الحرم اليوناني بالقاهرة من أبريل ٢٠٢٥ إلى أغسطس ٢٠٢٥)، قمت بمساعدة العملاء وتحديد نقاط الضعف في تجربة المستخدم وتطبيق كتابة المحتوى الإعلاني لرفع الأداء الذاتي للدعم."
           },
           {
             name: "projects",
@@ -1621,7 +1621,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "new_direction",
             keywords: ["دايركشن", "اتجاه", "جديد", "أكاديمية", "انجليزي", "تعليم", "new direction"],
-            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية (من سبتمبر ٢٠٢٠ إلى مايو ٢٠٢٢)، توافقني إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
+            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية (من سبتمبر ٢٠٢٠ إلى مايو ٢٠٢٢ كمسوق رقمي ومخطط استراتيجي للعلامة التجارية)، توليت إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
           },
           {
             name: "hosting",
@@ -1661,7 +1661,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
           },
           {
             name: "thanks",
@@ -1681,7 +1681,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "retention_info",
             keywords: ["الاحتفاظ بالعملاء", "ما هو الاحتفاظ", "الولاء", "retention", "loyalty"],
-            response: "الاحتفاظ بالعملاء (Customer Retention) هو الأنشطة التي تتخذها الشركات لزيادة ولاء عملائها وتقليل نسب تسربهم. عبد الرحمن خبير معتمد في الاحتفاظ بالعملاء وحصل على جائزة الولاء الأولى على مستوى مؤسسة كونسنتريكس لتميزه في هذا المجال."
+            response: "الاحتفاظ بالعملاء (Customer Retention) هو الأنشطة التي تتخذها الشركات لزيادة ولاء عملائها وتقليل نسب تسربهم. عبد الرحمن خبير معتمد في الاحتفاظ بالعملاء وحصل على جائزة الولاء الأولى على مستوى مؤسسة كونسنتريكس لتميزه في هذا مجال."
           },
           {
             name: "seo_info",
