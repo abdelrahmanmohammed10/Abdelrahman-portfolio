@@ -1440,6 +1440,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatSuggestionsContainer = document.getElementById('chat-suggestions-container');
     const chatInputForm = document.getElementById('chat-input-form');
     const chatUserInput = document.getElementById('chat-user-input');
+    const chatCloseBtn = document.getElementById('chat-close-btn');
     
     if (!chatTriggerBtn || !chatWindowPanel || !chatMessagesContainer) return;
 
@@ -1633,7 +1634,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
           },
           {
             name: "thanks",
@@ -1796,8 +1797,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const openChat = () => {
       chatWindowPanel.classList.remove('hidden');
-      chatTriggerBtn.querySelector('.chat-icon-svg').classList.add('hidden');
-      chatTriggerBtn.querySelector('.close-icon-svg').classList.remove('hidden');
+      chatTriggerBtn.classList.add('hidden'); // Hide floating trigger button when open
       
       if (chatMessagesContainer.children.length === 0) {
         const lang = document.documentElement.getAttribute('lang') || 'en';
@@ -1808,8 +1808,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeChat = () => {
       chatWindowPanel.classList.add('hidden');
-      chatTriggerBtn.querySelector('.chat-icon-svg').classList.remove('hidden');
-      chatTriggerBtn.querySelector('.close-icon-svg').classList.add('hidden');
+      chatTriggerBtn.classList.remove('hidden'); // Show floating trigger button when closed
     };
 
     chatTriggerBtn.addEventListener('click', (e) => {
@@ -1821,6 +1820,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       e.stopPropagation();
     });
+
+    if (chatCloseBtn) {
+      chatCloseBtn.addEventListener('click', (e) => {
+        closeChat();
+        e.stopPropagation();
+      });
+    }
 
     document.addEventListener('click', (e) => {
       if (!chatWindowPanel.classList.contains('hidden') && !e.target.closest('#astro-chat-widget')) {

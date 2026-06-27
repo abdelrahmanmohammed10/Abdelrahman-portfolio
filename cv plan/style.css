@@ -2565,7 +2565,7 @@ button, input, textarea {
 /* Scroll-to-Top Button */
 .scroll-to-top-btn {
   position: fixed;
-  bottom: 30px;
+  bottom: 105px; /* Stacks above chatbot trigger button */
   right: 30px;
   width: 48px;
   height: 48px;
@@ -2617,7 +2617,7 @@ button, input, textarea {
 /* Adjust scroll-to-top button on mobile */
 @media (max-width: 1024px) {
   .scroll-to-top-btn {
-    bottom: 24px;
+    bottom: 90px; /* Stacks above chatbot trigger button */
     right: 24px;
     width: 44px;
     height: 44px;
@@ -4113,6 +4113,50 @@ html[lang="ar"] .chat-window-panel {
   display: block;
 }
 
+.chat-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.2s;
+  outline: none;
+  margin-left: auto;
+}
+
+.chat-close-btn:hover {
+  color: var(--color-cyan);
+  transform: scale(1.1);
+}
+
+.chat-close-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+html[lang="ar"] .chat-close-btn {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[data-theme="light"] .chat-close-btn {
+  color: rgba(30, 61, 97, 0.5);
+}
+
+html[data-theme="light"] .chat-close-btn:hover {
+  color: var(--color-cyan);
+}
+
+.chat-avatar-orb svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
 .chat-avatar-orb::after {
   content: '';
   position: absolute;
@@ -4331,7 +4375,7 @@ html[lang="ar"] .chat-submit-btn svg {
 html[data-theme="light"] .chat-trigger-btn {
   background: radial-gradient(circle at 30% 30%, rgba(30, 61, 97, 0.08), rgba(255, 255, 255, 0.9));
   border-color: rgba(30, 61, 97, 0.12);
-  color: var(--text-primary);
+  color: var(--text-dark);
   box-shadow: 0 8px 32px 0 rgba(30, 61, 97, 0.1), 0 0 15px rgba(39, 76, 119, 0.1);
 }
 

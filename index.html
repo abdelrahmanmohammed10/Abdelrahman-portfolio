@@ -1529,7 +1529,7 @@
   <!-- Cosmic AI Chatbot Assistant -->
   <div id="astro-chat-widget" class="chat-widget-container" aria-label="AI Assistant Chat">
     <!-- Pulsing Chat Trigger Button -->
-        <button id="chat-trigger-btn" class="chat-trigger-btn magnetic-button" aria-label="Open AI Chatbot">
+            <button id="chat-trigger-btn" class="chat-trigger-btn magnetic-button" aria-label="Open AI Chatbot">
       <div class="bot-orb-pulse"></div>
       <svg class="chat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <rect x="7" y="9" width="10" height="9" rx="2" />
@@ -1539,14 +1539,11 @@
         <path d="M12 6v3M10 6h4" />
         <circle cx="12" cy="12" r="10.5" stroke="var(--color-cyan)" stroke-opacity="0.3" stroke-width="1" />
       </svg>
-      <svg class="close-icon-svg hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
     </button>
 
     <!-- Chat Window Panel -->
     <div id="chat-window-panel" class="chat-window-panel hidden" role="dialog" aria-modal="true">
-            <div class="chat-header">
+                  <div class="chat-header">
         <div class="chat-header-info">
           <div class="chat-avatar-orb">
             <svg class="bot-avatar-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1564,6 +1561,12 @@
             <span class="chat-subtitle lang-ar">عميل عبد الرحمن الذكي</span>
           </div>
         </div>
+        <button id="chat-close-btn" class="chat-close-btn" aria-label="Close Chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
       
       <!-- Messages Area -->
