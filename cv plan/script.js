@@ -1429,66 +1429,360 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
   }
 
-  // Phase 3: Interactive Marketing Funnel
-  const funnelGroups = document.querySelectorAll('.funnel-group');
-  const allTags = document.querySelectorAll('.skills-grid .tag');
 
-  funnelGroups.forEach(group => {
-    group.addEventListener('mouseenter', () => {
-      const stage = group.getAttribute('data-stage');
+  /* ============================================================
+     COSMIC AI CHATBOT ENGINE (ASTRO-BOT)
+     ============================================================ */
+  const initAstroChat = () => {
+    const chatTriggerBtn = document.getElementById('chat-trigger-btn');
+    const chatWindowPanel = document.getElementById('chat-window-panel');
+    const chatMessagesContainer = document.getElementById('chat-messages-container');
+    const chatSuggestionsContainer = document.getElementById('chat-suggestions-container');
+    const chatInputForm = document.getElementById('chat-input-form');
+    const chatUserInput = document.getElementById('chat-user-input');
+    
+    if (!chatTriggerBtn || !chatWindowPanel || !chatMessagesContainer) return;
+
+    // Chatbot Knowledge Base
+    const KB = {
+      en: {
+        greeting: "Hello! This is Abdelrahman's personal chatbot. You can ask me anything about my experience, projects, skills, or certifications. How may I help you today?",
+        defaultResponse: "I'm not sure about that specific question, but I can tell you about Abdelrahman's marketing services, experience at Tabby and Concentrix, certifications, or key projects like Kyoko Gifts. Try asking: 'What are your projects?' or 'How can I contact you?'",
+        typing: "Astro-Bot is thinking...",
+        intents: [
+          {
+            name: "cv",
+            keywords: ["cv", "resume", "download", "pdf", "file", "documents", "sira"],
+            response: "You can download my full, up-to-date professional CV in PDF format by clicking <a href=\"Abdelrahman_CV_Final.pdf\" download target=\"_blank\">here</a>."
+          },
+          {
+            name: "contact",
+            keywords: ["contact", "email", "phone", "whatsapp", "call", "reach", "hire", "number", "connect", "message", "linked"],
+            response: "You can reach me directly via:<br>• <strong>WhatsApp:</strong> <a href=\"https://wa.me/201157265599\" target=\"_blank\">+20 115 726 5599</a><br>• <strong>Email:</strong> <a href=\"mailto:abdelrahman.abdelhafez10@gmail.com\">abdelrahman.abdelhafez10@gmail.com</a><br>• <strong>LinkedIn:</strong> <a href=\"https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/\" target=\"_blank\">LinkedIn Profile</a>"
+          },
+          {
+            name: "experience",
+            keywords: ["experience", "work", "job", "career", "history", "employer", "employ", "company", "role", "concentrix", "tabby", "fine stone", "resala"],
+            response: "I have over 4 years of experience in digital marketing and retention:<br>• <strong>Concentrix (Boost Mobile):</strong> Customer Retention & Sales Specialist (2025-Present) - 1st Enterprise Loyalty Award.<br>• <strong>Tabby (Fintech):</strong> Customer Service Ambassador (2025) - Mapped user behavior and reduced repeat support contacts.<br>• <strong>New Direction Academy:</strong> Digital Marketer (2020-2022) - Launch strategy and monthly campaigns.<br>• <strong>Fine Stone (UnionAire):</strong> Website Editor & Content Coordinator (2019-2020) - Odoo CMS optimization."
+          },
+          {
+            name: "concentrix",
+            keywords: ["concentrix", "loyalty", "retention", "boost mobile", "dish"],
+            response: "At Concentrix (handling Boost Mobile by Dish Technologies), I consult high-risk accounts, resolve critical customer issues, and design retention plays. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for my outstanding performance in reducing customer churn."
+          },
+          {
+            name: "tabby",
+            keywords: ["tabby", "fintech", "bnpl", "customer service", "ambassador"],
+            response: "At Tabby Technologies (BNPL Fintech startup), I mapped and analyzed digital buyer behaviors, restructured self-service support guides, and resolved merchant issues, which systematically decreased support contact recurrence."
+          },
+          {
+            name: "projects",
+            keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain"],
+            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts:</strong> A comprehensive e-commerce marketing strategy (SWOT, SMART Goals, Buyer Personas, KPI frameworks).<br>• <strong>New Direction Academy:</strong> Complete launch strategy and visual positioning from scratch.<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider to optimize landing page conversion rates."
+          },
+          {
+            name: "kyoko",
+            keywords: ["kyoko", "gifts", "gifting", "e-commerce"],
+            response: "<strong>Kyoko Gifts</strong> is an e-commerce brand. I built their full marketing playbook, outlining the customer journey, content pillars, Blue Ocean market differentiation, double SWOT analysis, 5 SMART goals, and a 6-category KPI measurement framework."
+          },
+          {
+            name: "new_direction",
+            keywords: ["new direction", "academy", "english", "edtech"],
+            response: "For <strong>New Direction Academy</strong> (EdTech), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
+          },
+          {
+            name: "hosting",
+            keywords: ["hosting", "hostingwdomain", "saas", "audit", "ux"],
+            response: "For <strong>HostingWDomain</strong>, I performed a detailed content and UX audit. I identified user friction points, mapped drop-off areas, and restructured landing page layouts to optimize their conversion funnel and increase sales."
+          },
+          {
+            name: "skills",
+            keywords: ["skills", "toolkit", "competence", "capabilities", "strategy", "planning", "copywriting", "content", "growth", "analytics", "cro", "meta", "tiktok", "ads", "seo", "swot", "smart", "canvas", "odoo", "canva"],
+            response: "My skills are categorized into:<br>• <strong>Strategy:</strong> SWOT, SMART goals, Buyer Personas, Blue Ocean Strategy, Business Model Canvas (BMC).<br>• <strong>Content:</strong> Bilingual copywriting (AR/EN), Content Calendars, Brand Voice, Content Audits.<br>• <strong>Growth/Analytics:</strong> KPI frameworks, Meta Insights, CRO (Conversion Rate Optimization), Competitor Analysis.<br>• <strong>Tools:</strong> Meta Ads Manager, TikTok Ads Manager, Odoo CMS, Canva, AI productivity."
+          },
+          {
+            name: "certifications",
+            keywords: ["certif", "accredit", "diploma", "course", "fwd", "udacity", "degree", "education", "school", "zagazig", "cct", "ibrahim elfiky"],
+            response: "My top certifications include:<br>• <strong>Professional Diploma in Digital Marketing</strong> from BSA Academy (40+ hours).<br>• <strong>Certified Corporate Trainer (CCT)</strong> from the Canadian Center (CTCHD / Dr. Ibrahim Elfiky).<br>• <strong>Digital Marketing Challenger Track</strong> from Udacity & Egypt FWD (ITIDA).<br>• Zagazig University graduate."
+          },
+          {
+            name: "rates",
+            keywords: ["price", "rate", "cost", "salary", "freelance", "budget", "consult", "charge"],
+            response: "I am open to full-time opportunities, freelance consulting, and strategic contract roles. My rates and salary expectations depend on the project scope, duration, and alignment. Let's connect via <a href=\"https://wa.me/201157265599\" target=\"_blank\">WhatsApp</a> to discuss your needs!"
+          },
+          {
+            name: "location",
+            keywords: ["location", "based", "egypt", "ciza", "cairo", "zagazig", "october", "office", "remote"],
+            response: "I am based in <strong>6th of October City, Giza, Egypt</strong>. I am available for on-site roles in Cairo, Zayed, Smart Village, and Maadi, as well as remote opportunities worldwide."
+          },
+          {
+            name: "greetings",
+            keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you"],
+            response: "Hello! I am Astro-Bot, Abdelrahman's AI representative. Ask me about my CV, experience at Tabby/Concentrix, digital marketing services, or contact details!"
+          }
+        ]
+      },
+      ar: {
+        greeting: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك طرح أي سؤال عليّ بخصوص خبراتي المهنية، أو مشاريعي، أو مهاراتي، أو شهاداتي. كيف يمكنني مساعدتك اليوم؟",
+        defaultResponse: "لست متأكداً تماماً من إجابة هذا السؤال، ولكن يمكنني إخبارك عن خدمات عبد الرحمن التسويقية، أو خبراته في شركات تابي وكونسنتريكس، أو مشاريع مثل هدايا كيوكو. جرب أن تسألني: 'ما هي خبراتك؟' أو 'كيف يمكنني التواصل معك؟'",
+        typing: "المساعد الذكي يفكر...",
+        intents: [
+          {
+            name: "cv",
+            keywords: ["سي في", "سيرة", "ذاتية", "سيره", "تحميل", "ملف", "ملخص", "تنزيل", "cv", "resume"],
+            response: "يمكنك تحميل سيرتي الذاتية المهنية والمحدثة بالكامل بصيغة PDF مباشرة بالضغط <a href=\"Abdelrahman_CV_Final.pdf\" download target=\"_blank\">هنا</a>."
+          },
+          {
+            name: "contact",
+            keywords: ["تواصل", "راسل", "اتصال", "ايميل", "بريد", "واتساب", "واتس", "هاتف", "تلفون", "رقم", "لينكد", "linkedin", "email", "phone"],
+            response: "يسعدني تواصلك معي مباشرة عبر القنوات التالية:<br>• <strong>واتساب:</strong> <a href=\"https://wa.me/201157265599\" target=\"_blank\">+20 115 726 5599</a><br>• <strong>البريد الإلكتروني:</strong> <a href=\"mailto:abdelrahman.abdelhafez10@gmail.com\">abdelrahman.abdelhafez10@gmail.com</a><br>• <strong>لينكد إن:</strong> <a href=\"https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/\" target=\"_blank\">حسابي الشخصي</a>"
+          },
+          {
+            name: "experience",
+            keywords: ["خبرة", "خبرات", "خبرتك", "عمل", "سابق", "وظائف", "وظيفة", "شركات", "شركة", "كونسنتريكس", "تابي", "رسالة", "فاين ستون", "مركز"],
+            response: "لدي خبرة تزيد عن 4 سنوات في مجالات التسويق الرقمي واستبقاء العملاء:<br>• <strong>كونسنتريكس (Boost Mobile):</strong> أخصائي استبقاء مبيعات وعملاء (2025-الآن) - جائزة الولاء الأولى.<br>• <strong>تابي للتكنولوجيا المالية (Tabby):</strong> أخصائي علاقات ودعم عملاء (2025) - تقليل تكرار الشكاوى.<br>• <strong>أكاديمية نيو دايركشن:</strong> أخصائي تسويق رقمي (2020-2022) - استراتيجية الإطلاق وحملات الاستحواذ.<br>• <strong>فاين ستون (يونيون إير):</strong> مسؤول محتوى ومواقع (2019-2020) - إدارة Odoo CMS."
+          },
+          {
+            name: "concentrix",
+            keywords: ["كونسنتريكس", "concentrix", "الولاء", "استبقاء", "عملاء", "مبيعات", "جوائز", "جائزة"],
+            response: "في شركة كونسنتريكس (حساب Boost Mobile)، قمت بتقديم استشارات للحسابات ذات الاحتمالية العالية للمغادرة، وحل النزاعات المعقدة، وتطوير استراتيجيات تعزيز الولاء. حصلت على <strong>جائزة الولاء المؤسسية الأولى (2026)</strong> تقديراً لنجاحي الفعلي في خفض خسارة العملاء."
+          },
+          {
+            name: "tabby",
+            keywords: ["تابي", "tabby", "فنتك", "تكنولوجيا مالية", "اشتر الآن", "دعم", "خدمة ذاتية"],
+            response: "في شركة تابي (منصة التكنولوجيا المالية الرائدة)، قمت برسم وتحليل سلوك المشترين الرقميين، وإعادة هيكلة وتبسيط أدلة الدعم الذاتي، وحل مشكلات المتاجر والشركاء، مما ساهم بشكل نظامي في تقليل تكرار الشكاوى الواردة لمركز الدعم."
+          },
+          {
+            name: "projects",
+            keywords: ["مشاريع", "مشروع", "أعمال", "سابقة", "كيوكو", "هدايا", "نيو دايركشن", "دايركشن", "هوستنج", "تدقيق"],
+            response: "قمت بإعداد وتنفيذ مشاريع استراتيجية بارزة:<br>• <strong>هدايا كيوكو:</strong> خطة تسويق متكاملة شاملة (SWOT، نموذج العمل، شخصيات المشترين، إطار KPIs).<br>• <strong>أكاديمية نيو دايركشن:</strong> استراتيجية إطلاق وتأسيس الهوية التجارية من الصفر.<br>• <strong>هوستنج و دومين:</strong> تدقيق وتقييم شامل لتجربة المستخدم والمحتوى (SaaS UX Audit) لزيادة المبيعات."
+          },
+          {
+            name: "kyoko",
+            keywords: ["كيوكو", "هدايا", "kyoko", "تجارة", "إلكترونية", "العميل"],
+            response: "<strong>هدايا كيوكو:</strong> مشروع تجارة إلكترونية متكامل. قمت ببناء دليل تسويقي شامل للبراند، حددت فيه رحلة العميل بالتفصيل، ركائز المحتوى، دراسة المزيج التسويقي 4Ps، التميز بموجب استراتيجية المحيط الأزرق، تحليل سوات الثنائي، وصياغة 5 أهداف ذكية SMART."
+          },
+          {
+            name: "new_direction",
+            keywords: ["نيو دايركشن", "دايركشن", "أكاديمية", "تعليم", "إنجليزي", "انجليزي", "new direction"],
+            response: "لصالح <strong>أكاديمية نيو دايركشن لتعليم الإنجليزية</strong>، قدت استراتيجية الإطلاق من الصفر؛ بما يشمل اختيار باليتة الألوان ونبرة صوت العلامة التجارية، والتموضع التنافسي، وتخطيط وإطلاق الحملات الإعلانية على فيسبوك وإنستجرام لزيادة الاشتراكات."
+          },
+          {
+            name: "hosting",
+            keywords: ["هوستنج", "دومين", "تدقيق", "استضافة", "موقع", "تجربة المستخدم", "ux", "SaaS"],
+            response: "لصالح منصة <strong>هوستنج و دومين</strong> (استضافة مواقع ويب)، قمت بإجراء تدقيق شامل لتجربة المستخدم والمحتوى. حددت الفجوات والعقبات في صفحات الهبوط التي تسبب خروج العميل، وأعدت صياغة النصوص والهيكل لرفع معدل المبيعات والتحويل."
+          },
+          {
+            name: "skills",
+            keywords: ["مهارات", "مهاراتك", "قدرات", "تتقن", "الاستراتيجية", "تخطيط", "كتابة", "إعلانات", "إعلانية", "سوشيال", "تحليل", "بيانات", "أدوات", "سوات", "أهداف", "ميتا", "تيك توك", "أودو", "كانفا"],
+            response: "تتوزع مهاراتي وخبراتي في عدة محاور أساسية:<br>• <strong>الاستراتيجية والتخطيط:</strong> SWOT، الأهداف الذكية، شخصية العميل المستهدف، استراتيجية المحيط الأزرق، مخطط نموذج العمل التجاري BMC.<br>• <strong>المحتوى وكتابة الإعلانات:</strong> كتابة نصوص ثنائية اللغة، تقويمات النشر، نبرة صوت العلامة، تدقيق المحتوى.<br>• <strong>النمو والتحليلات:</strong> أطر قياس الأداء (KPIs)، تحليلات ميتا، تحسين التحويل (CRO)، دراسة المنافسين.<br>• <strong>العمليات والقيادة:</strong> إدارة الفرق والمهام، التدريب المؤسسي المعتمد، الخطابة، والتفاوض ثنائي اللغة."
+          },
+          {
+            name: "certifications",
+            keywords: ["شهادة", "شهادات", "كورسات", "دبلوم", "دبلومة", "تدريب", "مستقبلنا رقمي", "يوداسيتي", "fwd", "udacity", "إبراهيم الفقي", "الفقي", "BSA"],
+            response: "أبرز شهاداتي المهنية تشمل:<br>• <strong>دبلوم احترافي في التسويق الرقمي</strong> من BSA (أكثر من 40 ساعة).<br>• <strong>شهادة مدرب شركات معتمد (CCT)</strong> من المركز الكندي للتنمية البشرية (د. إبراهيم الفقي).<br>• <strong>مسار تحدي التسويق الرقمي</strong> من Udacity وهيئة تكنولوجيا المعلومات بمصر (FWD).<br>• خريج جامعة الزقازيق."
+          },
+          {
+            name: "rates",
+            keywords: ["سعر", "أسعار", "تكلفة", "راتب", "سعر الخدمة", "شغل", "توظيف", "ميزانية", "استشارة"],
+            response: "أنا متاح للعمل كموظف بدوام كامل، أو تقديم استشارات تسويقية مستقلة وحملات إعلانية مخصصة. تعتمد التكلفة والراتب المتوقع على حجم العمل المطلوب والمدة الزمنية. دعنا نتناقش عبر <a href=\"https://wa.me/201157265599\" target=\"_blank\">واتساب</a> لتحديد أفضل عرض يناسب مشروعك!"
+          },
+          {
+            name: "location",
+            keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+          },
+          {
+            name: "greetings",
+            keywords: ["أهلا", "اهلاً", "مرحباً", "مرحبا", "السلام", "سلام", "ازيك", "أهلاً وسهلاً", "من أنت", "مين"],
+            response: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك طرح أي سؤال عليّ بخصوص خبراتي المهنية، أو مشاريعي، أو مهاراتي، أو شهاداتي. كيف يمكنني مساعدتك اليوم؟"
+          }
+        ]
+      }
+    };
+
+    // Helper: Normalize inputs for better token matching (removes diacritics in Arabic)
+    const normalizeText = (text) => {
+      let str = text.toLowerCase().trim();
+      str = str.replace(/[ًٌٍَُِّْ]/g, "");
+      str = str.replace(/[أإآ]/g, "ا");
+      str = str.replace(/ة/g, "ه");
+      str = str.replace(/ى/g, "ي");
+      str = str.replace(/[?؟.,!/\\()]/g, "");
+      return str;
+    };
+
+    // NLP Matching logic (Calculates semantic score based on token overlaps & synonyms)
+    const getBestResponse = (query, lang) => {
+      const normalizedQuery = normalizeText(query);
+      const queryTokens = normalizedQuery.split(/\s+/);
       
-      funnelGroups.forEach(g => g.classList.remove('active'));
-      group.classList.add('active');
+      const langKB = KB[lang] || KB.en;
+      let bestIntent = null;
+      let maxScore = 0;
 
-      allTags.forEach(tag => {
-        if (tag.getAttribute('data-funnel') === stage) {
-          tag.classList.add(stage === 'consideration' || stage === 'retention' ? 'highlight-funnel-gold' : 'highlight-funnel');
-        } else {
-          tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
-          tag.style.opacity = '0.3';
+      for (const intent of langKB.intents) {
+        let score = 0;
+        for (const kw of intent.keywords) {
+          const normalizedKw = normalizeText(kw);
+          
+          if (normalizedQuery.includes(normalizedKw)) {
+            score += 3;
+          }
+          
+          for (const token of queryTokens) {
+            if (token === normalizedKw) {
+              score += 2;
+            } else if (token.length > 3 && normalizedKw.includes(token)) {
+              score += 1;
+            }
+          }
+        }
+
+        if (score > maxScore) {
+          maxScore = score;
+          bestIntent = intent;
+        }
+      }
+
+      if (maxScore >= 2 && bestIntent) {
+        return bestIntent.response;
+      }
+      return langKB.defaultResponse;
+    };
+
+    const getSuggestions = (lang) => {
+      if (lang === 'ar') {
+        return [
+          "ما هي خبراتك المهنية؟",
+          "تحميل السيرة الذاتية",
+          "أخبرني عن مشروع هدايا كيوكو",
+          "كيف يمكنني التواصل معك؟"
+        ];
+      } else {
+        return [
+          "What is your experience?",
+          "Download CV",
+          "Tell me about Kyoko Gifts",
+          "How can I contact you?"
+        ];
+      }
+    };
+
+    const renderSuggestions = (lang) => {
+      chatSuggestionsContainer.innerHTML = '';
+      const suggestions = getSuggestions(lang);
+      suggestions.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'suggestion-chip';
+        btn.textContent = s;
+        btn.addEventListener('click', () => {
+          handleUserMessage(s);
+        });
+        chatSuggestionsContainer.appendChild(btn);
+      });
+    };
+
+    const addMessageBubble = (text, sender) => {
+      const bubble = document.createElement('div');
+      bubble.className = `chat-msg ${sender}`;
+      bubble.innerHTML = text;
+      chatMessagesContainer.appendChild(bubble);
+      chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    };
+
+    const showTypingIndicator = () => {
+      const indicator = document.createElement('div');
+      indicator.className = 'chat-msg bot typing-bubble';
+      indicator.id = 'typing-indicator';
+      indicator.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+      chatMessagesContainer.appendChild(indicator);
+      chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    };
+
+    const removeTypingIndicator = () => {
+      const indicator = document.getElementById('typing-indicator');
+      if (indicator) indicator.remove();
+    };
+
+    const handleUserMessage = (text) => {
+      if (!text.trim()) return;
+      
+      const lang = document.documentElement.getAttribute('lang') || 'en';
+      addMessageBubble(text, 'user');
+      showTypingIndicator();
+      
+      setTimeout(() => {
+        removeTypingIndicator();
+        const response = getBestResponse(text, lang);
+        addMessageBubble(response, 'bot');
+      }, Math.random() * 600 + 600);
+    };
+
+    const openChat = () => {
+      chatWindowPanel.classList.remove('hidden');
+      chatTriggerBtn.querySelector('.chat-icon-svg').classList.add('hidden');
+      chatTriggerBtn.querySelector('.close-icon-svg').classList.remove('hidden');
+      
+      if (chatMessagesContainer.children.length === 0) {
+        const lang = document.documentElement.getAttribute('lang') || 'en';
+        addMessageBubble(KB[lang].greeting, 'bot');
+        renderSuggestions(lang);
+      }
+    };
+
+    const closeChat = () => {
+      chatWindowPanel.classList.add('hidden');
+      chatTriggerBtn.querySelector('.chat-icon-svg').classList.remove('hidden');
+      chatTriggerBtn.querySelector('.close-icon-svg').classList.add('hidden');
+    };
+
+    chatTriggerBtn.addEventListener('click', (e) => {
+      const isHidden = chatWindowPanel.classList.contains('hidden');
+      if (isHidden) {
+        openChat();
+      } else {
+        closeChat();
+      }
+      e.stopPropagation();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!chatWindowPanel.classList.contains('hidden') && !e.target.closest('#astro-chat-widget')) {
+        closeChat();
+      }
+    });
+
+    chatInputForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = chatUserInput.value.trim();
+      if (val) {
+        handleUserMessage(val);
+        chatUserInput.value = '';
+      }
+    });
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'lang') {
+          const lang = document.documentElement.getAttribute('lang') || 'en';
+          chatUserInput.placeholder = lang === 'ar' ? 'اسألني عن أي شيء...' : 'Ask me anything...';
+          chatMessagesContainer.innerHTML = '';
+          addMessageBubble(KB[lang].greeting, 'bot');
+          renderSuggestions(lang);
         }
       });
     });
-
-    group.addEventListener('mouseleave', () => {
-      group.classList.remove('active');
-      allTags.forEach(tag => {
-        tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
-        tag.style.opacity = '';
-      });
-    });
     
-    group.addEventListener('click', (e) => {
-      const isAlreadyActive = group.classList.contains('active');
-      
-      funnelGroups.forEach(g => g.classList.remove('active'));
-      allTags.forEach(tag => {
-        tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
-        tag.style.opacity = '';
-      });
+    observer.observe(document.documentElement, { attributes: true });
 
-      if (!isAlreadyActive) {
-        group.classList.add('active');
-        const stage = group.getAttribute('data-stage');
-        allTags.forEach(tag => {
-          if (tag.getAttribute('data-funnel') === stage) {
-            tag.classList.add(stage === 'consideration' || stage === 'retention' ? 'highlight-funnel-gold' : 'highlight-funnel');
-          } else {
-            tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
-            tag.style.opacity = '0.3';
-          }
-        });
-        e.stopPropagation();
-      }
-    });
-  });
+    const initialLang = document.documentElement.getAttribute('lang') || 'en';
+    chatUserInput.placeholder = initialLang === 'ar' ? 'اسألني عن أي شيء...' : 'Ask me anything...';
+  };
 
-  document.addEventListener('click', () => {
-    funnelGroups.forEach(g => g.classList.remove('active'));
-    allTags.forEach(tag => {
-      tag.classList.remove('highlight-funnel', 'highlight-funnel-gold');
-      tag.style.opacity = '';
-    });
-  });
+  initAstroChat();
+
+
+});
 });
 
