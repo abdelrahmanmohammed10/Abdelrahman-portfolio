@@ -1449,14 +1449,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chatbot Knowledge Base
     const KB = {
       en: {
-        greeting: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing or retention strategy, and let's explore!",
-        defaultResponse: "I am Astro-Bot, focused on digital marketing, retention strategies, and Abdelrahman's work. Ask me about space, marketing, or check out his CV! You can also ask anything else, and I'll do my best to help.",
+        greeting: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about his marketing projects, retention work, or how he can help your team!",
+        defaultResponse: "I am Astro-Bot, focused on digital marketing, retention strategies, and Abdelrahman's work. Ask me about his projects, experience, or contact channels!",
         typing: "Astro-Bot is thinking...",
         intents: [
           {
             name: "cv",
             keywords: ["cv", "resume", "download", "pdf", "file", "documents", "sira", "ذاتية", "سيرة", "سيره", "تحميل", "تنزيل", "ملف", "ملخص"],
-            response: "You can download my full, up-to-date professional CV in PDF format by clicking <a href=\"Abdelrahman_CV_Final.pdf\" download target=\"_blank\">here</a>."
+            response: "You can download my full professional CV in PDF format by clicking <a href=\"Abdelrahman_CV_Final.pdf\" download target=\"_blank\">here</a>."
           },
           {
             name: "contact",
@@ -1466,22 +1466,22 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["experience", "work", "job", "career", "history", "employer", "employ", "company", "role", "concentrix", "tabby", "fine stone", "resala", "خبرة", "عمل", "وظيفة", "وظائف", "سابق", "خبرات"],
-            response: "I have over 5 years of experience in digital marketing and customer retention:<br>• <strong>Concentrix (Boost Mobile account):</strong> Sales & Retention Consultant (Aug 2025-Present) - Awarded the 1st Enterprise Loyalty Award (2026) for ranking #1 company-wide in sales conversion and churn reduction.<br>• <strong>Tabby Technologies Egypt (Fintech/BNPL):</strong> Customer Service & E-commerce Experience Specialist (Apr 2025-Aug 2025) - Restructured FAQ support guides and analyzed digital buyer behavior to reduce repeat contact.<br>• <strong>New Direction Academy (EdTech):</strong> Digital Marketer & Brand Strategist (Sep 2020-May 2022) - Led brand launch strategy, Facebook/Instagram campaigns, and dual SWOT analyses.<br>• <strong>Fine Stone (UnionAire Group):</strong> Website Editor & Digital Content Coordinator (Jul 2019-Feb 2020) - Landing page optimizations on Odoo CMS and SEO metrics tracking."
+            response: "My professional experience includes:<br>• <strong>Concentrix (Boost Mobile account):</strong> Sales & Retention Consultant (Aug 2025-Present) - Awarded the 1st Enterprise Loyalty Award (2026) for ranking #1 in customer retention and sales conversion.<br>• <strong>Tabby Technologies Egypt (Fintech/BNPL):</strong> Customer Service & E-commerce Experience Specialist (Apr 2025-Aug 2025) - Restructured FAQ support content and mapped user customer journeys.<br>• <strong>New Direction Academy:</strong> Digital Marketer & Brand Strategist (Sep 2020-May 2022) - Led brand positioning, Facebook/Instagram campaigns, and dual SWOT analyses.<br>• <strong>Fine Stone:</strong> Website Editor & Digital Content Coordinator (Jul 2019-Feb 2020) - Landing page optimizations on Odoo CMS and SEO tracking."
           },
           {
             name: "concentrix",
             keywords: ["concentrix", "loyalty", "retention", "boost mobile", "dish", "كونسنتريكس", "ولاء"],
-            response: "At Concentrix (handling the Boost Mobile account by Dish Technologies from Aug 2025-Present as a Sales & Retention Consultant), I resolve critical billing, technical, and mobile plan issues. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for ranking #1 company-wide in sales conversion and churn reduction, and maintaining top-tier customer satisfaction metrics."
+            response: "At Concentrix (Aug 2025-Present as a Sales & Retention Consultant), I resolve critical mobile plan and billing issues. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for ranking #1 company-wide in sales conversion and churn reduction."
           },
           {
             name: "tabby",
             keywords: ["tabby", "fintech", "bnpl", "customer service", "ambassador", "تابي"],
-            response: "At Tabby Technologies Egypt (BNPL Fintech startup located at The Greek Campus, Cairo from Apr 2025-Aug 2025 as a Customer Service & E-commerce Experience Specialist), I supported customers through BNPL payment journeys, mapped user support friction points, and applied copywriting to restructure guides and decrease support contact recurrence."
+            response: "At Tabby Egypt (Apr 2025-Aug 2025 as a Customer Service & E-commerce Experience Specialist), I supported customers through payment journeys, mapped UX friction points, and restructured self-service guides to reduce support recurrences."
           },
           {
             name: "projects",
             keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain", "مشاريع", "مشروع", "اعمال", "موقع"],
-            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive marketing playbook covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, 4Ps, competitor analysis, Blue Ocean strategy, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
+            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive e-commerce marketing playbook covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
           },
           {
             name: "kyoko",
@@ -1491,7 +1491,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "new_direction",
             keywords: ["new direction", "academy", "english", "edtech", "نيو دايركشن", "اكاديمية"],
-            response: "For <strong>New Direction Academy</strong> (EdTech, Sep 2020-May 2022 as a Digital Marketer & Brand Strategist), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
+            response: "For <strong>New Direction Academy</strong> (Sep 2020-May 2022 as a Digital Marketer & Brand Strategist), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
           },
           {
             name: "hosting",
@@ -1502,16 +1502,6 @@ document.addEventListener('DOMContentLoaded', () => {
             name: "skills",
             keywords: ["skills", "toolkit", "competence", "capabilities", "strategy", "planning", "copywriting", "content", "growth", "analytics", "cro", "meta", "tiktok", "ads", "seo", "swot", "smart", "canvas", "odoo", "canva", "مهارات", "ادوات"],
             response: "My skills are categorized into:<br>• <strong>Strategy:</strong> SWOT, SMART goals, Buyer Personas, Blue Ocean Strategy, Business Model Canvas (BMC).<br>• <strong>Content:</strong> Bilingual copywriting (AR/EN), Content Calendars, Brand Voice, Content Audits.<br>• <strong>Growth/Analytics:</strong> KPI frameworks, Meta Insights, CRO (Conversion Rate Optimization), Competitor Analysis.<br>• <strong>Tools:</strong> Meta Ads Manager, TikTok Ads Manager, Odoo CMS, Canva, AI productivity."
-          },
-          {
-            name: "certifications",
-            keywords: ["certif", "accredit", "diploma", "course", "fwd", "udacity", "degree", "education", "school", "zagazig", "cct", "ibrahim elfiky", "شهادات", "كورسات", "دبلوم"],
-            response: "My top certifications include:<br>• <strong>Professional Diploma in Digital Marketing</strong> from BSA Academy (40+ hours, 2026).<br>• <strong>Certified Corporate Trainer (CCT)</strong> from the Canadian Center / Dr. Ibrahim Elfiky (2024).<br>• <strong>Digital Marketing Challenger Track</strong> from Udacity & Egypt FWD (ITIDA, 2020).<br>• <strong>European Computer Driving Licence (ECDL)</strong> & Microsoft Office Specialist (score 97/100, 2022).<br>• <strong>Space Sciences & Satellite Technologies Course</strong> from Egyptian Space Agency (EgSA, 2022)."
-          },
-          {
-            name: "education",
-            keywords: ["education", "degree", "university", "faculty", "science", "astronomy", "meteorology", "al-azhar", "graduat", "دراسة", "تعليم", "جامعة"],
-            response: "I graduated with a **Bachelor of Science in Astronomy, Meteorology & Space Science** (2019-2023) from Al-Azhar University, Faculty of Science in Cairo, Egypt. Grade: Good (68.71%). This quantitative background strongly supports my data-driven approach to marketing campaigns and measurement loops."
           },
           {
             name: "volunteer",
@@ -1541,12 +1531,12 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "abilities",
             keywords: ["what can you do", "help", "capabilities", "do", "how to use", "questions", "ماذا تفعل", "مساعدة", "خدماتك"],
-            response: "I can answer questions about Abdelrahman's professional details. Try asking: <br>• 'Tell me about your experience at Tabby/Concentrix'<br>• 'What projects have you worked on?'<br>• 'How can I download your CV?'<br>• 'What are your contact details?'"
+            response: "I can answer questions about Abdelrahman's professional details. Try asking: <br>• 'Why should we hire you?'<br>• 'What is your experience?'<br>• 'What projects have you worked on?'<br>• 'How can I download your CV?'"
           },
           {
             name: "why_hire",
             keywords: ["why", "hire", "recruit", "why you", "results", "fit", "value", "benefits", "choose you"],
-            response: "Abdelrahman is a battle-tested Digital Marketing Strategist with a proven record of driving growth and retention. He has over 4 years of experience delivering end-to-end B2C campaigns and was awarded the Concentrix 1st Enterprise Loyalty Award (2026) for ranking #1 in customer retention. He brings analytical precision, bilingual copywriting excellence (AR/EN), and platform fluency to help launch your next campaign successfully!"
+            response: "You should hire Abdelrahman because of his proven track record in customer retention and digital marketing. During his time at Concentrix, he won the 1st Enterprise Loyalty Award (2026) for ranking #1 in retaining customers and reducing churn. He has hands-on experience in building marketing playbooks, executing social campaigns, and optimizing customer support experiences to drive brand loyalty."
           },
           {
             name: "marketing_info",
@@ -1564,11 +1554,6 @@ document.addEventListener('DOMContentLoaded', () => {
             response: "SEO (Search Engine Optimization) is the practice of optimizing web content and structure to increase organic search visibility. Abdelrahman has experience optimizing CMS systems like Odoo and Wix, commending landing page UX, and tracking search index growth."
           },
           {
-            name: "astronomy_info",
-            keywords: ["what is astronomy", "astronomy definition", "space science", "meteorology", "ما هو علم الفلك", "علم الفلك"],
-            response: "Astronomy is the scientific study of stars, planets, and cosmic space phenomena. Did you know Abdelrahman holds a **Bachelor of Science in Astronomy, Meteorology & Space Science** (2019-2023) from Al-Azhar University? This background fuels his analytical and data-driven approach to marketing campaigns!"
-          },
-          {
             name: "ai_info",
             keywords: ["what is ai", "define artificial intelligence", "robot", "chatbot", "ما هو الذكاء الاصطناعي", "روبوت"],
             response: "AI (Artificial Intelligence) is the simulation of human cognitive processes by computer systems. I am an AI-driven chatbot representation of Abdelrahman's digital footprint, built to handle marketing, professional, and general questions!"
@@ -1576,13 +1561,13 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "greetings",
             keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you", "أهلا", "مرحبا", "سلام", "ازيك"],
-            response: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing or retention strategy, and let's explore!"
+            response: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about his marketing projects, retention work, or how he can help your team!"
           }
         ]
       },
       ar: {
-        greeting: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي أو خطط الاحتفاظ بالعملاء، ودعنا نستكشف معاً!",
-        defaultResponse: "أنا Astro-Bot، ومهمتي مساعدتك في التسويق الرقمي، خطط الاحتفاظ بالعملاء، ومشاريع عبد الرحمن. اسألني عن الفضاء، أو التسويق، أو تصفح سيرته الذاتية! يمكنك سؤالي عن أي شيء آخر وسأبذل قصارى جهدي لمساعدتك.",
+        greeting: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن مشاريعه التسويقية، أو أعماله في الاحتفاظ بالعملاء، أو كيف يمكنه مساعدة فريقك!",
+        defaultResponse: "أنا Astro-Bot، ومهمتي مساعدتك في التسويق الرقمي، خطط الاحتفاظ بالعملاء، ومشاريع عبد الرحمن. اسألني عن مشاريعه، أو خبراته، أو قنوات التواصل معه!",
         typing: "المساعد الذكي يفكر...",
         intents: [
           {
@@ -1598,7 +1583,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["خبرة", "عمل", "وظيفة", "تاريخ", "سيرة", "شركة", "دور", "كونسنتريكس", "تابي", "فاين ستون", "رسالة", "experience", "work", "job"],
-            response: "لدي أكثر من 5 سنوات من الخبرة المهنية في التسويق الرقمي والاحتفاظ بالعملاء (Retention):<br>• <strong>كونسنتريكس (Boost Mobile):</strong> مستشار مبيعات واستبقاء العملاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026).<br>• <strong>تابي (التقنية المالية):</strong> أخصائي خدمة العملاء وتجربة التجارة الإلكترونية (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المشترين وتطوير تجربة المستخدم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي ومخطط استراتيجي للعلامة التجارية (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
+            response: "تشمل خبراتي المهنية:<br>• <strong>كونسنتريكس (Boost Mobile):</strong> مستشار مبيعات واستبقاء العملاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026) للتميز في الاحتفاظ بالعملاء والمبيعات.<br>• <strong>تابي (التقنية المالية):</strong> أخصائي خدمة العملاء وتجربة التجارة الإلكترونية (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المشترين وتطوير تجربة المستخدم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي ومخطط استراتيجي للعلامة التجارية (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
           },
           {
             name: "concentrix",
@@ -1636,16 +1621,6 @@ document.addEventListener('DOMContentLoaded', () => {
             response: "تنقسم مهاراتي إلى:<br>• <strong>الاستراتيجية:</strong> SWOT، الأهداف الذكية SMART، شخصيات المشتري، استراتيجية المحيط الأزرق، مخطط نموذج العمل.<br>• <strong>المحتوى:</strong> كتابة المحتوى الإعلاني باللغتين العربية والإنجليزية، خطط وجداول المحتوى، نبرة العلامة التجارية.<br>• <strong>النمو والتحليل:</strong> تصميم أطر مؤشرات الأداء (KPIs)، إحصاءات ميتا، تحسين معدلات التحويل (CRO)، وتحليل المنافسين.<br>• <strong>الأدوات:</strong> Meta Ads Manager، TikTok Ads Manager، نظام إدارة المحتوى Odoo، وتطبيقات Canva والذكاء الاصطناعي."
           },
           {
-            name: "certifications",
-            keywords: ["شهادة", "شهادات", "دبلومة", "كورس", "دورة", "تعليم", "جامعة", "المركز الكندي", "ابراهيم الفقي", "certifications"],
-            response: "أبرز شهاداتي المهنية تشمل:<br>• <strong>الدبلوم المهني في التسويق الرقمي</strong> من أكاديمية BSA (أكثر من 40 ساعة تدريبية، 2026).<br>• <strong>مدرب شركات معتمد (CCT)</strong> من المركز الكندي (الدكتور إبراهيم الفقي، 2024).<br>• <strong>مسار تحدي التسويق الرقمي</strong> من Udacity ومبادرة FWD المصرية (2020).<br>• <strong>الرخصة الدولية لقيادة الحاسب الآلي (ECDL)</strong> وأخصائي مايكروسوفت أوفيس (2022/2019).<br>• <strong>دورة تكنولوجيا الفضاء والأقمار الصناعية</strong> من وكالة الفضاء المصرية (2022)."
-          },
-          {
-            name: "education",
-            keywords: ["دراسة", "تعليم", "جامعة", "شهادتي", "كلية", "علوم", "الازهر", "فلك", "تخصص", "education", "degree"],
-            response: "تخرجت من **كلية العلوم بجامعة الأزهر في القاهرة** وحصلت على **بكالوريوس العلوم في الفلك والأرصاد الجوية وعلوم الفضاء** (2019-2023) بتقدير عام جيد (68.71%). تعزز هذه الخلفية العلمية قدرتي الكبيرة على التحليل الكمي وتفسير البيانات لقياس وتطوير أداء حملات التسويق الرقمية."
-          },
-          {
             name: "volunteer",
             keywords: ["تطوع", "خيري", "رسالة", "قائد", "انوار", "الزقازيق", "volunteer", "charity"],
             response: "عملت كـ **قائد لفريق التسويق** (مايو ٢٠١٩ - أكتوبر ٢٠٢٢) في نشاط أنوار رسالة الزقازيق (جمعية رسالة للأعمال الخيرية). قمت بقيادة وتدريب فريق من 8 أفراد على كتابة المحتوى، وإطلاق حملات التوعية، وحصلت على جائزة التقديم والإلقاء من الجمعية."
@@ -1663,7 +1638,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
           },
           {
             name: "thanks",
@@ -1673,12 +1648,12 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "abilities",
             keywords: ["ماذا تفعل", "مساعدة", "من أنت", "قدراتك", "كيف استعملك", "help", "do"],
-            response: "يمكنني الإجابة عن أي استفسار يخص الحياة المهنية لعبد الرحمن. جرب أن تسألني عن:<br>• خبراته في شركتي تابي وكونسنتريكس<br>• تفاصيل مشاريعه التسويقية (مثل هدايا كيوكو)<br>• كيفية تحميل سيرته الذاتية (CV)<br>• قنوات التواصل المباشر معه"
+            response: "يمكنني الإجابة عن أي استفسار يخص الحياة المهنية لعبد الرحمن. جرب أن تسألني عن:<br>• لماذا يجب أن نقوم بتوظيفك؟<br>• ما هي خبراته المهنية؟<br>• ما هي مشاريعه التسويقية؟<br>• كيف يمكنني التواصل معه؟"
           },
           {
             name: "why_hire",
             keywords: ["توظيف", "لماذا", "توظف", "تعيين", "مميزات", "لماذا نوظفك", "نتائج", "فائدة"],
-            response: "يتميز عبد الرحمن بخبرة تتجاوز 5 سنوات كمخطط استراتيجي للتسويق الرقمي مع سجل حافل في زيادة المبيعات والاحتفاظ بالعملاء. حصل على جائزة الولاء الأولى على مستوى مؤسسة كونسنتريكس (2026) لتحقيقه المركز الأول في مبيعات الاستبقاء. يجمع بين التفكير التحليلي، والمهارة العالية في كتابة النصوص الإعلانية ثنائية اللغة (AR/EN)، والخبرة العملية بالأدوات لمساعدتك في تحقيق أهدافك الاستراتيجية بنجاح!"
+            response: "يجب عليك توظيف عبد الرحمن بسبب سجله الحافل في الاحتفاظ بالعملاء والتسويق الرقمي. خلال عمله في كونسنتريكس، حصل على جائزة الولاء الأولى (2026) لتحقيقه المركز الأول في استبقاء العملاء وتقليل تسربهم. كما يمتلك خبرة عملية في إعداد الخطط التسويقية، وإدارة الحملات الاجتماعية، وتحسين تجارب الدعم لتعزيز ولاء العملاء."
           },
           {
             name: "marketing_info",
@@ -1696,11 +1671,6 @@ document.addEventListener('DOMContentLoaded', () => {
             response: "تحسين محركات البحث (SEO) هو تحسين المواقع والصفحات لزيادة نسبة ظهورها بشكل طبيعي على محركات البحث. يمتلك عبد الرحمن خبرة في تطوير أداء السيو على أنظمة إدارة المحتوى Odoo و Wix وكتابة الأوصاف التعريفية للمنتجات."
           },
           {
-            name: "astronomy_info",
-            keywords: ["علم الفلك", "ما هو الفلك", "الفضاء", "الارصاد", "astronomy", "space"],
-            response: "علم الفلك هو العلم الذي يدرس النجوم والكواكب والمجرات والظواهر الفضائية. عبد الرحمن خريج كلية العلوم بجامعة الأزهر بتخصص **الفلك والأرصاد الجوية وعلوم الفضاء**، وتساعده هذه الخلفية العلمية والرياضية في التحليل الدقيق لقياسات وأرقام حملات التسويق."
-          },
-          {
             name: "ai_info",
             keywords: ["الذكاء الاصطناعي", "ما هو الذكاء", "روبوت", "بوت", "ai", "artificial intelligence"],
             response: "الذكاء الاصطناعي هو محاكاة العمليات الذهنية البشرية بواسطة الآلات. أنا مساعد ذكي أعمل كخوارزمية محاكاة لتمثيل الحضور الرقمي لعبد الرحمن ومساعدتك في الإجابة عن أي تساؤل!"
@@ -1708,7 +1678,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "greetings",
             keywords: ["أهلا", "اهلاً", "مرحباً", "مرحبا", "السلام", "سلام", "ازيك", "أهلاً وسهلاً", "من أنت", "مين"],
-            response: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي أو خطط الاحتفاظ بالعملاء، ودعنا نستكشف معاً!"
+            response: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن مشاريعه التسويقية، أو أعماله في الاحتفاظ بالعملاء، أو كيف يمكنه مساعدة فريقك!"
           }
         ]
       }
@@ -1789,16 +1759,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const getSuggestions = (lang) => {
       if (lang === 'ar') {
         return [
-          "ما هو التسويق الرقمي؟",
           "لماذا يجب أن نقوم بتوظيفك؟",
           "ما هي خبراتك المهنية؟",
+          "ما هي مشاريعه التسويقية؟",
           "كيف يمكنني التواصل معك؟"
         ];
       } else {
         return [
-          "What is digital marketing?",
           "Why should we hire you?",
           "What is your experience?",
+          "What projects have you worked on?",
           "How can I contact you?"
         ];
       }
