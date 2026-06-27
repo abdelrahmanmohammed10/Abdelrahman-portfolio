@@ -1134,8 +1134,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dynamic pulsing size based on twinkle
         let currentZ = Math.max(0.1, this.z + (Math.sin(this.twinklePhase) * 0.3));
 
-        // Scale down alpha to make the stars fade a little (60% of original opacity)
-        let renderAlpha = this.alpha * 0.6;
+        // Scale down alpha to make the stars fade a little (35% of original opacity)
+        let renderAlpha = this.alpha * 0.35;
 
         // Draw soft glow halo for brighter stars (replaces slow CPU shadowBlur)
         if (this.z > 0.8 && renderAlpha > 0.2) {
