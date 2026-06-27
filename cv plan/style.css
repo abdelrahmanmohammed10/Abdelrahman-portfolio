@@ -1527,7 +1527,8 @@ html[data-theme="light"] .funnel-group.active .funnel-text {
   bottom: 0;
   left: 0;
   width: 2px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 10px rgba(46, 196, 182, 0.15);
 }
 
 .spine-progress {
@@ -1536,7 +1537,8 @@ html[data-theme="light"] .funnel-group.active .funnel-text {
   left: 0;
   width: 100%;
   height: 0%;
-  background: var(--color-gold);
+  background: linear-gradient(to bottom, var(--color-cyan), var(--color-violet));
+  box-shadow: 0 0 12px rgba(46, 196, 182, 0.6);
   transition: height 0.1s ease-out;
 }
 
@@ -1558,27 +1560,60 @@ html[data-theme="light"] .funnel-group.active .funnel-text {
   height: 18px;
   border-radius: 50%;
   border: 4px solid var(--bg-primary);
-  background: var(--text-dark);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-dot.bg-cyan {
+  background: var(--color-cyan);
+  animation: starNodePulseCyan 3s infinite ease-in-out;
+}
+.timeline-dot.bg-gold {
+  background: var(--color-gold);
+  animation: starNodePulseGold 3s infinite ease-in-out;
+}
+.timeline-dot.bg-purple {
+  background: var(--color-purple);
+  animation: starNodePulsePurple 3s infinite ease-in-out;
 }
 
 .timeline-item:hover .timeline-dot,
 .timeline-item.active .timeline-dot {
-  transform: scale(1.3);
-  box-shadow: 0 0 12px var(--color-cyan);
-  background: var(--color-cyan);
+  transform: scale(1.3) !important;
+  box-shadow: 0 0 20px var(--color-cyan) !important;
+  background: var(--color-cyan) !important;
+  animation: none !important;
 }
 
-.timeline-item.active .timeline-dot {
-  animation: timelineDotPulse 2s infinite ease-in-out;
-}
-
-@keyframes timelineDotPulse {
+@keyframes starNodePulseCyan {
   0%, 100% {
-    box-shadow: 0 0 6px rgba(46, 196, 182, 0.6);
+    transform: scale(1);
+    box-shadow: 0 0 6px rgba(46, 196, 182, 0.25);
   }
   50% {
-    box-shadow: 0 0 16px rgba(46, 196, 182, 0.9);
+    transform: scale(1.15);
+    box-shadow: 0 0 16px rgba(46, 196, 182, 0.7);
+  }
+}
+
+@keyframes starNodePulseGold {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 6px rgba(255, 159, 28, 0.25);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 16px rgba(255, 159, 28, 0.7);
+  }
+}
+
+@keyframes starNodePulsePurple {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 6px rgba(39, 76, 119, 0.25);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 16px rgba(39, 76, 119, 0.7);
   }
 }
 
@@ -1621,6 +1656,23 @@ html[data-theme="light"] .funnel-group.active .funnel-text {
 
 .timeline-body strong {
   color: var(--text-primary);
+}
+
+.timeline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: var(--transition-smooth);
+}
+
+.timeline-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.35);
 }
 
 /* ----- 11. CREDENTIALS ----- */
@@ -3892,6 +3944,16 @@ html[data-theme="light"] .timeline-role { color: var(--text-primary); }
 html[data-theme="light"] .timeline-company { color: var(--text-muted); font-weight: 600; }
 html[data-theme="light"] .timeline-body { color: var(--text-primary); font-weight: 500; }
 html[data-theme="light"] .timeline-body strong { color: var(--text-primary); font-weight: 700; }
+html[data-theme="light"] .timeline-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: var(--border-color);
+  box-shadow: 0 2px 10px rgba(30, 61, 97, 0.05);
+}
+html[data-theme="light"] .timeline-card:hover {
+  background: #ffffff;
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 28px -8px rgba(30, 61, 97, 0.12);
+}
 
 /* ----- CERTIFICATES ----- */
 html[data-theme="light"] .certificate-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
