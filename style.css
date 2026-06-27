@@ -4510,3 +4510,23 @@ html[data-theme="light"] .chat-close-btn:hover {
   animation: rocketFlame 0.12s infinite alternate ease-in-out;
   transform-origin: top center;
 }
+
+/* PERFORMANCE OPTIMIZATION: Disable expensive backdrop-filter on mobile viewports for Light Mode */
+@media (max-width: 1024px) {
+  html[data-theme="light"] .stat-card,
+  html[data-theme="light"] .skill-category,
+  html[data-theme="light"] .project-glass-card,
+  html[data-theme="light"] .campaign-glass-card,
+  html[data-theme="light"] .certificate-glass-card,
+  html[data-theme="light"] .cert-download-center,
+  html[data-theme="light"] .contact-form-card,
+  html[data-theme="light"] .floating-lang-toggle,
+  html[data-theme="light"] .mobile-header,
+  html[data-theme="light"] .chat-window-panel,
+  html[data-theme="light"] .chat-trigger-btn {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(30, 61, 97, 0.08) !important;
+  }
+}

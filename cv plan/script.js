@@ -1452,7 +1452,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chatbot Knowledge Base
     const KB = {
       en: {
-        greeting: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing, retention strategy, or coding, and let's explore!",
+        greeting: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing or retention strategy, and let's explore!",
         defaultResponse: "I am Astro-Bot, focused on digital marketing, retention strategies, and Abdelrahman's work. Ask me about space, marketing, or check out his CV! You can also ask anything else, and I'll do my best to help.",
         typing: "Astro-Bot is thinking...",
         intents: [
@@ -1518,7 +1518,7 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           {
             name: "volunteer",
-            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagazig", "عمل تطوعي", "جمعية", "رسالة"],
+            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagازيج", "عمل تطوعي", "جمعية", "رسالة"],
             response: "I served as a **Marketing Team Lead** (May 2019 - Oct 2022) at Anwar Resala Zagazig (Resala Charity). I led a team of 8+ members, built awareness campaigns for community initiatives, trained members on content creation, and won the **Presentation & Public Speaking Competition Award**."
           },
           {
@@ -1574,12 +1574,12 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "greetings",
             keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you", "أهلا", "مرحبا", "سلام", "ازيك"],
-            response: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing, retention strategy, or coding, and let's explore!"
+            response: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing or retention strategy, and let's explore!"
           }
         ]
       },
       ar: {
-        greeting: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي، خطط الاحتفاظ بالعملاء، أو البرمجة، ودعنا نستكشف معاً!",
+        greeting: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي أو خطط الاحتفاظ بالعملاء، ودعنا نستكشف معاً!",
         defaultResponse: "أنا Astro-Bot، ومهمتي مساعدتك في التسويق الرقمي، خطط الاحتفاظ بالعملاء، ومشاريع عبد الرحمن. اسألني عن الفضاء، أو التسويق، أو تصفح سيرته الذاتية! يمكنك سؤالي عن أي شيء آخر وسأبذل قصارى جهدي لمساعدتك.",
         typing: "المساعد الذكي يفكر...",
         intents: [
@@ -1661,7 +1661,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
           },
           {
             name: "thanks",
@@ -1701,7 +1701,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "greetings",
             keywords: ["أهلا", "اهلاً", "مرحباً", "مرحبا", "السلام", "سلام", "ازيك", "أهلاً وسهلاً", "من أنت", "مين"],
-            response: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي، خطط الاحتفاظ بالعملاء، أو البرمجة، ودعنا نستكشف معاً!"
+            response: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي أو خطط الاحتفاظ بالعملاء، ودعنا نستكشف معاً!"
           }
         ]
       }
