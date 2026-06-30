@@ -1040,7 +1040,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Palette for realistic stars
-    const starColors = ['#FFFFFF', '#FFFFFF', '#F8F9FA', '#E3F2FD', '#FFF9C4', '#FFE0B2'];
+    // Palette for realistic stars (Color Temperature: Blue-White, Amber, Red Dwarf, Aurora Cyan)
+    const starColors = ['#FFFFFF', '#F8F9FA', '#A0C4FF', '#FFD166', '#FFADAD', '#2EC4B6'];
     
     // Mouse interaction with interpolation for organic, fluid lag
     let mouse = { x: -1000, y: -1000 };
@@ -1204,9 +1205,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Precompute RGB values to avoid hex conversions in every frame
         if (this.color === '#FFFFFF') { this.rgb = { r: 255, g: 255, b: 255 }; }
         else if (this.color === '#F8F9FA') { this.rgb = { r: 248, g: 249, b: 250 }; }
-        else if (this.color === '#E3F2FD') { this.rgb = { r: 227, g: 242, b: 253 }; }
-        else if (this.color === '#FFF9C4') { this.rgb = { r: 255, g: 249, b: 196 }; }
-        else if (this.color === '#FFE0B2') { this.rgb = { r: 255, g: 224, b: 178 }; }
+        else if (this.color === '#A0C4FF') { this.rgb = { r: 160, g: 196, b: 255 }; }
+        else if (this.color === '#FFD166') { this.rgb = { r: 255, g: 209, b: 102 }; }
+        else if (this.color === '#FFADAD') { this.rgb = { r: 255, g: 173, b: 173 }; }
+        else if (this.color === '#2EC4B6') { this.rgb = { r: 46, g: 196, b: 182 }; }
         else { this.rgb = { r: 255, g: 255, b: 255 }; }
         
         // Slower, more realistic drift
@@ -1491,6 +1493,33 @@ document.addEventListener('DOMContentLoaded', () => {
             star.update();
             star.draw();
           });
+
+          // Draw constellation lines
+          for (let i = 0; i < stars.length; i++) {
+            let starA = stars[i];
+            if (starA.z < 0.55) continue;
+            
+            for (let j = i + 1; j < stars.length; j++) {
+              let starB = stars[j];
+              if (starB.z < 0.55) continue;
+              
+              let dx = starA.x - starB.x;
+              let dy = starA.y - starB.y;
+              let distSq = dx * dx + dy * dy;
+              const maxConnDist = 110;
+              if (distSq < maxConnDist * maxConnDist) {
+                let dist = Math.sqrt(distSq);
+                let alphaFactor = (maxConnDist - dist) / maxConnDist;
+                let lineAlpha = Math.min(starA.alpha, starB.alpha) * 0.09 * alphaFactor;
+                ctx.beginPath();
+                ctx.moveTo(starA.x, starA.y);
+                ctx.lineTo(starB.x, starB.y);
+                ctx.strokeStyle = `rgba(46, 196, 182, ${lineAlpha})`;
+                ctx.lineWidth = 0.35;
+                ctx.stroke();
+              }
+            }
+          }
           
           // Comet spawning and processing
           if (!activeComet) {
