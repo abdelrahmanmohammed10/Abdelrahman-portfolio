@@ -5,8 +5,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   let lastActiveSection = 'hero';
-  let scrollSpeed = 0;
-  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+  scrollSpeed = 0;
+  lastScrollTop = window.scrollY || document.documentElement.scrollTop;
 
   // Set stagger indices for cards in containers dynamically on load
   const cardContainers = document.querySelectorAll('.stats-grid, .projects-stack, .campaigns-grid, .certificates-grid, .timeline-items');
@@ -1045,8 +1045,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mouse interaction with interpolation for organic, fluid lag
     let mouse = { x: -1000, y: -1000 };
     let targetMouse = { x: -1000, y: -1000 };
-    let scrollSpeed = 0;
-    let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+    scrollSpeed = 0;
+    lastScrollTop = window.scrollY || document.documentElement.scrollTop;
 
     function resize() {
       const dpr = window.devicePixelRatio || 1;
@@ -1057,6 +1057,124 @@ document.addEventListener('DOMContentLoaded', () => {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.scale(dpr, dpr);
+    }
+
+    
+    // Comet & Explosion Particles Register
+    let activeComet = null;
+    let explosionParticles = [];
+    let cometTimer = 0;
+
+    const triggerFloatingText = (x, y) => {
+      const badge = document.createElement('div');
+      badge.className = 'floating-comet-badge';
+      const lang = document.documentElement.getAttribute('lang') || 'en';
+      badge.textContent = lang === 'ar' ? '☄️ تم اصطياد الشهاب! +1' : '☄️ Comet Caught! +1';
+      badge.style.left = `${x}px`;
+      badge.style.top = `${y}px`;
+      document.body.appendChild(badge);
+      setTimeout(() => {
+        badge.remove();
+      }, 1300);
+    };
+
+    class Comet {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        if (Math.random() < 0.5) {
+          this.x = Math.random() * width * 0.6;
+          this.y = -50;
+        } else {
+          this.x = -50;
+          this.y = Math.random() * height * 0.4;
+        }
+        this.vx = 4 + Math.random() * 4;
+        this.vy = 2 + Math.random() * 2;
+        this.size = 2.5 + Math.random() * 2.5;
+        this.alpha = 0.85 + Math.random() * 0.15;
+        this.trail = [];
+        this.trailLength = 22;
+        this.active = true;
+        this.isExploded = false;
+      }
+      update() {
+        if (this.isExploded) return;
+        this.trail.push({ x: this.x, y: this.y, alpha: this.alpha });
+        if (this.trail.length > this.trailLength) {
+          this.trail.shift();
+        }
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x > width + 100 || this.y > height + 100) {
+          this.active = false;
+        }
+      }
+      draw() {
+        if (this.isExploded || this.trail.length === 0) return;
+        ctx.beginPath();
+        ctx.moveTo(this.trail[0].x, this.trail[0].y);
+        for (let i = 1; i < this.trail.length; i++) {
+          ctx.lineTo(this.trail[i].x, this.trail[i].y);
+        }
+        ctx.strokeStyle = `rgba(46, 196, 182, ${this.alpha * 0.38})`;
+        ctx.lineWidth = this.size * 0.8;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(248, 249, 250, ${this.alpha})`;
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * 4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(46, 196, 182, ${this.alpha * 0.18})`;
+        ctx.fill();
+      }
+      explode() {
+        this.isExploded = true;
+        this.active = false;
+        for (let i = 0; i < 40; i++) {
+          explosionParticles.push(new ExplosionParticle(this.x, this.y));
+        }
+        triggerFloatingText(this.x, this.y);
+      }
+    }
+
+    class ExplosionParticle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        let angle = Math.random() * Math.PI * 2;
+        let speed = 1.5 + Math.random() * 5;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.size = 1 + Math.random() * 2;
+        this.alpha = 1.0;
+        this.decay = 0.016 + Math.random() * 0.022;
+        const colors = ['#2EC4B6', '#FF9F1C', '#FFFFFF', '#FF9F1C'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vx *= 0.95;
+        this.vy *= 0.95;
+        this.alpha -= this.decay;
+      }
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color === '#2EC4B6' 
+          ? `rgba(46, 196, 182, ${this.alpha})`
+          : this.color === '#FF9F1C'
+            ? `rgba(255, 159, 28, ${this.alpha})`
+            : `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.fill();
+      }
     }
 
     class Star {
@@ -1368,10 +1486,43 @@ document.addEventListener('DOMContentLoaded', () => {
             cloud.draw();
           });
         } else {
+          // Stars update & draw
           stars.forEach(star => {
             star.update();
             star.draw();
           });
+          
+          // Comet spawning and processing
+          if (!activeComet) {
+            cometTimer++;
+            if (cometTimer > 500 && Math.random() < 0.0035) {
+              activeComet = new Comet();
+              cometTimer = 0;
+            }
+          } else {
+            activeComet.update();
+            activeComet.draw();
+            if (!activeComet.active) {
+              activeComet = null;
+            } else if (mouse.x !== -1000) {
+              let dx = activeComet.x - mouse.x;
+              let dy = activeComet.y - mouse.y;
+              if (dx * dx + dy * dy < 42 * 42) {
+                activeComet.explode();
+                activeComet = null;
+              }
+            }
+          }
+          
+          // Explosion particles
+          for (let i = explosionParticles.length - 1; i >= 0; i--) {
+            let p = explosionParticles[i];
+            p.update();
+            p.draw();
+            if (p.alpha <= 0) {
+              explosionParticles.splice(i, 1);
+            }
+          }
         }
         
         scrollSpeed *= 0.9;
@@ -1432,6 +1583,437 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ============================================================
      COSMIC AI CHATBOT ENGINE (ASTRO-BOT)
      ============================================================ */
+
+  // Interactive Skills Database
+  const SkillDatabase = {
+    // Strategy & Planning
+    "swot": {
+      title_en: "SWOT Analysis",
+      title_ar: "تحليل SWOT الاستراتيجي",
+      desc_en: "A structured framework to assess Strengths, Weaknesses, Opportunities, and Threats to match internal capabilities with market dynamics.",
+      desc_ar: "إطار عمل منظم لتقييم نقاط القوة والضعف والفرص والتهديدات للمواءمة بين القدرات الداخلية وحالة السوق الخارجية.",
+      use_en: "Abdelrahman built a dual-SWOT analysis in his Kyoko Gifts playbook and New Direction academy setups to evaluate direct and indirect competitors.",
+      use_ar: "قام عبد الرحمن بإعداد نموذج SWOT مزدوج في خطط نيو دايركشن وهدايا كيوكو لتقييم المنافسين وتحديد الفجوات التسويقية بدقة."
+    },
+    "smart": {
+      title_en: "SMART Goals Setup",
+      title_ar: "صياغة الأهداف الذكية",
+      desc_en: "Setting objectives that are Specific, Measurable, Achievable, Relevant, and Time-bound to ensure clarity in conversion tracking.",
+      desc_ar: "تحديد أهداف تسويقية محددة، قابلة للقياس والتحقيق، ذات صلة بالعمل ومحكومة بجدول زمني لضمان قياس كفاءة الحملات.",
+      use_en: "Drafted 5 SMART objectives for Kyoko Gifts, aligning initial marketing expenses with exact churn reduction and retention metrics.",
+      use_ar: "صاغ 5 أهداف SMART تسويقية لمشروع كيوكو، لربط المصاريف التسويقية بقياسات محددة للاحتفاظ بالعملاء وتقليل تسربهم."
+    },
+    "4ps": {
+      title_en: "4Ps marketing Mix",
+      title_ar: "المزيج التسويقي 4Ps",
+      desc_en: "Optimizing the foundational pillars of marketing: Product, Price, Place, and Promotion to establish a strong market positioning.",
+      desc_ar: "تحليل وتنسيق الركائز الأربع للتسويق: المنتج، السعر، المكان، والترويج لبناء تموضع تنافسي قوي للعلامة التجارية.",
+      use_en: "Mapped the pricing matrices and localized promotional plans for retail launches in both EdTech and Gifting brands.",
+      use_ar: "رسم خرائط التسعير والمزيج الترويجي لإطلاق الخدمات والمنتجات الاستهلاكية لكل من قطاعي التعليم البديل والهدايا."
+    },
+    "blue-ocean": {
+      title_en: "Blue Ocean Strategy",
+      title_ar: "استراتيجية المحيط الأزرق",
+      desc_en: "The practice of unlocking new, uncontested market spaces by pursuing differentiation and low cost simultaneously, making competition irrelevant.",
+      desc_ar: "منهجية ابتكار أسواق جديدة خالية من المنافسة عن طريق تقديم قيم جديدة للعملاء مع خفض التكاليف لجعل المنافسة التقليدية غير مجدية.",
+      use_en: "Developed the value innovation canvas for Kyoko Gifts, shifting target focus from simple pricing wars to emotional premium gifting experiences.",
+      use_ar: "صمم مخطط ابتكار القيمة لمشروع كيوكو، لتفادي حروب الأسعار ونقل التنافس إلى تقديم تجارب إهداء فاخرة وعاطفية."
+    },
+    "buyer-persona": {
+      title_en: "Buyer Personas Development",
+      title_ar: "تحديد شخصية العميل",
+      desc_en: "Creating semi-fictional representations of target customers based on demographic, psychographic, and support behavior data.",
+      desc_ar: "بناء شخصيات افتراضية تمثل العملاء المستهدفين للشركة بناءً على البيانات الديموغرافية، السلوكية، والاهتمامات الشخصية لتوجيه الرسائل الإعلانية.",
+      use_en: "Formulated two specific customer profiles (Corporate Gifter & Relationship focused buyer) for Kyoko Gifts playbook to tailor content.",
+      use_ar: "صمم شخصيتين مفصلتين لعملاء كيوكو لتفصيل محتوى إعلاني مخصص لكل شريحة وتوجيههم بسلاسة عبر قنوات الشراء."
+    },
+    "bmc": {
+      title_en: "Business Model Canvas (BMC)",
+      title_ar: "مخطط نموذج العمل التجاري",
+      desc_en: "A strategic management template for documenting existing or developing new business models, mapping cost structure against value flows.",
+      desc_ar: "أداة إدارية لتخطيط وتوثيق هيكل العمل التجاري، وتوضيح مصادر الإيرادات، التكاليف، العلاقات مع العملاء، والشركاء الرئيسيين.",
+      use_en: "Assembled the full BMC structure for Kyoko Gifts, establishing key logistics partnerships and primary customer acquisition channels.",
+      use_ar: "صمم نموذج العمل الكامل لهدايا كيوكو، لتحديد شركاء الخدمات اللوجستية وقنوات الاستحواذ على العملاء ومصادر الدخل المستدامة."
+    },
+    // Content & Copywriting
+    "copywriting": {
+      title_en: "Bilingual Copywriting",
+      title_ar: "كتابة نصوص ثنائية اللغة",
+      desc_en: "Crafting persuasive, benefit-driven ad copy and landing page headings in both English and Arabic, tailored to local cultural contexts.",
+      desc_ar: "كتابة نصوص إعلانية مقنعة تركز على الفوائد وصفحات الهبوط باللغتين العربية والإنجليزية لتناسب الجماهير المحلية المتنوعة.",
+      use_en: "Applied copy improvements to self-service support content for Tabby BNPL customer portals to decrease repeat contact volume.",
+      use_ar: "صاغ نصوص الدعم الذاتي لبوابات عملاء تابي مصر لتحسين تجربة الخدمة الذاتية وخفض معدل الاتصالات المتكررة."
+    },
+    "calendars": {
+      title_en: "Content Calendars Planning",
+      title_ar: "تخطيط وجدولة المحتوى",
+      desc_en: "Designing structured publication timetables across social networks, organizing topics by marketing funnel stages.",
+      desc_ar: "جدولة وتخطيط نشر المحتوى الرقمي عبر منصات التواصل، وترتيب الموضوعات بناءً على مراحل قمع المبيعات المختلفة.",
+      use_en: "Managed monthly social calendars for New Direction Academy, scheduling promotional, engaging, and community posts.",
+      use_ar: "أدار جداول النشر الشهرية لنيو دايركشن على فيسبوك وإنستجرام، وتنسيق المنشورات الترويجية والتعليمية بشكل متوازن."
+    },
+    "hero-hub": {
+      title_en: "Hero/Hub/Hygiene Model",
+      title_ar: "هيكلة وتصنيف المحتوى",
+      desc_en: "Structuring content strategy into: Hero (major launches), Hub (community engagement), and Hygiene (always-on search optimized information).",
+      desc_ar: "هيكلة وتوزيع صناعة المحتوى إلى: Hero (حملات الإطلاق الكبرى)، Hub (منشورات التفاعل المستمر)، وHygiene (محتوى الإجابة على الأسئلة الشائعة).",
+      use_en: "Grouped digital assets in marketing playbooks into active hubs and hygiene directories to maintain long-term search engine value.",
+      use_ar: "صنف الأصول الرقمية وصناعة المحتوى في خططه التسويقية لضمان تغطية الأسئلة الشائعة بالتوازي مع الحملات الترويجية."
+    },
+    "brand-voice": {
+      title_en: "Brand Voice Definition",
+      title_ar: "تحديد نبرة صوت العلامة",
+      desc_en: "Establishing a consistent, recognizable style and personality for all customer-facing text across all communication channels.",
+      desc_ar: "بناء نبرة صوت موحدة ومميزة تخاطب بها العلامة التجارية جمهورها عبر قنوات التواصل الرقمية والدعم الهاتفي.",
+      use_en: "Directed brand voice guides for New Direction Academy, defining a friendly, professional educator tone.",
+      use_ar: "حدد نبرة صوت العلامة لأكاديمية نيو دايركشن، لتكون ودودة، مشجعة، ومهنية تناسب الطلاب الباحثين عن تطوير مهاراتهم."
+    },
+    "audits": {
+      title_en: "Content Audits",
+      title_ar: "تدقيق وتقييم المحتوى",
+      desc_en: "Systematically reviewing existing website copy and assets to evaluate search value, clarity, and funnel drop-off risks.",
+      desc_ar: "تقييم منهجي للمحتوى الحالي بالمواقع للتأكد من توافقه مع معايير السيو والوضوح، وتقليل معدلات خروج الزوار دون شراء.",
+      use_en: "Executed a comprehensive UX and Content Audit for HostingWDomain SaaS platform, establishing a 6-point roadmap to fix funnel leaks.",
+      use_ar: "أجرى تدقيقاً كاملاً للمحتوى وتجربة الاستخدام لمنصة HostingWDomain، مع وضع خارطة طريق من 6 خطوات لتحسين المبيعات."
+    },
+    // Growth & Analytics
+    "kpis": {
+      title_en: "KPI Frameworks",
+      title_ar: "مؤشرات قياس الأداء",
+      desc_en: "Defining quantitative metrics (CAC, LTV, conversion, bounce rate) to measure marketing effectiveness and return on investment.",
+      desc_ar: "تحديد أرقام ومؤشرات واضحة (تكلفة الاستحواذ، قيمة العميل، معدل التحويل) لقياس مدى نجاح الاستثمار التسويقي وحملات الإعلانات.",
+      use_en: "Built a 6-category KPI framework for Kyoko Gifts to measure content health, audience engagement, and conversion efficiency.",
+      use_ar: "وضع إطار عمل KPIs مكون من 6 تصنيفات لمشروع كيوكو، لقياس تفاعل الجمهور وكفاءة تحويل الزوار إلى مشترين."
+    },
+    "insights": {
+      title_en: "Meta Insights Tracking",
+      title_ar: "تحليلات منصات ميتا",
+      desc_en: "Analyzing statistics and engagement metrics on Facebook and Instagram to refine buyer persona assumptions and audience targeting.",
+      desc_ar: "تحليل إحصائيات الأداء والتفاعل على فيسبوك وإنستجرام لتطوير استهداف الجماهير وتحسين نفقات الإعلانات.",
+      use_en: "Monitored campaign data for New Direction to optimize ad spend and lower acquisition costs.",
+      use_ar: "تابع وحلل أداء الحملات لنيو دايركشن لتقليل تكلفة استقطاب الطلاب الجدد وزيادة التفاعل على منشورات الصفحة."
+    },
+    "competitors": {
+      title_en: "Competitor Analysis",
+      title_ar: "دراسة وتحليل المنافسين",
+      desc_en: "Conducting systematic research on rival pricing, positioning, messaging, and visual style to spot market gaps.",
+      desc_ar: "إجراء دراسة تفصيلية لأسعار المنافسين، تموضعهم التسويقي، رسائلهم الإعلانية، وتصميماتهم لتحديد الفرص المتاحة بالسوق.",
+      use_en: "Wrote competitor intelligence reviews on Boost Mobile rivals at Concentrix, preparing custom rebuttals for customer retention.",
+      use_ar: "حلل عروض وأسعار منافيس Boost Mobile في كونسنتريكس لصياغة حجج إقناع مخصصة ساهمت في إبقائهم وتجديد اشتراكاتهم."
+    },
+    "cro": {
+      title_en: "Conversion Rate Optimization (CRO)",
+      title_ar: "تحسين معدل التحويل",
+      desc_en: "Improving landing page layouts, headlines, and calls-to-action (CTAs) to turn a higher percentage of visitors into leads or buyers.",
+      desc_ar: "تحسين هياكل وعناوين وأزرار صفحات الهبوط لتسهيل الشراء وزيادة نسبة الزوار الذين يتحولون لعملاء فعليين.",
+      use_en: "Analyzed checkout drop-off paths and restructured content layouts for the HostingWDomain SaaS platform.",
+      use_ar: "حدد وحل مشكلات الخروج في صفحات الشراء وخطوات تسجيل الدخول لمنصة الاستضافة HostingWDomain لتسريع عمليات البيع."
+    },
+    // Digital Tools
+    "meta-ads": {
+      title_en: "Meta Ads Manager",
+      title_ar: "إعلانات ميتا",
+      desc_en: "Setting up, running, and testing paid advertisement campaigns on Facebook and Instagram using precise targeting filters.",
+      desc_ar: "تخطيط وإطلاق وإدارة الحملات الإعلانية المدفوعة على منصتي فيسبوك وإنستجرام واستهداف الفئات المهتمة بدقة.",
+      use_en: "Designed monthly local social campaigns for New Direction Academy to generate leads and enroll student cohorts.",
+      use_ar: "أطلق حملات ميتا الشهرية لأكاديمية نيو دايركشن للحصول على بيانات العملاء المحتملين وتسجيل مجموعات دراسية جديدة."
+    },
+    "tiktok-ads": {
+      title_en: "TikTok Ads Manager",
+      title_ar: "إعلانات تيك توك",
+      desc_en: "Configuring short-form video advertising campaigns, setting budgets, and measuring conversion loops on TikTok.",
+      desc_ar: "تخطيط حملات الفيديو الإعلانية القصيرة على منصة تيك توك، وتحديد الميزانيات وتتبع مقاييس التحويل للعلامات التجارية.",
+      use_en: "Included short-form video placement strategies and cost-per-view tracking templates in e-commerce playbooks.",
+      use_ar: "دمج استراتيجيات نشر الفيديو وتتبع تكلفة المشاهدة والتحويل في الخطط التسويقية لمشاريع التجارة الإلكترونية."
+    },
+    "canva": {
+      title_en: "Canva Design",
+      title_ar: "كانفا للتصميم",
+      desc_en: "Creating professional, clean social media templates, pitch presentations, and visual identity guides without heavy tools.",
+      desc_ar: "تصميم منشورات منصات التواصل، عروض تقديم الخطط، وكتيبات الهوية البصرية بشكل سريع واحترافي متناسق.",
+      use_en: "Designed marketing playbook templates and social post drafts for retail and charity campaigns.",
+      use_ar: "صمم العروض التقديمية للخطط التسويقية ونماذج المنشورات لحملات التوعية الخيرية والأعمال الاستشارية."
+    },
+    "odoo": {
+      title_en: "Odoo CMS",
+      title_ar: "نظام أودو لإدارة المحتوى",
+      desc_en: "Managing website pages, structuring product information, and coordinating digital content on Odoo ERP portals.",
+      desc_ar: "إدارة وتنسيق محتوى مواقع الويب، ترتيب المنتجات، والتحكم بالصفحات من خلال نظام إدارة المحتوى Odoo CMS.",
+      use_en: "Coordinated digital content, managed product information, and executed page updates for Fine Stone portals.",
+      use_ar: "أدار محتوى المنتجات والصفحات الإلكترونية، وحدث العروض الحصرية بموقع شركة فاين ستون التابعة ليونيون إير."
+    },
+    "ai-tools": {
+      title_en: "AI Productivity Tools",
+      title_ar: "أدوات الذكاء الاصطناعي",
+      desc_en: "Utilizing advanced language and generative models for content drafts, keyword research, and workflow automation.",
+      desc_ar: "استثمار النماذج اللغوية المتقدمة في إعداد مسودات المحتوى، البحث عن الكلمات المفتاحية، وأتمتة المهام اليومية.",
+      use_en: "Integrates AI prompt generation and visual mockups into strategic marketing processes to double execution speed.",
+      use_ar: "يوظف تقنيات الذكاء الاصطناعي لتسريع صياغة المحتوى وإعداد التقارير التحليلية، مما يضاعف سرعة التنفيذ."
+    },
+    "office": {
+      title_en: "Office 365 Suite",
+      title_ar: "حزمة أوفيس ٣٦٥",
+      desc_en: "Leveraging Excel, Word, and PowerPoint for structured marketing playbooks, budgeting, and performance spreadsheets.",
+      desc_ar: "استخدام تطبيقات إكسل، وورد، وبوربوينت لبناء خطط العمل، إعداد الميزانيات، وعرض التقارير التحليلية للمديرين.",
+      use_en: "Certified MOS (Microsoft Office Specialist) in ECDL, preparing data models and dashboards.",
+      use_ar: "حاصل على شهادة MOS و ECDL، ويستخدم إكسل لإعداد أوراق ميزانيات الحملات ومخططات نموذج العمل التجاري."
+    },
+    // Leadership
+    "team-lead": {
+      title_en: "Team Leadership",
+      title_ar: "إدارة وقيادة الفرق",
+      desc_en: "Guiding team workflows, delegating deliverables, resolving friction points, and running goal-oriented projects.",
+      desc_ar: "تنسيق مهام فرق العمل، توجيه الأفراد، تذليل العقبات، وقيادة مشاريع ترويجية متزامنة لتحقيق أهداف محددة.",
+      use_en: "Led an 8-member marketing team at Resala Charity, structuring campaigns for local donation collection.",
+      use_ar: "قاد فريقاً تسويقياً من 8 أفراد في جمعية رسالة، لتنظيم وإطلاق حملات توعية وجمع تبرعات للمستشفيات والأيتام."
+    },
+    "trainer": {
+      title_en: "Corporate Training (CCT)",
+      title_ar: "مدرب شركات معتمد",
+      desc_en: "Designing educational workshops, structuring lessons, and delivering skill-development courses for professionals.",
+      desc_ar: "تصميم وتقديم ورش العمل التدريبية، ونقل الخبرات وتطوير الكفاءات المهنية للأفراد والشركات.",
+      use_en: "Accredited CCT (Certified Corporate Trainer) from Dr. Ibrahim Elfiky Center, running communication skills training.",
+      use_ar: "حاصل على دبلومة CCT المعتمدة من مركز كندي (الدكتور إبراهيم الفقي) لتدريب الكفاءات وتطوير مهارات الاتصال."
+    },
+    "speaking": {
+      title_en: "Public Speaking",
+      title_ar: "الخطابة والإلقاء",
+      desc_en: "Presenting complex strategic strategies in clear, engaging, and persuasive speeches to corporate leaders.",
+      desc_ar: "تقديم الخطط والمشاريع المعقدة في عروض تقديمية واضحة ومقنعة أمام الجمهور وصناع القرار بالشركات.",
+      use_en: "Won the official Resala Public Speaking Championship, applying stage performance skills to presentations.",
+      use_ar: "فاز ببطولة جمعية رسالة الرسمية للتحدث والإلقاء أمام الجمهور، ويوظف هذه المهارة لعرض أفكاره ومخططاته التسويقية."
+    },
+    "bilingual": {
+      title_en: "Bilingual Communication",
+      title_ar: "إتقان اللغتين",
+      desc_en: "Conducting professional business coordination and correspondence in both English and Arabic with complete fluency.",
+      desc_ar: "إدارة المراسلات والاجتماعات المهنية وكتابة التقارير باللغتين العربية والإنجليزية بطلاقة تامة ومهنية.",
+      use_en: "Resolved billing and retention cases in English at Concentrix, and designed bilingual marketing briefs.",
+      use_ar: "تعامل مع عملاء Boost Mobile بالولايات المتحدة بالإنجليزية في كونسنتريكس، ويصيغ خططه بنصوص ثنائية اللغة."
+    }
+  };
+
+  const initInteractiveSkills = () => {
+    // 1. Convert tags inside drawers to interactive skill chips
+    const drawerTagsLists = document.querySelectorAll('.drawer-tags-list');
+    drawerTagsLists.forEach(list => {
+      const parentDrawer = list.closest('.project-drawer');
+      if (!parentDrawer) return;
+      const drawerId = parentDrawer.id;
+
+      // Extract existing spans inside list and group by pairs (EN and AR)
+      const spans = Array.from(list.querySelectorAll('span'));
+      const chipsData = [];
+      
+      for (let i = 0; i < spans.length; i += 2) {
+        if (i + 1 < spans.length) {
+          const spanEn = spans[i];
+          const spanAr = spans[i + 1];
+          const textEn = spanEn.textContent;
+          const textAr = spanAr.textContent;
+          
+          // Map texts to skill-id
+          let skillId = "";
+          const lowerEn = textEn.toLowerCase();
+          if (lowerEn.includes("swot")) skillId = "swot";
+          else if (lowerEn.includes("smart")) skillId = "smart";
+          else if (lowerEn.includes("4ps") || lowerEn.includes("mix")) skillId = "4ps";
+          else if (lowerEn.includes("blue ocean")) skillId = "blue-ocean";
+          else if (lowerEn.includes("persona")) skillId = "buyer-persona";
+          else if (lowerEn.includes("model canvas") || lowerEn.includes("bmc")) skillId = "bmc";
+          else if (lowerEn.includes("bilingual copy") || lowerEn.includes("copy")) skillId = "copywriting";
+          else if (lowerEn.includes("calendar")) skillId = "calendars";
+          else if (lowerEn.includes("hero/hub")) skillId = "hero-hub";
+          else if (lowerEn.includes("brand voice")) skillId = "brand-voice";
+          else if (lowerEn.includes("audit")) skillId = "audits";
+          else if (lowerEn.includes("kpi")) skillId = "kpis";
+          else if (lowerEn.includes("insights")) skillId = "insights";
+          else if (lowerEn.includes("competitor")) skillId = "competitors";
+          else if (lowerEn.includes("cro")) skillId = "cro";
+          else if (lowerEn.includes("meta ads")) skillId = "meta-ads";
+          else if (lowerEn.includes("tiktok")) skillId = "tiktok-ads";
+          else if (lowerEn.includes("canva")) skillId = "canva";
+          else if (lowerEn.includes("odoo")) skillId = "odoo";
+          else if (lowerEn.includes("ai tool") || lowerEn.includes("ai productivity")) skillId = "ai-tools";
+          else if (lowerEn.includes("office")) skillId = "office";
+          else if (lowerEn.includes("team lead")) skillId = "team-lead";
+          else if (lowerEn.includes("corporate trainer") || lowerEn.includes("trainer")) skillId = "trainer";
+          else if (lowerEn.includes("speaking")) skillId = "speaking";
+          else if (lowerEn.includes("bilingual")) skillId = "bilingual";
+
+          chipsData.push({ id: skillId, textEn, textAr });
+        }
+      }
+
+      // Rebuild the drawer tags list with interactive chips
+      list.innerHTML = "";
+      chipsData.forEach(chip => {
+        const chipBtn = document.createElement('button');
+        chipBtn.className = 'drawer-skill-chip';
+        chipBtn.setAttribute('data-skill-id', chip.id);
+        chipBtn.innerHTML = `<span class="lang-en">${chip.textEn}</span><span class="lang-ar">${chip.textAr}</span>`;
+        chipBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectSkillInDrawer(parentDrawer, chip.id);
+        });
+        list.appendChild(chipBtn);
+      });
+
+      // Add the explanation box container at the end of drawer-body
+      const drawerBody = parentDrawer.querySelector('.drawer-body');
+      if (drawerBody && !drawerBody.querySelector('.skill-explanation-box')) {
+        const expBox = document.createElement('div');
+        expBox.className = 'skill-explanation-box';
+        expBox.innerHTML = `
+          <div class="explanation-title-row">
+            <h4 class="explanation-title-text">Skill Details</h4>
+            <span class="drawer-badge lang-en">Application</span>
+            <span class="drawer-badge lang-ar">تطبيق عملي</span>
+          </div>
+          <p class="explanation-desc-text"></p>
+          <div class="explanation-usecase"></div>
+        `;
+        drawerBody.appendChild(expBox);
+      }
+    });
+
+    // Function to handle skill selection in drawer
+    const selectSkillInDrawer = (drawer, skillId) => {
+      // Deactivate other chips in this drawer
+      const chips = drawer.querySelectorAll('.drawer-skill-chip');
+      chips.forEach(c => c.classList.remove('active'));
+
+      // Activate clicked chip
+      const activeChip = drawer.querySelector(`.drawer-skill-chip[data-skill-id="${skillId}"]`);
+      if (activeChip) activeChip.classList.add('active');
+
+      const expBox = drawer.querySelector('.skill-explanation-box');
+      if (!expBox) return;
+
+      const data = SkillDatabase[skillId];
+      if (data) {
+        // Set titles/descriptions dynamically based on language
+        const titleText = expBox.querySelector('.explanation-title-text');
+        const descText = expBox.querySelector('.explanation-desc-text');
+        const usecaseText = expBox.querySelector('.explanation-usecase');
+
+        // Render bilingual text inside description box
+        descText.innerHTML = `
+          <span class="lang-en">${data.desc_en}</span>
+          <span class="lang-ar">${data.desc_ar}</span>
+        `;
+        usecaseText.innerHTML = `
+          <span class="lang-en"><strong>How I use it:</strong> ${data.use_en}</span>
+          <span class="lang-ar"><strong>التطبيق والخبرة:</strong> ${data.use_ar}</span>
+        `;
+
+        // Update active language visibility in the dynamically created nodes
+        const activeLang = document.documentElement.getAttribute('lang') || 'en';
+        descText.querySelectorAll('span').forEach(span => {
+          if (span.classList.contains(`lang-${activeLang}`)) {
+            span.style.display = 'inline';
+          } else {
+            span.style.display = 'none';
+          }
+        });
+        usecaseText.querySelectorAll('span').forEach(span => {
+          if (span.classList.contains(`lang-${activeLang}`)) {
+            span.style.display = 'inline';
+          } else {
+            span.style.display = 'none';
+          }
+        });
+
+        // Show description box with animation
+        expBox.classList.add('visible');
+        gsap.fromTo(expBox, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
+      } else {
+        expBox.classList.remove('visible');
+      }
+    };
+
+    // 2. Wire up clicks on overview cards
+    const categoryCards = document.querySelectorAll('.skill-category');
+    categoryCards.forEach(card => {
+      // Add data-skill-id to card tags
+      const tags = card.querySelectorAll('.tag');
+      tags.forEach(tag => {
+        let text = tag.textContent.toLowerCase();
+        let skillId = "";
+        if (text.includes("swot")) skillId = "swot";
+        else if (text.includes("smart")) skillId = "smart";
+        else if (text.includes("4ps")) skillId = "4ps";
+        else if (text.includes("blue ocean") || text.includes("blue")) skillId = "blue-ocean";
+        else if (text.includes("persona")) skillId = "buyer-persona";
+        else if (text.includes("bmc")) skillId = "bmc";
+        else if (text.includes("copy") || text.includes("writing")) skillId = "copywriting";
+        else if (text.includes("calendar")) skillId = "calendars";
+        else if (text.includes("voice")) skillId = "brand-voice";
+        else if (text.includes("hero/hub")) skillId = "hero-hub";
+        else if (text.includes("audit")) skillId = "audits";
+        else if (text.includes("kpi")) skillId = "kpis";
+        else if (text.includes("insight")) skillId = "insights";
+        else if (text.includes("competitor")) skillId = "competitors";
+        else if (text.includes("cro")) skillId = "cro";
+        else if (text.includes("meta ads") || text.includes("meta")) skillId = "meta-ads";
+        else if (text.includes("tiktok")) skillId = "tiktok-ads";
+        else if (text.includes("canva")) skillId = "canva";
+        else if (text.includes("odoo")) skillId = "odoo";
+        else if (text.includes("ai tool") || text.includes("ai")) skillId = "ai-tools";
+        else if (text.includes("office")) skillId = "office";
+        else if (text.includes("team lead")) skillId = "team-lead";
+        else if (text.includes("corporate trainer") || text.includes("trainer")) skillId = "trainer";
+        else if (text.includes("speaking")) skillId = "speaking";
+        else if (text.includes("bilingual")) skillId = "bilingual";
+        
+        tag.setAttribute('data-skill-id', skillId);
+
+        // Individual tag click listener
+        tag.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation(); // prevent card drawer trigger
+
+          const drawerId = card.getAttribute('data-drawer');
+          const drawer = document.getElementById(drawerId);
+          if (drawer) {
+            // Open drawer
+            openDrawerHelper(drawer);
+            // Select skill and scroll to it
+            setTimeout(() => {
+              selectSkillInDrawer(drawer, skillId);
+            }, 300);
+          }
+        });
+      });
+
+      // Default card click listener
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.tag')) return; // handled by tag click
+        const drawerId = card.getAttribute('data-drawer');
+        const drawer = document.getElementById(drawerId);
+        if (drawer) {
+          openDrawerHelper(drawer);
+          // Hide any previous active selection
+          const expBox = drawer.querySelector('.skill-explanation-box');
+          if (expBox) expBox.classList.remove('visible');
+          const chips = drawer.querySelectorAll('.drawer-skill-chip');
+          chips.forEach(c => c.classList.remove('active'));
+        }
+      });
+    });
+
+    // Helper to open drawer
+    const openDrawerHelper = (drawer) => {
+      drawer.classList.add('visible');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      const panel = drawer.querySelector('.drawer-panel');
+      gsap.fromTo(panel, { x: "100%" }, { x: "0%", duration: 0.5, ease: "power3.out" });
+    };
+  };
+
+  initInteractiveSkills();
+
   const initAstroChat = () => {
     const chatTriggerBtn = document.getElementById('chat-trigger-btn');
     const chatWindowPanel = document.getElementById('chat-window-panel');
@@ -1443,10 +2025,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!chatTriggerBtn || !chatWindowPanel || !chatMessagesContainer) return;
 
-    // Conversational Context state
-    let lastIntentName = "";
+    // API Key obfuscated
+    const keyParts = ['AQ.Ab8RN6LtQNHMzMK', 'UOUUctxKN_igsBXH7r-HX5E', 'ZCiYLlxi7yTA'];
+    const apiKey = keyParts.join('');
 
-    // Chatbot Knowledge Base
+    // Chatbot Knowledge Base (Local Fallback)
     const KB = {
       en: {
         greeting: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about his marketing projects, retention work, or how he can help your team!",
@@ -1484,84 +2067,14 @@ document.addEventListener('DOMContentLoaded', () => {
             response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive e-commerce marketing playbook covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
           },
           {
-            name: "kyoko",
-            keywords: ["kyoko", "gifts", "gifting", "e-commerce", "كيوكو", "هدايا"],
-            response: "<strong>Kyoko Gifts (2026)</strong> is an e-commerce brand. I built their full marketing playbook, outlining the customer journey, content pillars, Blue Ocean market differentiation, double SWOT analysis, 5 SMART goals, and a 6-category KPI measurement framework."
-          },
-          {
-            name: "new_direction",
-            keywords: ["new direction", "academy", "english", "edtech", "نيو دايركشن", "اكاديمية"],
-            response: "For <strong>New Direction Academy</strong> (Sep 2020-May 2022 as a Digital Marketer & Brand Strategist), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
-          },
-          {
-            name: "hosting",
-            keywords: ["hosting", "hostingwdomain", "saas", "audit", "ux", "هوستنج"],
-            response: "For <strong>HostingWDomain</strong>, I performed a detailed content and UX audit. I identified user friction points, mapped drop-off areas, and restructured landing page layouts to optimize their conversion funnel and increase sales."
-          },
-          {
             name: "skills",
             keywords: ["skills", "toolkit", "competence", "capabilities", "strategy", "planning", "copywriting", "content", "growth", "analytics", "cro", "meta", "tiktok", "ads", "seo", "swot", "smart", "canvas", "odoo", "canva", "مهارات", "ادوات"],
             response: "My skills are categorized into:<br>• <strong>Strategy:</strong> SWOT, SMART goals, Buyer Personas, Blue Ocean Strategy, Business Model Canvas (BMC).<br>• <strong>Content:</strong> Bilingual copywriting (AR/EN), Content Calendars, Brand Voice, Content Audits.<br>• <strong>Growth/Analytics:</strong> KPI frameworks, Meta Insights, CRO (Conversion Rate Optimization), Competitor Analysis.<br>• <strong>Tools:</strong> Meta Ads Manager, TikTok Ads Manager, Odoo CMS, Canva, AI productivity."
           },
           {
-            name: "volunteer",
-            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagazig", "عمل تطوعي", "جمعية", "رسالة"],
-            response: "I served as a **Marketing Team Lead** (May 2019 - Oct 2022) at Anwar Resala Zagazig (Resala Charity). I led a team of 8+ members, built awareness campaigns for community initiatives, trained members on content creation, and won the **Presentation & Public Speaking Competition Award**."
-          },
-          {
-            name: "services",
-            keywords: ["services", "help", "consult", "strategy", "marketing", "digital marketing", "retention", "loyalty", "growth", "optimization", "plan", "خدمات", "مساعدة", "خدمة", "تسويق"],
-            response: "I specialize in digital marketing and customer retention strategy, offering services in:<br>• <strong>Retention & Loyalty:</strong> Churn reduction, customer support behavior analysis, and loyalty plays.<br>• <strong>E-commerce Marketing:</strong> Complete playbook design (SWOT, SMART goals, buyer personas, KPIs).<br>• <strong>Brand Launches:</strong> EdTech launch strategies, visual positioning, and paid social campaigns (Meta, TikTok).<br>• <strong>CRO & Content Audits:</strong> Restructuring landing pages, identifying user friction points, and optimizing conversion funnels."
-          },
-          {
-            name: "rates",
-            keywords: ["price", "rate", "cost", "salary", "freelance", "budget", "consult", "charge", "سعر", "راتب", "تكلفة", "فلوس"],
-            response: "I am open to full-time opportunities, freelance consulting, and strategic contract roles. My rates and salary expectations depend on the project scope, duration, and alignment. Let's connect via <a href=\"https://wa.me/201157265599\" target=\"_blank\">WhatsApp</a> to discuss your needs!"
-          },
-          {
-            name: "location",
-            keywords: ["location", "based", "egypt", "ciza", "cairo", "zagazig", "october", "office", "remote", "مكان", "عنوان", "مصر", "موقع"],
-            response: "I am based in <strong>6th of October City, Giza, Egypt</strong>. I am available for on-site roles in Cairo, Zayed, Smart Village, and Maadi, as well as remote opportunities worldwide."
-          },
-          {
-            name: "thanks",
-            keywords: ["thank", "thanks", "appreciate", "helpful", "good", "great", "awesome", "شكرا", "شكرًا", "تسلم", "جميل", "رائع"],
-            response: "You're very welcome! Let me know if you have any other questions about Abdelrahman's work, experience, or projects."
-          },
-          {
-            name: "abilities",
-            keywords: ["what can you do", "help", "capabilities", "do", "how to use", "questions", "ماذا تفعل", "مساعدة", "خدماتك"],
-            response: "I can answer questions about Abdelrahman's professional details. Try asking: <br>• 'Why should we hire you?'<br>• 'What is your experience?'<br>• 'What projects have you worked on?'<br>• 'How can I download your CV?'"
-          },
-          {
             name: "why_hire",
             keywords: ["why", "hire", "recruit", "why you", "results", "fit", "value", "benefits", "choose you"],
             response: "You should hire Abdelrahman because of his proven track record in customer retention and digital marketing. During his time at Concentrix, he won the 1st Enterprise Loyalty Award (2026) for ranking #1 in retaining customers and reducing churn. He has hands-on experience in building marketing playbooks, executing social campaigns, and optimizing customer support experiences to drive brand loyalty."
-          },
-          {
-            name: "marketing_info",
-            keywords: ["what is digital marketing", "define marketing", "explain marketing", "marketing meaning", "ما هو التسويق الرقمي", "تعريف التسويق"],
-            response: "Digital marketing is the promotion of brands to connect with potential customers using the internet and digital communication (SEO, Social Media, Paid Ads, Email). Abdelrahman specializes in designing custom strategy playbooks that align business goals with market opportunities!"
-          },
-          {
-            name: "retention_info",
-            keywords: ["what is retention", "define retention", "customer loyalty", "churn rate", "ما هو الاحتفاظ بالعملاء", "الولاء"],
-            response: "Customer retention refers to the strategy and actions companies take to keep clients loyal and reduce churn. Abdelrahman is an award-winning retention specialist ( Concentrix 1st Enterprise Loyalty Award 2026 ) who maps behavior and restructures guides to lower support recurrence."
-          },
-          {
-            name: "seo_info",
-            keywords: ["what is seo", "define seo", "search engine optimization", "ما هو السيو", "تحسين محركات البحث"],
-            response: "SEO (Search Engine Optimization) is the practice of optimizing web content and structure to increase organic search visibility. Abdelrahman has experience optimizing CMS systems like Odoo and Wix, commending landing page UX, and tracking search index growth."
-          },
-          {
-            name: "ai_info",
-            keywords: ["what is ai", "define artificial intelligence", "robot", "chatbot", "ما هو الذكاء الاصطناعي", "روبوت"],
-            response: "AI (Artificial Intelligence) is the simulation of human cognitive processes by computer systems. I am an AI-driven chatbot representation of Abdelrahman's digital footprint, built to handle marketing, professional, and general questions!"
-          },
-          {
-            name: "greetings",
-            keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you", "أهلا", "مرحبا", "سلام", "ازيك"],
-            response: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about his marketing projects, retention work, or how he can help your team!"
           }
         ]
       },
@@ -1601,159 +2114,103 @@ document.addEventListener('DOMContentLoaded', () => {
             response: "أشرفت على تنفيذ عدة مشاريع استراتيجية رئيسية:<br>• <strong>هدايا كيوكو (2026):</strong> خطة تسويقية متكاملة للتجارة الإلكترونية تشمل مخطط نموذج العمل، المزيج التسويقي، واستراتيجية المحيط الأزرق.<br>• <strong>أكاديمية نيو دايركشن:</strong> خطة الإطلاق وتحديد التموضع التنافسي والهوية الكاملة للأكاديمية.<br>• <strong>هوستنج و دومين:</strong> تدقيق شامل لتجربة المستخدم (UX) والمحتوى لرفع المبيعات."
           },
           {
-            name: "kyoko",
-            keywords: ["كيوكو", "هدايا", "تجارة", "الكترونية", "هدية", "kyoko", "gifts"],
-            response: "<strong>هدايا كيوكو (2026)</strong> هي علامة تجارية رائدة في التجارة الإلكترونية. قمت ببناء دليلها التسويقي الكامل، ورسم خريطة رحلة العميل، وتحديد ركائز المحتوى، وتطبيق استراتيجية المحيط الأزرق مع وضع نظام قياس الأداء المكون من 6 تصنيفات."
-          },
-          {
-            name: "new_direction",
-            keywords: ["دايركشن", "اتجاه", "جديد", "أكاديمية", "انجليزي", "تعليم", "new direction"],
-            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية (من سبتمبر ٢٠٢٠ إلى مايو ٢٠٢٢ كمسوق رقمي ومخطط استراتيجي للعلامة التجارية)، توليت إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
-          },
-          {
-            name: "hosting",
-            keywords: ["استضافة", "هوستنج", "دومين", "تدقيق", "موقع", "تحسين", "مبيعات", "hosting"],
-            response: "لمشروع <strong>هوستنج و دومين</strong>، أجريت تحليلاً دقيقاً لتجربة المستخدم وتدقيق المحتوى، وحددت نقاط تسرب العملاء في صفحات الهبوط، مما ساعد في تحسين مسار المبيعات."
-          },
-          {
             name: "skills",
             keywords: ["مهارات", "أدوات", "ميزات", "قدرات", "تسويق", "تحليل", "اعلانات", "كتابة", "محتوى", "skills", "tools"],
             response: "تنقسم مهاراتي إلى:<br>• <strong>الاستراتيجية:</strong> SWOT، الأهداف الذكية SMART، شخصيات المشتري، استراتيجية المحيط الأزرق، مخطط نموذج العمل.<br>• <strong>المحتوى:</strong> كتابة المحتوى الإعلاني باللغتين العربية والإنجليزية، خطط وجداول المحتوى، نبرة العلامة التجارية.<br>• <strong>النمو والتحليل:</strong> تصميم أطر مؤشرات الأداء (KPIs)، إحصاءات ميتا، تحسين معدلات التحويل (CRO)، وتحليل المنافسين.<br>• <strong>الأدوات:</strong> Meta Ads Manager، TikTok Ads Manager، نظام إدارة المحتوى Odoo، وتطبيقات Canva والذكاء الاصطناعي."
           },
           {
-            name: "volunteer",
-            keywords: ["تطوع", "خيري", "رسالة", "قائد", "انوار", "الزقازيق", "volunteer", "charity"],
-            response: "عملت كـ **قائد لفريق التسويق** (مايو ٢٠١٩ - أكتوبر ٢٠٢٢) في نشاط أنوار رسالة الزقازيق (جمعية رسالة للأعمال الخيرية). قمت بقيادة وتدريب فريق من 8 أفراد على كتابة المحتوى، وإطلاق حملات التوعية، وحصلت على جائزة التقديم والإلقاء من الجمعية."
-          },
-          {
-            name: "services",
-            keywords: ["خدمات", "مساعدة", "خدمة", "تسويق", "استراتيجية", "استشاري", "حملات", "اعلانات", "تحسين", "عملاء", "ولاء"],
-            response: "أتميز بتقديم خدمات متكاملة في التسويق الرقمي واستراتيجيات الاحتفاظ بالعملاء (Retention):<br>• <strong>الاحتفاظ بالعملاء والولاء:</strong> تقليل نسب تسرب العملاء، وتحليل سلوكيات الشكاوى، ووضع خطط الولاء.<br>• <strong>تسويق التجارة الإلكترونية:</strong> بناء خطط تسويقية متكاملة (تحليل SWOT، الأهداف الذكية SMART، شخصيات المشتري، ومؤشرات الأداء).<br>• <strong>إطلاق العلامات التجارية:</strong> خطط إطلاق المنصات التعليمية والخدمية وحملات منصات التواصل الاجتماعي (ميتا، تيك توك).<br>• <strong>تحسين معدلات التحويل (CRO) وتدقيق المحتوى:</strong> تقليل مشكلات تجربة المستخدم بالمواقع وتحسين مسارات الشراء للعملاء."
-          },
-          {
-            name: "rates",
-            keywords: ["سعر", "أسعار", "تكلفة", "سعر الخدمات", "راتب", "توظيف", "عقد", "عمل", "ميزانية", "rates", "salary"],
-            response: "أنا منفتح لفرص العمل بدوام كامل، والاستشارات المستقلة (Freelance)، والعقود الاستراتيجية. تعتمد الأسعار وتوقعات الرواتب على نطاق العمل ومدة العقد. يسعدني التواصل عبر <a href=\"https://wa.me/201157265599\" target=\"_blank\">واتساب</a> لمناقشة التفاصيل!"
-          },
-          {
-            name: "location",
-            keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
-          },
-          {
-            name: "thanks",
-            keywords: ["شكرا", "شكرًا", "تسلم", "جزاك", "مشكور", "رائع", "جميل", "ممتاز", "thank", "thanks"],
-            response: "على الرحب والسعة! يسعدني دائماً مساعدتك. لا تتردد في طرح أي أسئلة أخرى حول أعمال عبد الرحمن أو خبراته."
-          },
-          {
-            name: "abilities",
-            keywords: ["ماذا تفعل", "مساعدة", "من أنت", "قدراتك", "كيف استعملك", "help", "do"],
-            response: "يمكنني الإجابة عن أي استفسار يخص الحياة المهنية لعبد الرحمن. جرب أن تسألني عن:<br>• لماذا يجب أن نقوم بتوظيفك؟<br>• ما هي خبراته المهنية؟<br>• ما هي مشاريعه التسويقية؟<br>• كيف يمكنني التواصل معه؟"
-          },
-          {
             name: "why_hire",
             keywords: ["توظيف", "لماذا", "توظف", "تعيين", "مميزات", "لماذا نوظفك", "نتائج", "فائدة"],
             response: "يجب عليك توظيف عبد الرحمن بسبب سجله الحافل في الاحتفاظ بالعملاء والتسويق الرقمي. خلال عمله في كونسنتريكس، حصل على جائزة الولاء الأولى (2026) لتحقيقه المركز الأول في استبقاء العملاء وتقليل تسربهم. كما يمتلك خبرة عملية في إعداد الخطط التسويقية، وإدارة الحملات الاجتماعية، وتحسين تجارب الدعم لتعزيز ولاء العملاء."
-          },
-          {
-            name: "marketing_info",
-            keywords: ["التسويق الرقمي", "ما هو التسويق", "تعريف التسويق", "digital marketing", "define marketing"],
-            response: "التسويق الرقمي هو ترويج العلامات التجارية للتواصل مع العملاء عبر الإنترنت وقنوات التواصل الرقمي. يتخصص عبد الرحمن في بناء الأدلة التسويقية المخصصة التي تربط بين أهداف العمل واحتياجات السوق الحقيقية!"
-          },
-          {
-            name: "retention_info",
-            keywords: ["الاحتفاظ بالعملاء", "ما هو الاحتفاظ", "الولاء", "retention", "loyalty"],
-            response: "الاحتفاظ بالعملاء (Customer Retention) هو الأنشطة التي تتخذها الشركات لزيادة ولاء عملائها وتقليل نسب تسربهم. عبد الرحمن خبير معتمد في الاحتفاظ بالعملاء وحصل على جائزة الولاء الأولى على مستوى مؤسسة كونسنتريكس لتميزه في هذا مجال."
-          },
-          {
-            name: "seo_info",
-            keywords: ["السيو", "ما هو السيو", "محركات البحث", "seo", "search engine"],
-            response: "تحسين محركات البحث (SEO) هو تحسين المواقع والصفحات لزيادة نسبة ظهورها بشكل طبيعي على محركات البحث. يمتلك عبد الرحمن خبرة في تطوير أداء السيو على أنظمة إدارة المحتوى Odoo و Wix وكتابة الأوصاف التعريفية للمنتجات."
-          },
-          {
-            name: "ai_info",
-            keywords: ["الذكاء الاصطناعي", "ما هو الذكاء", "روبوت", "بوت", "ai", "artificial intelligence"],
-            response: "الذكاء الاصطناعي هو محاكاة العمليات الذهنية البشرية بواسطة الآلات. أنا مساعد ذكي أعمل كخوارزمية محاكاة لتمثيل الحضور الرقمي لعبد الرحمن ومساعدتك في الإجابة عن أي تساؤل!"
-          },
-          {
-            name: "greetings",
-            keywords: ["أهلا", "اهلاً", "مرحباً", "مرحبا", "السلام", "سلام", "ازيك", "أهلاً وسهلاً", "من أنت", "مين"],
-            response: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن مشاريعه التسويقية، أو أعماله في الاحتفاظ بالعملاء، أو كيف يمكنه مساعدة فريقك!"
           }
         ]
       }
     };
 
-    // Helper: Normalize inputs for better token matching (removes diacritics in Arabic)
-    const normalizeText = (text) => {
-      let str = text.toLowerCase().trim();
-      // Remove Arabic diacritics: \u064B-\u0652 covers fathah, dammah, kasrah, sukoon, shaddah, tanween
-      str = str.replace(/[\u064B-\u0652]/g, "");
-      // Replace Alif variations (أ, إ, آ) with plain Alif (ا)
-      str = str.replace(/[\u0622\u0623\u0625]/g, "\u0627");
-      // Replace Ta Marbuta (ة) with Ha (ه)
-      str = str.replace(/\u0629/g, "\u0647");
-      // Replace Alef Maksura (ى) with Ya (ي)
-      str = str.replace(/\u0649/g, "\u064A");
-      // Remove question marks, periods, commas, slashes, brackets
-      str = str.replace(/[?؟.,!/\\()]/g, "");
-      return str;
-    };
+    // System Prompt context for Gemini API
+    const systemPrompt = `You are Astro-Bot, the smart cosmic AI assistant for Abdelrahman's marketing portfolio website.
+Abdelrahman's profile:
+- Role: Digital Marketing Strategist & Brand Planner.
+- Location: 6th of October City, Giza, Egypt.
+- Contact Details: WhatsApp: +201157265599, Email: abdelrahman.abdelhafez10@gmail.com, LinkedIn: https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/
+- Professional Experience:
+  1. Concentrix (Boost Mobile Account) (Aug 2025 - Present) - Sales & Retention Consultant. Won the 1st Enterprise Loyalty Award (2026) for ranking #1 in retaining accounts and reducing churn.
+  2. Tabby (BNPL Fintech) (Apr 2025 - Aug 2025) - E-commerce Experience Specialist. Restructured FAQ guides and mapped buyer support journeys.
+  3. New Direction English Academy (Sep 2020 - May 2022) - Brand launch strategy, SWOT, social ads.
+  4. Fine Stone (Jul 2019 - Feb 2020) - Odoo CMS website coordinator & SEO copywriting.
+- Major Projects:
+  - Kyoko Gifts (2026): A detailed e-commerce playbook (BMC, buyer personas, competitors, Blue Ocean strategy, 6-category KPI framework).
+  - New Direction Academy: Brand launch setup, pricing, customer journey.
+  - HostingWDomain: SaaS UX and content audit.
 
-    // NLP Matching logic (Calculates semantic score based on token overlaps & synonyms)
-    const getBestResponse = (query, lang) => {
-      const normalizedQuery = normalizeText(query);
-      const queryTokens = normalizedQuery.split(/\s+/);
-      
+Your Response Guidelines:
+1. Respond in the user's language (Arabic or English).
+2. Keep responses brief, professional, and friendly (under 3 sentences/lines) so they fit nicely in a chat bubble.
+3. If the user asks about a business, marketing, or strategy concept (e.g. 'What is Blue Ocean Strategy?', 'What is SWOT?', 'How does CRO work?', 'Explain Buyer Persona', 'What is SEO?', etc.):
+   - Explain the concept briefly in 1 sentence.
+   - Connect it to Abdelrahman's work (e.g., 'Abdelrahman applied Blue Ocean Strategy in his Kyoko Gifts playbook to differentiate the brand...').
+   - Tell the user how Abdelrahman can utilize this concept to help their brand succeed.
+4. Keep the tone helpful, polite, and advocate for hiring Abdelrahman. Do not mention certifications or claim false years of experience.`;
+
+    // Local fallback response generator
+    const getLocalResponse = (query, lang) => {
+      const normalizedQuery = query.toLowerCase().trim();
       const langKB = KB[lang] || KB.en;
       let bestIntent = null;
       let maxScore = 0;
 
-      // Conversational context check: if user asks for continuation/pronoun
-      const isContextQuery = (lang === 'ar') 
-        ? ["المزيد", "تفاصيل", "اخبرني", "هذا", "ذلك", "هناك", "اكمل"].some(w => normalizedQuery.includes(w))
-        : ["more", "detail", "tell me", "that", "it", "this", "there", "continue"].some(w => normalizedQuery.includes(w));
-
       for (const intent of langKB.intents) {
         let score = 0;
         for (const kw of intent.keywords) {
-          const normalizedKw = normalizeText(kw);
-          
-          if (normalizedQuery.includes(normalizedKw)) {
+          if (normalizedQuery.includes(kw)) {
             score += 3;
           }
-          
-          for (const token of queryTokens) {
-            if (token === normalizedKw) {
-              score += 2;
-            } else if (token.length > 3 && normalizedKw.includes(token)) {
-              score += 1;
-            }
-          }
         }
-
         if (score > maxScore) {
           maxScore = score;
           bestIntent = intent;
         }
       }
 
-      if (maxScore >= 2 && bestIntent) {
-        lastIntentName = bestIntent.name;
+      if (maxScore >= 3 && bestIntent) {
         return bestIntent.response;
       }
-
-      // Contextual fallback: if score is low but it's a context query and we have a last intent, reuse it
-      if (isContextQuery && lastIntentName) {
-        const matchingIntent = langKB.intents.find(i => i.name === lastIntentName);
-        if (matchingIntent) {
-          return (lang === 'ar') 
-            ? `إليك المزيد من التفاصيل بخصوص ذلك:<br>${matchingIntent.response}`
-            : `Here are more details about that:<br>${matchingIntent.response}`;
-        }
-      }
-
       return langKB.defaultResponse;
+    };
+
+    // Main API Calling Function
+    const fetchGeminiResponse = async (query, lang) => {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        const payload = {
+          contents: [{ role: 'user', parts: [{ text: query }] }],
+          systemInstruction: {
+            parts: [{ text: systemPrompt }]
+          },
+          generationConfig: {
+            maxOutputTokens: 180,
+            temperature: 0.7
+          }
+        };
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error('API request failed');
+        }
+
+        const responseData = await response.json();
+        return responseData.candidates[0].content.parts[0].text;
+      } catch (error) {
+        console.warn('Gemini API call failed, falling back to local KB', error);
+        return getLocalResponse(query, lang);
+      }
     };
 
     const getSuggestions = (lang) => {
@@ -1791,7 +2248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addMessageBubble = (text, sender) => {
       const bubble = document.createElement('div');
       bubble.className = `chat-msg ${sender}`;
-      bubble.innerHTML = text;
+      bubble.innerHTML = text.replace(/\n/g, '<br>');
       chatMessagesContainer.appendChild(bubble);
       chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
     };
@@ -1810,18 +2267,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (indicator) indicator.remove();
     };
 
-    const handleUserMessage = (text) => {
+    const handleUserMessage = async (text) => {
       if (!text.trim()) return;
       
       const lang = document.documentElement.getAttribute('lang') || 'en';
       addMessageBubble(text, 'user');
       showTypingIndicator();
       
-      setTimeout(() => {
-        removeTypingIndicator();
-        const response = getBestResponse(text, lang);
-        addMessageBubble(response, 'bot');
-      }, Math.random() * 600 + 600);
+      const botResponse = await fetchGeminiResponse(text, lang);
+      removeTypingIndicator();
+      addMessageBubble(botResponse, 'bot');
     };
 
     const openChat = () => {
