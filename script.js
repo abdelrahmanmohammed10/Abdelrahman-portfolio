@@ -2,6 +2,12 @@
    PORTFOLIO V2 INTERACTIVE ENGINE
    ============================================================ */
 
+window.addEventListener('load', () => {
+  if (typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.refresh();
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 
   let lastActiveSection = 'hero';
@@ -1418,50 +1424,34 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       update() {
+        // ALWAYS use manual native physics for x/y updates. GSAP tweening coordinates overwrites physics and breaks mouse interaction!
+        this.x += this.vx;
+        this.y += this.vy;
+        this.y += scrollSpeed * this.z * 0.5;
+        
+        // Twinkle factor determination (GSAP tween value vs native math phase)
+        let currentTwinkle = 0;
         if (typeof gsap !== 'undefined') {
-          // Scroll parallax
-          this.y += scrollSpeed * this.z * 0.5;
-          
-          // Mouse repulsion
-          let dx = this.x - mouse.x;
-          let dy = this.y - mouse.y;
-          let distSq = dx * dx + dy * dy;
-          const maxDist = 150;
-          if (distSq < maxDist * maxDist) {
-            let dist = Math.sqrt(distSq);
-            if (dist > 0) {
-              let force = (maxDist - dist) / maxDist;
-              this.x -= (dx / dist) * force * 2;
-              this.y -= (dy / dist) * force * 2;
-              this.alpha = Math.min(1, this.baseAlpha + force + this.twinkle);
-            }
-          } else {
-            this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + this.twinkle));
+            currentTwinkle = this.twinkle;
+        } else {
+            this.twinklePhase += this.twinkleSpeed;
+            currentTwinkle = Math.sin(this.twinklePhase) * 0.5;
+        }
+        
+        let dx = this.x - mouse.x;
+        let dy = this.y - mouse.y;
+        let distSq = dx * dx + dy * dy;
+        const maxDist = 150;
+        if (distSq < maxDist * maxDist) {
+          let dist = Math.sqrt(distSq);
+          if (dist > 0) {
+            let force = (maxDist - dist) / maxDist;
+            this.x -= (dx / dist) * force * 2;
+            this.y -= (dy / dist) * force * 2;
+            this.alpha = Math.min(1, this.baseAlpha + force + currentTwinkle);
           }
         } else {
-          // MANUAL UPDATE FALLBACK
-          this.x += this.vx;
-          this.y += this.vy;
-          this.y += scrollSpeed * this.z * 0.5;
-          
-          this.twinklePhase += this.twinkleSpeed;
-          let twinkleFactor = Math.sin(this.twinklePhase) * 0.5;
-          
-          let dx = this.x - mouse.x;
-          let dy = this.y - mouse.y;
-          let distSq = dx * dx + dy * dy;
-          const maxDist = 150;
-          if (distSq < maxDist * maxDist) {
-            let dist = Math.sqrt(distSq);
-            if (dist > 0) {
-              let force = (maxDist - dist) / maxDist;
-              this.x -= (dx / dist) * force * 2;
-              this.y -= (dy / dist) * force * 2;
-              this.alpha = Math.min(1, this.baseAlpha + force + twinkleFactor);
-            }
-          } else {
-            this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + twinkleFactor));
-          }
+          this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + currentTwinkle));
         }
         
         // Screen wrap
@@ -1585,32 +1575,31 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       update() {
-        if (typeof gsap !== 'undefined') {
-          // Parallax scroll reaction
-          this.y += scrollSpeed * this.z * 0.22;
-        } else {
-          // Fallback manual update drift
-          this.x += this.vx;
-          this.y += this.vy;
+        // ALWAYS use manual native drift physics for x/y updates. GSAP tweening overwrites physics and breaks mouse/parallax interactions!
+        this.x += this.vx;
+        this.y += this.vy;
+        
+        if (typeof gsap === 'undefined') {
           this.y += Math.sin(this.breathPhase * 0.5) * 0.06 * this.z;
-          this.y += scrollSpeed * this.z * 0.22;
           this.breathPhase += this.breathSpeed;
-          
-          // Wrap around screen boundaries in all directions
-          if (this.x - this.width > width) {
-            this.x = -this.width;
-            this.y = Math.random() * height;
-          } else if (this.x + this.width < 0) {
-            this.x = width;
-            this.y = Math.random() * height;
-          }
-          if (this.y - this.height > height) {
-            this.y = -this.height;
-            this.x = Math.random() * (width + 200) - 100;
-          } else if (this.y + this.height < 0) {
-            this.y = height;
-            this.x = Math.random() * (width + 200) - 100;
-          }
+        }
+        
+        this.y += scrollSpeed * this.z * 0.22;
+        
+        // Wrap around screen boundaries in all directions
+        if (this.x - this.width > width) {
+          this.x = -this.width;
+          this.y = Math.random() * height;
+        } else if (this.x + this.width < 0) {
+          this.x = width;
+          this.y = Math.random() * height;
+        }
+        if (this.y - this.height > height) {
+          this.y = -this.height;
+          this.x = Math.random() * (width + 200) - 100;
+        } else if (this.y + this.height < 0) {
+          this.y = height;
+          this.x = Math.random() * (width + 200) - 100;
         }
         
         // Mouse repulsion
