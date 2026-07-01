@@ -345,8 +345,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. GSAP Count-up animations
     document.querySelectorAll('.stat-num').forEach(num => {
       const limit = parseInt(num.getAttribute('data-val')) || 0;
-      gsap.from(num, {
-        textContent: 0,
+      // Start element text at 0 before running the count-up tween
+      num.textContent = "0";
+      gsap.to(num, {
+        textContent: limit,
         duration: 1.6,
         ease: "power2.out",
         snap: { textContent: 1 },
@@ -706,7 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----- 10. PROJECT DRAWERS (GSAP Accelerated Slide-ins) ----- */
-  const projectCards = document.querySelectorAll('.project-glass-card, .skill-category');
+  const projectCards = document.querySelectorAll('.project-glass-card, .skill-category, .timeline-card');
   const drawers = document.querySelectorAll('.project-drawer');
 
   drawers.forEach(drawer => {
@@ -725,11 +727,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const panel = drawer.querySelector('.drawer-panel');
     const overlay = drawer.querySelector('.drawer-overlay');
 
-    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-    const startX = isRtl ? "-100%" : "100%";
-
-    gsap.fromTo(panel, { x: startX }, { x: "0%", duration: 0.55, ease: "power3.out" });
-    gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.4 });
+    if (window.innerWidth <= 768) {
+      // Mobile bottom sheet: slide up
+      gsap.fromTo(panel, { y: "100%", x: "0%" }, { y: "0%", x: "0%", duration: 0.5, ease: "power3.out" });
+    } else {
+      // Desktop modal: scale up & fade in
+      gsap.fromTo(panel, { scale: 0.88, opacity: 0, x: "0%", y: "0%" }, { scale: 1.0, opacity: 1, x: "0%", y: "0%", duration: 0.45, ease: "back.out(1.15)" });
+    }
+    gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.35 });
 
     const closeBtn = drawer.querySelector('.drawer-close');
     if (closeBtn) closeBtn.focus();
@@ -739,10 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const panel = drawer.querySelector('.drawer-panel');
     const overlay = drawer.querySelector('.drawer-overlay');
 
-    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-    const endX = isRtl ? "-100%" : "100%";
-
-    gsap.to(panel, { x: endX, duration: 0.45, ease: "power3.in", onComplete: () => {
+    const finishClose = () => {
       drawer.classList.remove('active');
       drawer.setAttribute('aria-hidden', 'true');
       drawer.setAttribute('inert', '');
@@ -751,8 +753,16 @@ document.addEventListener('DOMContentLoaded', () => {
         activeTriggerElement.focus();
         activeTriggerElement = null;
       }
-    }});
-    gsap.to(overlay, { opacity: 0, duration: 0.35 });
+    };
+
+    if (window.innerWidth <= 768) {
+      // Mobile bottom sheet: slide down
+      gsap.to(panel, { y: "100%", duration: 0.4, ease: "power3.in", onComplete: finishClose });
+    } else {
+      // Desktop modal: scale down & fade out
+      gsap.to(panel, { scale: 0.9, opacity: 0, duration: 0.35, ease: "power2.in", onComplete: finishClose });
+    }
+    gsap.to(overlay, { opacity: 0, duration: 0.3 });
   };
 
   projectCards.forEach(card => {
@@ -957,7 +967,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ----- 12. GLASS CARDS mouse tracking (3D GSAP TILT EFFECT) ----- */
-  const glassCards = document.querySelectorAll('.project-glass-card, .certificate-glass-card, .campaign-glass-card');
+  const glassCards = document.querySelectorAll('.project-glass-card, .certificate-glass-card, .campaign-glass-card, .skill-category, .timeline-card');
   
   glassCards.forEach(card => {
     let rect = null;
@@ -1444,13 +1454,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let dx = this.x - mouse.x;
         let dy = this.y - mouse.y;
         let distSq = dx * dx + dy * dy;
-        const maxDist = 150;
+        const maxDist = 200;
         if (distSq < maxDist * maxDist) {
           let dist = Math.sqrt(distSq);
           if (dist > 0) {
             let force = (maxDist - dist) / maxDist;
-            this.x -= (dx / dist) * force * 2;
-            this.y -= (dy / dist) * force * 2;
+            this.x -= (dx / dist) * force * 4;
+            this.y -= (dy / dist) * force * 4;
             this.alpha = Math.min(1, this.baseAlpha + force + currentTwinkle);
           }
         } else {
@@ -1467,7 +1477,7 @@ document.addEventListener('DOMContentLoaded', () => {
       draw() {
         let currentTwinkle = (typeof gsap !== 'undefined') ? this.twinkle : Math.sin(this.twinklePhase) * 0.3;
         let currentZ = Math.max(0.1, this.z + currentTwinkle);
-        let renderAlpha = this.alpha * 0.35;
+        let renderAlpha = this.alpha * 0.6;
 
         if (this.z > 0.8 && renderAlpha > 0.2) {
           ctx.beginPath();
@@ -1846,6 +1856,13 @@ document.addEventListener('DOMContentLoaded', () => {
       targetMouse.y = -1000;
     });
     
+    window.addEventListener('touchstart', (e) => {
+      targetMouse.x = e.touches[0].clientX;
+      targetMouse.y = e.touches[0].clientY;
+      mouse.x = targetMouse.x;
+      mouse.y = targetMouse.y;
+    }, { passive: true });
+
     window.addEventListener('touchmove', (e) => {
       targetMouse.x = e.touches[0].clientX;
       targetMouse.y = e.touches[0].clientY;
@@ -1853,6 +1870,11 @@ document.addEventListener('DOMContentLoaded', () => {
         mouse.x = targetMouse.x;
         mouse.y = targetMouse.y;
       }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      targetMouse.x = -1000;
+      targetMouse.y = -1000;
     }, { passive: true });
     
     init();

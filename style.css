@@ -1470,7 +1470,8 @@ button, input, textarea {
 
 /* Dim siblings effect */
 .projects-stack:hover .project-glass-card:not(:hover) {
-  opacity: 0.45;
+  opacity: 0.65;
+  filter: brightness(0.85);
 }
 
 .project-glass-card:hover {
@@ -2384,6 +2385,7 @@ button, input, textarea {
   pointer-events: none;
   overflow: hidden;
   display: block;
+  opacity: 1;
   will-change: transform;
 }
 
@@ -2503,20 +2505,21 @@ button, input, textarea {
 .project-drawer {
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   z-index: 99999;
   display: flex;
-  justify-content: flex-end;
   opacity: 0;
   pointer-events: none;
-  transition: var(--transition-smooth);
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  visibility: hidden;
 }
 
 .project-drawer.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
 }
 
 .drawer-overlay {
@@ -2532,20 +2535,46 @@ button, input, textarea {
 .drawer-panel {
   position: relative;
   width: 100%;
-  max-width: 600px;
-  height: 100%;
   background: #080c16;
-  border-left: 1px solid var(--border-color);
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
-  padding: 60px 40px;
   overflow-y: auto;
   z-index: 5;
-  transform: translateX(100%);
-  transition: transform 0.65s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.project-drawer.active .drawer-panel {
-  transform: translateX(0);
+/* Desktop: Centered Modal Overlay */
+@media (min-width: 769px) {
+  .project-drawer {
+    justify-content: center;
+    align-items: center;
+  }
+  .drawer-panel {
+    width: 90%;
+    max-width: 650px;
+    height: auto;
+    max-height: 85vh;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+    padding: 50px 40px;
+    transform: scale(0.9);
+  }
+}
+
+/* Mobile: Slide-up Bottom Sheet */
+@media (max-width: 768px) {
+  .project-drawer {
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+  .drawer-panel {
+    width: 100%;
+    height: auto;
+    max-height: 82vh;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.3);
+    padding: 40px 24px 30px;
+    transform: translateY(100%);
+  }
 }
 
 .drawer-close {
@@ -3504,9 +3533,7 @@ html[lang="ar"] .drawer-panel {
   transform: translateX(-100%);
 }
 
-html[lang="ar"] .project-drawer.active .drawer-panel {
-  transform: translateX(0);
-}
+html[lang="ar"] 
 
 html[lang="ar"] .drawer-close {
   left: auto;
@@ -3836,10 +3863,7 @@ html[lang="ar"] .project-card-peek {
 
   /* RTL dynamic bottom sheet */
   html[lang="ar"] .drawer-panel {
-    transform: translateY(100%) !important;
-  }
-  html[lang="ar"] .project-drawer.active .drawer-panel {
-    transform: translateY(0) !important;
+    /* RTL bottom sheet: same as LTR on mobile */
   }
 
   /* Drag handle visual */
@@ -4116,7 +4140,7 @@ html[data-theme="light"] .project-tag-badge { color: var(--text-muted); backgrou
 html[data-theme="light"] .project-glass-card:hover .project-tag-badge { color: var(--text-primary); background: rgba(30, 61, 97, 0.08); }
 html[data-theme="light"] .project-btn-reveal { color: var(--text-primary); background: rgba(30, 61, 97, 0.06); border-color: var(--border-color); }
 html[data-theme="light"] .project-glass-card:hover .project-btn-reveal { background: var(--color-purple); color: #ffffff; border-color: var(--color-purple); }
-html[data-theme="light"] .projects-stack:hover .project-glass-card:not(:hover) { opacity: 0.55; }
+html[data-theme="light"] .projects-stack:hover .project-glass-card:not(:hover) { opacity: 0.7; filter: brightness(0.9); }
 html[data-theme="light"] .project-card-peek { background: rgba(255, 255, 255, 0.98); border-top-color: var(--color-cyan); }
 html[data-theme="light"] .project-card-peek .peek-title { color: var(--color-purple); }
 html[data-theme="light"] .project-card-peek .peek-desc { color: var(--text-muted); }
@@ -4483,9 +4507,12 @@ html[lang="ar"] .chat-window-panel {
 .chat-messages-container {
   min-height: 0;
   max-height: calc(100% - 130px);
-  flex-grow: 1;
+  flex: 1 1 0;
   padding: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -5044,4 +5071,14 @@ html.gsap-active .reveal-card,
 html.gsap-active .reveal-paragraph,
 html.gsap-active .split-reveal-heading {
   transition: none !important;
+}
+
+/* Make timeline cards interactive */
+.timeline-card {
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+.timeline-card:hover {
+  border-color: var(--color-cyan);
+  box-shadow: 0 10px 30px rgba(var(--color-cyan-rgb), 0.08);
 }
