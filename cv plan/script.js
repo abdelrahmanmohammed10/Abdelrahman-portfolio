@@ -1257,12 +1257,12 @@ document.addEventListener('DOMContentLoaded', () => {
           this.x = -50;
           this.y = Math.random() * height * 0.4;
         }
-        this.vx = 4 + Math.random() * 4;
-        this.vy = 2 + Math.random() * 2;
-        this.size = 2.5 + Math.random() * 2.5;
-        this.alpha = 0.85 + Math.random() * 0.15;
+        this.vx = 8 + Math.random() * 6; // Faster linear movement
+        this.vy = 4 + Math.random() * 3;
+        this.size = 1.0 + Math.random() * 1.0; // Small star-like head point
+        this.alpha = 0.9 + Math.random() * 0.1;
         this.trail = [];
-        this.trailLength = 22;
+        this.trailLength = 16 + Math.floor(Math.random() * 10);
         this.active = true;
         this.isExploded = false;
       }
@@ -1280,24 +1280,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       draw() {
         if (this.isExploded || this.trail.length === 0) return;
-        ctx.beginPath();
-        ctx.moveTo(this.trail[0].x, this.trail[0].y);
-        for (let i = 1; i < this.trail.length; i++) {
-          ctx.lineTo(this.trail[i].x, this.trail[i].y);
-        }
-        ctx.strokeStyle = `rgba(46, 196, 182, ${this.alpha * 0.38})`;
-        ctx.lineWidth = this.size * 0.8;
-        ctx.lineCap = 'round';
-        ctx.stroke();
         
+        // Draw trailing needle-like line segment by segment with tapering opacity (extremely clean shooting star)
+        for (let i = 1; i < this.trail.length; i++) {
+          ctx.beginPath();
+          ctx.moveTo(this.trail[i-1].x, this.trail[i-1].y);
+          ctx.lineTo(this.trail[i].x, this.trail[i].y);
+          
+          const trailOpacity = this.alpha * (i / this.trail.length) * 0.22;
+          ctx.strokeStyle = `rgba(248, 249, 250, ${trailOpacity})`;
+          ctx.lineWidth = this.size * 0.5 * (i / this.trail.length); // tapers to head
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+        
+        // Head (star-like bright point)
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(248, 249, 250, ${this.alpha})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
         ctx.fill();
         
+        // Faint glow
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * 4, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(46, 196, 182, ${this.alpha * 0.18})`;
+        ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha * 0.12})`;
         ctx.fill();
       }
       explode() {
@@ -1347,28 +1353,46 @@ document.addEventListener('DOMContentLoaded', () => {
     class Star {
       constructor() {
         this.reset();
-        // randomize starting twinkle phase
-        this.twinklePhase = Math.random() * Math.PI * 2;
-        this.twinkleSpeed = Math.random() * 0.05 + 0.01;
+        
+        // Animate the twinkle property using GSAP
+        this.twinkle = 0;
+        this.twinkleTween = gsap.to(this, {
+          twinkle: 0.5,
+          duration: 1.5 + Math.random() * 2.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: Math.random() * 2
+        });
+        
+        // Animate drifting coordinates using GSAP
+        this.baseDriftX = (Math.random() - 0.5) * 50;
+        this.baseDriftY = (Math.random() - 0.5) * 50;
+        this.driftTween = gsap.to(this, {
+          x: `+=${this.baseDriftX}`,
+          y: `+=${this.baseDriftY}`,
+          duration: 20 + Math.random() * 25,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: Math.random() * 3
+        });
       }
       
       reset() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         
-        // Powerful Reality: More larger stars, higher base visibility
         const sizeRand = Math.random();
-        if (sizeRand > 0.96) this.z = Math.random() * 0.7 + 0.5; // planetary bright stars
-        else if (sizeRand > 0.72) this.z = Math.random() * 0.4 + 0.25; // medium stars
-        else this.z = Math.random() * 0.15 + 0.08; // small background stars
+        if (sizeRand > 0.96) this.z = Math.random() * 0.7 + 0.5;
+        else if (sizeRand > 0.72) this.z = Math.random() * 0.4 + 0.25;
+        else this.z = Math.random() * 0.15 + 0.08;
 
         this.baseAlpha = Math.random() * 0.7 + 0.3;
         this.alpha = this.baseAlpha;
         
-        // Color assignment
         this.color = starColors[Math.floor(Math.random() * starColors.length)];
         
-        // Precompute RGB values to avoid hex conversions in every frame
         if (this.color === '#FFFFFF') { this.rgb = { r: 255, g: 255, b: 255 }; }
         else if (this.color === '#F8F9FA') { this.rgb = { r: 248, g: 249, b: 250 }; }
         else if (this.color === '#A0C4FF') { this.rgb = { r: 160, g: 196, b: 255 }; }
@@ -1376,25 +1400,13 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (this.color === '#FFADAD') { this.rgb = { r: 255, g: 173, b: 173 }; }
         else if (this.color === '#2EC4B6') { this.rgb = { r: 46, g: 196, b: 182 }; }
         else { this.rgb = { r: 255, g: 255, b: 255 }; }
-        
-        // Slower, more realistic drift
-        this.vx = (Math.random() - 0.5) * 0.015; // Slowed down for astronomical realism
-        this.vy = -Math.random() * 0.015 - 0.008; // Slowed down for astronomical realism 
       }
       
       update() {
-        // Base movement
-        this.x += this.vx;
-        this.y += this.vy;
-        
-        // Scroll boost
+        // Scroll parallax
         this.y += scrollSpeed * this.z * 0.5;
         
-        // Powerful Twinkle effect
-        this.twinklePhase += this.twinkleSpeed;
-        let twinkle = Math.sin(this.twinklePhase) * 0.5;
-        
-        // Mouse repulsion (optimized squared distance check to prevent lag)
+        // Mouse repulsion
         let dx = this.x - mouse.x;
         let dy = this.y - mouse.y;
         let distSq = dx * dx + dy * dy;
@@ -1405,27 +1417,23 @@ document.addEventListener('DOMContentLoaded', () => {
             let force = (maxDist - dist) / maxDist;
             this.x -= (dx / dist) * force * 2;
             this.y -= (dy / dist) * force * 2;
-            this.alpha = Math.min(1, this.baseAlpha + force + twinkle);
+            this.alpha = Math.min(1, this.baseAlpha + force + this.twinkle);
           }
         } else {
-          this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + twinkle));
+          this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + this.twinkle));
         }
         
         // Screen wrap
-        if (this.x < 0) this.x = width;
-        if (this.x > width) this.x = 0;
-        if (this.y < 0) this.y = height;
-        if (this.y > height) this.y = 0;
+        if (this.x < -50) this.x = width + 50;
+        if (this.x > width + 50) this.x = -50;
+        if (this.y < -50) this.y = height + 50;
+        if (this.y > height + 50) this.y = -50;
       }
       
       draw() {
-        // Dynamic pulsing size based on twinkle
-        let currentZ = Math.max(0.1, this.z + (Math.sin(this.twinklePhase) * 0.3));
-
-        // Scale down alpha to make the stars fade a little (35% of original opacity)
+        let currentZ = Math.max(0.1, this.z + (this.twinkle * 0.3));
         let renderAlpha = this.alpha * 0.35;
 
-        // Draw soft glow halo for brighter stars (replaces slow CPU shadowBlur)
         if (this.z > 0.8 && renderAlpha > 0.2) {
           ctx.beginPath();
           ctx.arc(this.x, this.y, currentZ * 4, 0, Math.PI * 2);
@@ -1438,7 +1446,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha})`;
         ctx.fill();
         
-        // Diffraction spikes (starfish arms) for the largest, brightest stars
         if (this.z > 0.95 && renderAlpha > 0.2) {
           let spikeSize = currentZ * 4.5;
           ctx.beginPath();
@@ -1459,62 +1466,86 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       reset(randomY = false) {
-        // Spawn randomly across width plus horizontal margins
         this.x = Math.random() * (width + 800) - 400;
-        // Spawn vertically: randomly on start, or offscreen top on reset
         this.y = randomY ? Math.random() * height : -400;
-        
-        // Depth scale (z): 0.35 (background layer) to 1.15 (foreground layer)
         this.z = Math.random() * 0.8 + 0.35;
-        
-        // Pick one of the loaded cloud images
         this.imgIndex = Math.floor(Math.random() * cloudSources.length);
         
-        // Size based on depth (increased size for a more voluminous feel)
-        this.baseWidth = 550 + Math.random() * 350; // Increased size to make clouds appear more
+        this.baseWidth = 550 + Math.random() * 350;
         this.width = this.baseWidth * this.z;
-        this.height = this.width * 0.55; // Maintain aspect ratio
+        this.height = this.width * 0.55;
         
-        // Opacity: increased base visibility for highly defined volumetric clouds
-        this.baseAlpha = (Math.random() * 0.12 + 0.82) * (this.z * 0.2 + 0.8); // Increased cloud prominence
+        this.baseAlpha = (Math.random() * 0.12 + 0.82) * (this.z * 0.2 + 0.8);
         this.alpha = this.baseAlpha;
         
-        // Slow atmospheric drift speeds (drifts rightward and slightly downward)
-        this.vx = (0.03 + Math.random() * 0.05) * this.z;
-        this.vy = (0.01 + Math.random() * 0.02) * this.z;
-        
-        // Offset for mouse repulsion
         this.offsetX = 0;
         this.offsetY = 0;
         this.scaleX = 1;
         this.scaleY = 1;
-        this.lastTargetX = 0;
-        this.lastTargetY = 0;
         
-        // Volumetric breath cycle phase
-        this.breathPhase = Math.random() * Math.PI * 2;
-        this.breathSpeed = Math.random() * 0.005 + 0.002;
+        // GSAP animate cloud breath oscillation
+        this.breathX = 1.0;
+        this.breathY = 1.0;
+        
+        this.breathXTween = gsap.to(this, {
+          breathX: 1.09,
+          duration: 3 + Math.random() * 3,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: Math.random() * 2
+        });
+        
+        this.breathYTween = gsap.to(this, {
+          breathY: 1.09,
+          duration: 2.5 + Math.random() * 3,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: Math.random() * 2
+        });
+
+        // GSAP cloud drift tween
+        this.startDrift();
+      }
+
+      startDrift() {
+        const distanceLeft = (width + this.width + 100) - this.x;
+        const totalDistance = width + 2 * this.width + 200;
+        const driftDuration = (distanceLeft / totalDistance) * (100 + Math.random() * 80);
+        
+        this.driftTween = gsap.to(this, {
+          x: width + this.width + 100,
+          duration: driftDuration,
+          ease: "none",
+          onComplete: () => {
+            this.x = -this.width - 100;
+            this.y = Math.random() * height * 0.75;
+            this.driftTween = gsap.to(this, {
+              x: width + this.width + 100,
+              duration: 100 + Math.random() * 80,
+              ease: "none",
+              repeat: -1,
+              onRepeat: () => {
+                this.x = -this.width - 100;
+                this.y = Math.random() * height * 0.75;
+              }
+            });
+          }
+        });
       }
 
       update() {
-        // Apply normal drift
-        this.x += this.vx;
-        this.y += this.vy;
-        
-        // Gentle vertical floating wave oscillation (adds floating realism)
-        this.y += Math.sin(this.breathPhase * 0.5) * 0.06 * this.z;
-        
         // Parallax scroll reaction
         this.y += scrollSpeed * this.z * 0.22;
         
-        // Mouse repulsion (optimized squared distance check)
+        // Mouse repulsion
         const cx = this.x + this.width / 2;
         const cy = this.y + this.height / 2;
-        
         const dx = cx - mouse.x;
         const dy = cy - mouse.y;
         const distSq = dx * dx + dy * dy;
-        const maxDist = 380; // Wider repulsion radius
+        const maxDist = 380;
         
         let targetOffsetX = 0;
         let targetOffsetY = 0;
@@ -1526,67 +1557,32 @@ document.addEventListener('DOMContentLoaded', () => {
           const dist = Math.sqrt(distSq);
           if (dist > 0) {
             const force = (maxDist - dist) / maxDist;
-            
-            // Push cloud away from mouse: slower, smoother push values
             targetOffsetX = (dx / dist) * force * 110 * this.z;
             targetOffsetY = (dy / dist) * force * 75 * this.z;
-            
-            // Squash and stretch aspect ratio to organically reshape the cloud itself
             const angle = Math.atan2(dy, dx);
-            const stretchAmount = force * 0.24; // Up to 24% morph for more visual personality
+            const stretchAmount = force * 0.24;
             targetScaleX = 1.0 - stretchAmount * Math.cos(2 * angle);
             targetScaleY = 1.0 + stretchAmount * Math.cos(2 * angle);
-            
-            // Soft opacity boost when interacting with mouse to highlight shape
             targetAlpha = Math.min(1.0, this.baseAlpha + force * 0.18);
           }
         }
         
-        // Smoothly interpolate current values towards targets on every frame using a premium spring-like lerp
-        const speedFactor = 0.026; // Organic atmospheric damping
+        const speedFactor = 0.026;
         this.offsetX += (targetOffsetX - this.offsetX) * speedFactor;
         this.offsetY += (targetOffsetY - this.offsetY) * speedFactor;
         this.scaleX += (targetScaleX - this.scaleX) * speedFactor;
         this.scaleY += (targetScaleY - this.scaleY) * speedFactor;
         this.alpha += (targetAlpha - this.alpha) * speedFactor;
-        
-        // Breathing cycle
-        this.breathPhase += this.breathSpeed;
-        
-        // Wrap around screen boundaries in all directions
-        if (this.x - this.width > width) {
-          this.x = -this.width;
-          this.y = Math.random() * height;
-        } else if (this.x + this.width < 0) {
-          this.x = width;
-          this.y = Math.random() * height;
-        }
-        if (this.y - this.height > height) {
-          this.y = -this.height;
-          this.x = Math.random() * (width + 200) - 100;
-        } else if (this.y + this.height < 0) {
-          this.y = height;
-          this.x = Math.random() * (width + 200) - 100;
-        }
       }
 
       draw() {
         const img = cloudImages[this.imgIndex];
         if (img && img.complete && img.naturalWidth > 0) {
           ctx.save();
-          // Apply subtle breathing opacity fluctuation
-          const breathAlpha = Math.sin(this.breathPhase) * 0.03;
-          ctx.globalAlpha = Math.max(0.1, Math.min(1.0, this.alpha + breathAlpha));
+          ctx.globalAlpha = Math.max(0.1, Math.min(1.0, this.alpha));
           
-          // Organic, slow shape morphing (independent of mouse)
-          const morphX = 1 + Math.sin(this.breathPhase) * 0.09;
-          const morphY = 1 + Math.cos(this.breathPhase * 0.75) * 0.09;
-          
-          // Draw image centered with offset and dynamic scales
-          const drawW = this.width * morphX * this.scaleX;
-          const drawH = this.height * morphY * this.scaleY;
-          
-          // Subtle drop shadow disabled to resolve mobile scroll lag and maximize performance
+          const drawW = this.width * this.breathX * this.scaleX;
+          const drawH = this.height * this.breathY * this.scaleY;
           
           ctx.drawImage(
             img, 
@@ -1601,6 +1597,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function init() {
+      // Clean up old GSAP tweens on stars and clouds
+      stars.forEach(star => {
+        if (star.twinkleTween) star.twinkleTween.kill();
+        if (star.driftTween) star.driftTween.kill();
+      });
+      clouds.forEach(cloud => {
+        if (cloud.breathXTween) cloud.breathXTween.kill();
+        if (cloud.breathYTween) cloud.breathYTween.kill();
+        if (cloud.driftTween) cloud.driftTween.kill();
+      });
+
       resize();
       
       // Initialize Stars
@@ -2514,6 +2521,10 @@ Your Response Guidelines:
         const lang = document.documentElement.getAttribute('lang') || 'en';
         addMessageBubble(KB[lang].greeting, 'bot');
         renderSuggestions(lang);
+      }
+      chatSuggestionsContainer.classList.remove('hidden');
+      if (chatSuggestionsToggle) {
+        chatSuggestionsToggle.classList.add('active');
       }
     };
 
