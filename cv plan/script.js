@@ -1354,29 +1354,39 @@ document.addEventListener('DOMContentLoaded', () => {
       constructor() {
         this.reset();
         
-        // Animate the twinkle property using GSAP
-        this.twinkle = 0;
-        this.twinkleTween = gsap.to(this, {
-          twinkle: 0.5,
-          duration: 1.5 + Math.random() * 2.5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: Math.random() * 2
-        });
-        
-        // Animate drifting coordinates using GSAP
-        this.baseDriftX = (Math.random() - 0.5) * 50;
-        this.baseDriftY = (Math.random() - 0.5) * 50;
-        this.driftTween = gsap.to(this, {
-          x: `+=${this.baseDriftX}`,
-          y: `+=${this.baseDriftY}`,
-          duration: 20 + Math.random() * 25,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: Math.random() * 3
-        });
+        // Safe check for GSAP presence before launching tweens
+        if (typeof gsap !== 'undefined') {
+          this.twinkle = 0;
+          this.twinkleTween = gsap.to(this, {
+            twinkle: 0.5,
+            duration: 1.5 + Math.random() * 2.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: Math.random() * 2
+          });
+          
+          this.baseDriftX = (Math.random() - 0.5) * 50;
+          this.baseDriftY = (Math.random() - 0.5) * 50;
+          this.driftTween = gsap.to(this, {
+            x: `+=${this.baseDriftX}`,
+            y: `+=${this.baseDriftY}`,
+            duration: 20 + Math.random() * 25,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: Math.random() * 3
+          });
+        } else {
+          // TWINKLE FALLBACKS
+          this.twinkle = 0;
+          this.twinklePhase = Math.random() * Math.PI * 2;
+          this.twinkleSpeed = Math.random() * 0.05 + 0.01;
+          
+          // DRIFT FALLBACKS
+          this.vx = (Math.random() - 0.5) * 0.015;
+          this.vy = -Math.random() * 0.015 - 0.008;
+        }
       }
       
       reset() {
@@ -1403,24 +1413,50 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       update() {
-        // Scroll parallax
-        this.y += scrollSpeed * this.z * 0.5;
-        
-        // Mouse repulsion
-        let dx = this.x - mouse.x;
-        let dy = this.y - mouse.y;
-        let distSq = dx * dx + dy * dy;
-        const maxDist = 150;
-        if (distSq < maxDist * maxDist) {
-          let dist = Math.sqrt(distSq);
-          if (dist > 0) {
-            let force = (maxDist - dist) / maxDist;
-            this.x -= (dx / dist) * force * 2;
-            this.y -= (dy / dist) * force * 2;
-            this.alpha = Math.min(1, this.baseAlpha + force + this.twinkle);
+        if (typeof gsap !== 'undefined') {
+          // Scroll parallax
+          this.y += scrollSpeed * this.z * 0.5;
+          
+          // Mouse repulsion
+          let dx = this.x - mouse.x;
+          let dy = this.y - mouse.y;
+          let distSq = dx * dx + dy * dy;
+          const maxDist = 150;
+          if (distSq < maxDist * maxDist) {
+            let dist = Math.sqrt(distSq);
+            if (dist > 0) {
+              let force = (maxDist - dist) / maxDist;
+              this.x -= (dx / dist) * force * 2;
+              this.y -= (dy / dist) * force * 2;
+              this.alpha = Math.min(1, this.baseAlpha + force + this.twinkle);
+            }
+          } else {
+            this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + this.twinkle));
           }
         } else {
-          this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + this.twinkle));
+          // MANUAL UPDATE FALLBACK
+          this.x += this.vx;
+          this.y += this.vy;
+          this.y += scrollSpeed * this.z * 0.5;
+          
+          this.twinklePhase += this.twinkleSpeed;
+          let twinkleFactor = Math.sin(this.twinklePhase) * 0.5;
+          
+          let dx = this.x - mouse.x;
+          let dy = this.y - mouse.y;
+          let distSq = dx * dx + dy * dy;
+          const maxDist = 150;
+          if (distSq < maxDist * maxDist) {
+            let dist = Math.sqrt(distSq);
+            if (dist > 0) {
+              let force = (maxDist - dist) / maxDist;
+              this.x -= (dx / dist) * force * 2;
+              this.y -= (dy / dist) * force * 2;
+              this.alpha = Math.min(1, this.baseAlpha + force + twinkleFactor);
+            }
+          } else {
+            this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + twinkleFactor));
+          }
         }
         
         // Screen wrap
@@ -1431,7 +1467,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       draw() {
-        let currentZ = Math.max(0.1, this.z + (this.twinkle * 0.3));
+        let currentTwinkle = (typeof gsap !== 'undefined') ? this.twinkle : Math.sin(this.twinklePhase) * 0.3;
+        let currentZ = Math.max(0.1, this.z + currentTwinkle);
         let renderAlpha = this.alpha * 0.35;
 
         if (this.z > 0.8 && renderAlpha > 0.2) {
@@ -1458,9 +1495,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.stroke();
         }
       }
-    }
-
-    class CloudParticle {
+    }\n\n    class CloudParticle {
       constructor() {
         this.reset(true);
       }
@@ -1483,33 +1518,40 @@ document.addEventListener('DOMContentLoaded', () => {
         this.scaleX = 1;
         this.scaleY = 1;
         
-        // GSAP animate cloud breath oscillation
         this.breathX = 1.0;
         this.breathY = 1.0;
         
-        this.breathXTween = gsap.to(this, {
-          breathX: 1.09,
-          duration: 3 + Math.random() * 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: Math.random() * 2
-        });
-        
-        this.breathYTween = gsap.to(this, {
-          breathY: 1.09,
-          duration: 2.5 + Math.random() * 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: Math.random() * 2
-        });
+        if (typeof gsap !== 'undefined') {
+          this.breathXTween = gsap.to(this, {
+            breathX: 1.09,
+            duration: 3 + Math.random() * 3,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: Math.random() * 2
+          });
+          
+          this.breathYTween = gsap.to(this, {
+            breathY: 1.09,
+            duration: 2.5 + Math.random() * 3,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: Math.random() * 2
+          });
 
-        // GSAP cloud drift tween
-        this.startDrift();
+          this.startDrift();
+        } else {
+          // DRIFT & BREATH FALLBACKS
+          this.vx = (0.03 + Math.random() * 0.05) * this.z;
+          this.vy = (0.01 + Math.random() * 0.02) * this.z;
+          this.breathPhase = Math.random() * Math.PI * 2;
+          this.breathSpeed = Math.random() * 0.005 + 0.002;
+        }
       }
 
       startDrift() {
+        if (typeof gsap === 'undefined') return;
         const distanceLeft = (width + this.width + 100) - this.x;
         const totalDistance = width + 2 * this.width + 200;
         const driftDuration = (distanceLeft / totalDistance) * (100 + Math.random() * 80);
@@ -1536,8 +1578,33 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       update() {
-        // Parallax scroll reaction
-        this.y += scrollSpeed * this.z * 0.22;
+        if (typeof gsap !== 'undefined') {
+          // Parallax scroll reaction
+          this.y += scrollSpeed * this.z * 0.22;
+        } else {
+          // Fallback manual update drift
+          this.x += this.vx;
+          this.y += this.vy;
+          this.y += Math.sin(this.breathPhase * 0.5) * 0.06 * this.z;
+          this.y += scrollSpeed * this.z * 0.22;
+          this.breathPhase += this.breathSpeed;
+          
+          // Wrap around screen boundaries in all directions
+          if (this.x - this.width > width) {
+            this.x = -this.width;
+            this.y = Math.random() * height;
+          } else if (this.x + this.width < 0) {
+            this.x = width;
+            this.y = Math.random() * height;
+          }
+          if (this.y - this.height > height) {
+            this.y = -this.height;
+            this.x = Math.random() * (width + 200) - 100;
+          } else if (this.y + this.height < 0) {
+            this.y = height;
+            this.x = Math.random() * (width + 200) - 100;
+          }
+        }
         
         // Mouse repulsion
         const cx = this.x + this.width / 2;
@@ -1579,10 +1646,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const img = cloudImages[this.imgIndex];
         if (img && img.complete && img.naturalWidth > 0) {
           ctx.save();
-          ctx.globalAlpha = Math.max(0.1, Math.min(1.0, this.alpha));
           
-          const drawW = this.width * this.breathX * this.scaleX;
-          const drawH = this.height * this.breathY * this.scaleY;
+          let renderBreathX = this.breathX;
+          let renderBreathY = this.breathY;
+          let alphaBreath = 0;
+          
+          if (typeof gsap === 'undefined') {
+            renderBreathX = 1 + Math.sin(this.breathPhase) * 0.09;
+            renderBreathY = 1 + Math.cos(this.breathPhase * 0.75) * 0.09;
+            alphaBreath = Math.sin(this.breathPhase) * 0.03;
+          }
+          
+          ctx.globalAlpha = Math.max(0.1, Math.min(1.0, this.alpha + alphaBreath));
+          const drawW = this.width * renderBreathX * this.scaleX;
+          const drawH = this.height * renderBreathY * this.scaleY;
           
           ctx.drawImage(
             img, 
@@ -1594,19 +1671,19 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.restore();
         }
       }
-    }
-
-    function init() {
-      // Clean up old GSAP tweens on stars and clouds
-      stars.forEach(star => {
-        if (star.twinkleTween) star.twinkleTween.kill();
-        if (star.driftTween) star.driftTween.kill();
-      });
-      clouds.forEach(cloud => {
-        if (cloud.breathXTween) cloud.breathXTween.kill();
-        if (cloud.breathYTween) cloud.breathYTween.kill();
-        if (cloud.driftTween) cloud.driftTween.kill();
-      });
+    }\n\n    function init() {
+      // Clean up old GSAP tweens on stars and clouds if GSAP is available
+      if (typeof gsap !== 'undefined') {
+        stars.forEach(star => {
+          if (star.twinkleTween) star.twinkleTween.kill();
+          if (star.driftTween) star.driftTween.kill();
+        });
+        clouds.forEach(cloud => {
+          if (cloud.breathXTween) cloud.breathXTween.kill();
+          if (cloud.breathYTween) cloud.breathYTween.kill();
+          if (cloud.driftTween) cloud.driftTween.kill();
+        });
+      }
 
       resize();
       
@@ -1621,9 +1698,7 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < numClouds; i++) {
         clouds.push(new CloudParticle());
       }
-    }
-
-    let isTabVisible = true;
+    }\n\n    let isTabVisible = true;
     document.addEventListener('visibilitychange', () => {
       isTabVisible = !document.hidden;
       if (isTabVisible) {
