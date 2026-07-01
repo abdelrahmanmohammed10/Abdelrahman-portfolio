@@ -248,6 +248,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
+    // Disable CSS transitions to prevent them from fighting GSAP's frame-by-frame updates
+    document.documentElement.classList.add('gsap-active');
+
     // Force base CSS states to opacity: 1 so GSAP from() tweens can animate to full visibility
     document.querySelectorAll('.reveal, .reveal-card, .reveal-paragraph, .split-reveal-heading').forEach(el => {
       el.classList.add('visible');
@@ -2467,7 +2470,7 @@ Your Response Guidelines:
             parts: [{ text: systemPrompt }]
           },
           generationConfig: {
-            maxOutputTokens: 180,
+            maxOutputTokens: 800,
             temperature: 0.7
           }
         };

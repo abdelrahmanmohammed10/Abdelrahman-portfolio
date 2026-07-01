@@ -5000,10 +5000,7 @@ html[data-theme="light"] .chat-close-btn:hover {
 }
 
 /* ----- 13. PERFORMANCE RENDERING OPTIMIZATIONS ----- */
-#journey, #credentials, #contact {
-  content-visibility: auto;
-  contain-intrinsic-size: 800px;
-}
+/* Removed content-visibility: auto because it breaks GSAP ScrollTrigger height calculations */
 
 /* ----- 12d. CHATBOT SUGGESTIONS TOGGLE BUTTON ----- */
 .chat-suggestions-toggle {
@@ -5038,4 +5035,13 @@ html[data-theme="light"] .chat-close-btn:hover {
   html[data-theme="light"] .gradient-mesh {
     animation: none !important;
   }
+}
+
+
+/* ----- GSAP ACTIVE NO-TRANSITIONS OVERRIDE ----- */
+html.gsap-active .reveal,
+html.gsap-active .reveal-card,
+html.gsap-active .reveal-paragraph,
+html.gsap-active .split-reveal-heading {
+  transition: none !important;
 }
