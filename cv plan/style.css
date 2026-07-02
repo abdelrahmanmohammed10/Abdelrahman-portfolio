@@ -379,6 +379,7 @@
 }
 
 html {
+  background-color: var(--bg-primary);
   scroll-behavior: auto !important; /* Required for Lenis smooth scroll compatibility */
   overflow-x: hidden;
   width: 100%;
@@ -387,7 +388,7 @@ html {
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: transparent;
   color: var(--text-primary);
   font-family: var(--font-body);
   line-height: 1.7;
@@ -729,8 +730,6 @@ button, input, textarea {
   width: 0%;
   transition: width 0.1s ease-out;
 }
-
-
 
 /* Hide Preloader class */
 #preloader.loaded {
@@ -3223,8 +3222,6 @@ button, input, textarea {
     max-width: 100%;
   } 
 
-
-  
   /* Performance override for mobile - remove expensive blurs */
   .project-glass-card, 
   .campaign-glass-card, 
@@ -3616,10 +3613,9 @@ html[lang="en"] .spine-dot::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #000000;
+  background: radial-gradient(circle at 50% 50%, #080d19 0%, #03060c 75%, #000000 100%);
   pointer-events: none;
   z-index: -2;
-  animation: meshPulse 10s ease-in-out infinite alternate;
 }
 
 @keyframes meshPulse {
@@ -3875,7 +3871,6 @@ html[lang="ar"] .project-card-peek {
     margin: -15px auto 25px auto;
   }
 }
-
 
 /* ============================================================
    LIGHT MODE THEME — Space Weather Realistic Sky
@@ -4340,8 +4335,6 @@ html[data-theme="light"] .section-divider {
   );
 }
 
-
-
 /* ============================================================
    COSMIC GLASSMORPHIC AI CHATBOT (ASTRO-BOT)
    ============================================================ */
@@ -4466,10 +4459,6 @@ html[lang="ar"] .chat-window-panel {
   gap: 12px;
 }
 
-
-
-
-
 .chat-avatar-orb svg {
   width: 20px;
   height: 20px;
@@ -4523,7 +4512,6 @@ html[lang="ar"] .chat-window-panel {
 .chat-messages-container::-webkit-scrollbar {
   width: 4px;
 }
-
 
 .chat-messages-container::-webkit-scrollbar-track {
   background: rgba(13, 19, 33, 0.4);
@@ -5063,7 +5051,6 @@ html[data-theme="light"] .chat-close-btn:hover {
     animation: none !important;
   }
 }
-
 
 /* ----- GSAP ACTIVE NO-TRANSITIONS OVERRIDE ----- */
 html.gsap-active .reveal,

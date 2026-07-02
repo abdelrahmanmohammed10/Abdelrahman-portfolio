@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let lenis;
   if (window.Lenis) {
     lenis = new Lenis({
-      lerp: 0.1, // Snappy linear interpolation (standard default)
-      wheelMultiplier: 1.15, // Slightly boost wheel response
+      lerp: 0.08, // Snappier scroll response
+      wheelMultiplier: 1.15,
       infinite: false,
     });
 
@@ -112,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
-
 
   const preloader = document.getElementById('preloader');
   
@@ -203,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Safety fallback in case load event does not trigger
   setTimeout(startLoader, 3500);
 
-
   /* ----- 2. DYNAMIC SCROLL PROGRESS BAR ----- */
   const progressBar = document.createElement('div');
   progressBar.className = 'scroll-progress-bar';
@@ -211,13 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Progress bar logic moved to the combined throttled scroll handler below.
 
-
   /* ----- 3. CURSOR SPOTLIGHT ----- */
   // Combined mousemove event listener is defined below in the unified handler to prevent duplicate event loops.
 
-
   /* ----- 4. (Removed 3D Background) ----- */
-
 
   /* ----- 5. MAGNETIC HOVER EFFECT (GSAP Physics) ----- */
   const magneticButtons = document.querySelectorAll('.magnetic-button');
@@ -442,8 +437,6 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineObserver.observe(el);
   });
 
-
-
   /* ----- 8. ACTIVE NAV LINK TRACKING & BACKGROUND PLANETS ----- */
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-spine .spine-dot, .mobile-menu .mob-link');
@@ -454,7 +447,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobLinks = Array.from(document.querySelectorAll('.mobile-menu .mob-link'));
   const currentIndexEl = document.querySelector('.spine-progress-counter .current-index');
   // lastActiveSection declared at DOMContentLoaded top
-
 
   const timeline = document.querySelector('.timeline-container');
   const spineProgress = document.querySelector('.spine-progress');
@@ -651,7 +643,6 @@ document.addEventListener('DOMContentLoaded', () => {
       tickingScroll = true;
     }
   }, { passive: true });
-
 
   /* ----- 9. ACCESSIBILITY UTILITIES (FOCUS TRAP & GLOBAL ESCAPE) ----- */
   let activeTriggerElement = null;
@@ -912,7 +903,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (overlay) overlay.addEventListener('click', closeLightbox);
   }
 
-
   /* ----- 11. MOBILE HAMBURGER MENU ----- */
   const burger = document.getElementById('burger');
   const mobileNav = document.getElementById('mobile-nav-overlay');
@@ -964,7 +954,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileClose) mobileClose.addEventListener('click', closeMobileNav);
     mobileLinks.forEach(link => link.addEventListener('click', closeMobileNav));
   }
-
 
   /* ----- 12. GLASS CARDS mouse tracking (3D GSAP TILT EFFECT) ----- */
   const glassCards = document.querySelectorAll('.project-glass-card, .certificate-glass-card, .campaign-glass-card, .skill-category, .timeline-card');
@@ -1024,7 +1013,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
 
   /* ----- 14. AJAX CONTACT FORM HANDLING ----- */
   const contactForm = document.getElementById('contact-form');
@@ -1191,7 +1179,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initLanguage();
 
-
   // Project cards peek hover details are handled via native CSS now.
 
   /* ============================================================
@@ -1204,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let width, height;
     let stars = [];
     let clouds = [];
-    const numStars = window.innerWidth > 768 ? 400 : 150;
+    const numStars = window.innerWidth > 768 ? 250 : 120;
     const numClouds = window.innerWidth > 768 ? 20 : 0; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
 
     // Preload cloud images for light mode
@@ -1250,7 +1237,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.scale(dpr, dpr);
     }
 
-    
     // Comet & Explosion Particles Register
     let activeComet = null;
     let explosionParticles = [];
@@ -1274,19 +1260,29 @@ document.addEventListener('DOMContentLoaded', () => {
         this.reset();
       }
       reset() {
-        if (Math.random() < 0.5) {
-          this.x = Math.random() * width * 0.6;
+        // Decide spawn location & direction
+        const dir = Math.random() < 0.5 ? 1 : -1; // 1 = top-left to bottom-right, -1 = top-right to bottom-left
+        
+        if (dir === 1) {
+          this.x = Math.random() * width * 0.5 - 100;
           this.y = -50;
+          const angle = Math.PI * 0.25 + (Math.random() - 0.5) * 0.15; // ~45 deg diagonal down-right
+          const speed = 18 + Math.random() * 10;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed;
         } else {
-          this.x = -50;
-          this.y = Math.random() * height * 0.4;
+          this.x = Math.random() * width * 0.5 + width * 0.5 + 100;
+          this.y = -50;
+          const angle = Math.PI * 0.75 + (Math.random() - 0.5) * 0.15; // ~135 deg diagonal down-left
+          const speed = 18 + Math.random() * 10;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed;
         }
-        this.vx = 8 + Math.random() * 6; // Faster linear movement
-        this.vy = 4 + Math.random() * 3;
-        this.size = 1.0 + Math.random() * 1.0; // Small star-like head point
-        this.alpha = 0.9 + Math.random() * 0.1;
+        
+        this.size = 1.0 + Math.random() * 1.2;
+        this.alpha = 1.0;
         this.trail = [];
-        this.trailLength = 16 + Math.floor(Math.random() * 10);
+        this.trailLength = 25 + Math.floor(Math.random() * 15);
         this.active = true;
         this.isExploded = false;
       }
@@ -1298,7 +1294,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         this.x += this.vx;
         this.y += this.vy;
-        if (this.x > width + 100 || this.y > height + 100) {
+        
+        // Gradually fade out head alpha as it burns up
+        this.alpha -= 0.015 + Math.random() * 0.01;
+        
+        if (this.alpha <= 0 || this.x < -150 || this.x > width + 150 || this.y > height + 150) {
           this.active = false;
         }
       }
@@ -1378,7 +1378,11 @@ document.addEventListener('DOMContentLoaded', () => {
       constructor() {
         this.reset();
         
-        // Safe check for GSAP presence before launching tweens
+        // Setup initial drift speeds (always defined, so coordinate updates never produce NaN!)
+        this.vx = (Math.random() - 0.5) * 0.05 * this.z;
+        this.vy = -Math.random() * 0.05 * this.z - 0.015 * this.z;
+        
+        // Setup twinkling with GSAP if available
         if (typeof gsap !== 'undefined') {
           this.twinkle = 0;
           this.twinkleTween = gsap.to(this, {
@@ -1389,27 +1393,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "sine.inOut",
             delay: Math.random() * 2
           });
-          
-          this.baseDriftX = (Math.random() - 0.5) * 50;
-          this.baseDriftY = (Math.random() - 0.5) * 50;
-          this.driftTween = gsap.to(this, {
-            x: `+=${this.baseDriftX}`,
-            y: `+=${this.baseDriftY}`,
-            duration: 20 + Math.random() * 25,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: Math.random() * 3
-          });
         } else {
           // TWINKLE FALLBACKS
           this.twinkle = 0;
           this.twinklePhase = Math.random() * Math.PI * 2;
           this.twinkleSpeed = Math.random() * 0.05 + 0.01;
-          
-          // DRIFT FALLBACKS
-          this.vx = (Math.random() - 0.5) * 0.015;
-          this.vy = -Math.random() * 0.015 - 0.008;
         }
       }
       
@@ -1755,19 +1743,19 @@ document.addEventListener('DOMContentLoaded', () => {
             star.draw();
           });
 
-          // Draw constellation lines
+          // Draw constellation lines (Optimized connection distance and threshold)
           for (let i = 0; i < stars.length; i++) {
             let starA = stars[i];
-            if (starA.z < 0.55) continue;
+            if (starA.z < 0.65) continue;
             
             for (let j = i + 1; j < stars.length; j++) {
               let starB = stars[j];
-              if (starB.z < 0.55) continue;
+              if (starB.z < 0.65) continue;
               
               let dx = starA.x - starB.x;
               let dy = starA.y - starB.y;
               let distSq = dx * dx + dy * dy;
-              const maxConnDist = 110;
+              const maxConnDist = 80;
               if (distSq < maxConnDist * maxConnDist) {
                 let dist = Math.sqrt(distSq);
                 let alphaFactor = (maxConnDist - dist) / maxConnDist;
@@ -1880,7 +1868,6 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
     animate();
   }
-
 
   /* ============================================================
      COSMIC AI CHATBOT ENGINE (ASTRO-BOT)
@@ -2431,30 +2418,36 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // System Prompt context for Gemini API
-    const systemPrompt = `You are Astro-Bot, the smart cosmic AI assistant for Abdelrahman's marketing portfolio website.
-Abdelrahman's profile:
-- Role: Digital Marketing Strategist & Brand Planner.
-- Location: Giza, Egypt.
-- Contact Details: WhatsApp: +201157265599, Email: abdelrahman.abdelhafez10@gmail.com, LinkedIn: https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/
-- Experience:
-  1. Concentrix (Boost Mobile Account) (Aug 2025 - Present) - Sales & Retention Consultant. Won the 1st Enterprise Loyalty Award (2026) for ranking #1 in customer retention.
-  2. Tabby (Fintech / BNPL) (Apr 2025 - Aug 2025) - E-commerce Experience Specialist. Restructured FAQ guides and customer support journeys.
-  3. New Direction English Academy (Sep 2020 - May 2022) - Brand launch strategy, SWOT, Facebook/Instagram campaigns.
-  4. Fine Stone (Jul 2019 - Feb 2020) - Odoo CMS website coordinator & SEO product descriptions.
-- Projects:
-  - Kyoko Gifts (2026): A detailed e-commerce playbook (SWOT, 5 SMART goals, 2 buyer personas, Blue Ocean strategy, 6-category KPI framework).
-  - New Direction Academy: Brand launch setup, pricing, customer journey.
-  - HostingWDomain: SaaS UX and content audit.
+    const systemPrompt = `You are Astro-Bot — Abdelrahman's personal AI assistant embedded in his portfolio.
 
-Your Response Guidelines:
-1. Respond in the user's language (Arabic or English).
-2. Keep responses brief, professional, and friendly (under 4 sentences/lines) so they fit nicely in a chat bubble.
-3. If the user asks about a business, marketing, or strategy concept (e.g. 'What is Blue Ocean?', 'What is SWOT?', 'How does CRO work?', 'Explain Buyer Persona', 'What is SEO?', etc.):
-   You MUST structure your response into three short, bulleted sections:
-   - **What it is:** (Brief 1-sentence definition of the concept)
-   - **Connection to My Work:** (Explain how Abdelrahman applied this concept in his portfolio, e.g., 'Abdelrahman applied Blue Ocean Strategy in his Kyoko Gifts playbook to differentiate the brand...')
-   - **How I Can Utilize It For You:** (Explain how Abdelrahman can deploy this strategy to grow your specific business/marketing results)
-4. Keep the tone helpful, polite, and advocate for hiring Abdelrahman. Do not mention certifications or claim false years of experience.`;
+Your personality: Confident, sharp, strategic. You speak like a senior marketing consultant — direct, no fluff, every sentence carries weight. You're proud of Abdelrahman's work and you know the details cold.
+
+Abdelrahman Mohammed Abdelhafez:
+• Digital Marketing Strategist & Brand Planner based in Giza, Egypt
+• Contact: +201157265599 | abdelrahman.abdelhafez10@gmail.com | LinkedIn: linkedin.com/in/abdelrahman-abdelhafez-994932167/
+
+Career:
+1. Concentrix — Boost Mobile (Aug 2025–Present): Sales & Retention Consultant. Ranked #1 company-wide. Won 1st Enterprise Loyalty Award 2026. Conducts competitive intelligence, resolves critical cancellations.
+2. Tabby Technologies — Fintech/BNPL (Apr–Aug 2025): E-commerce Experience Specialist. Mapped UX friction points in BNPL checkout flows. Rewrote FAQ content to cut repeat contacts.
+3. New Direction Academy — EdTech (Sep 2020–May 2022): Digital Marketer & Brand Strategist. Built brand from zero: logo, tone, positioning. Ran monthly Facebook/Instagram campaigns. Created dual SWOT, buyer personas, competitor pricing analysis.
+4. Fine Stone / UnionAire Group (Jul 2019–Feb 2020): Website Editor. Optimized Odoo CMS landing pages. Wrote SEO product descriptions. Commended by E-commerce Manager.
+
+Projects:
+• Kyoko Gifts (2026): Complete marketing playbook — Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, 4Ps, Blue Ocean positioning, Push & Pull strategy, Meta + TikTok ad copy, content pillars, sales funnel, moderation guide, 6-category KPI framework.
+• New Direction Academy: Strategy & research package — dual SWOT, buyer persona, customer journey map, pricing competitor analysis.
+• HostingWDomain: SaaS UX audit — site architecture review, brand identity gaps, landing page friction analysis, A/B testing roadmap.
+
+RESPONSE RULES:
+1. Match the user's language (Arabic or English). If Arabic, write natural Egyptian/MSA Arabic.
+2. Keep responses concise — 2-4 sentences max for simple questions, up to 6 for concepts.
+3. When asked about a marketing/business concept (Blue Ocean, SWOT, CRO, SEO, etc.), structure your answer as:
+   • **Definition:** One sharp sentence explaining the concept.
+   • **How Abdelrahman Applied It:** Reference a specific project (Kyoko, New Direction, etc.) with real detail.
+   • **What This Means For You:** How hiring Abdelrahman means this strategy works for THEIR brand.
+4. Never use generic filler phrases like "I'd be happy to help" or "That's a great question". Get straight to the point.
+5. Always advocate for hiring Abdelrahman — but with evidence, not empty praise.
+6. If asked something unrelated to marketing/business, briefly answer then redirect: "But what really matters — how can Abdelrahman's strategy skills grow your brand?"
+7. Never fabricate experience or certifications.`;
 
     // Local fallback response generator
     const getLocalResponse = (query, lang) => {
@@ -2684,7 +2677,6 @@ Your Response Guidelines:
   };
 
   initAstroChat();
-
 
 });
 
