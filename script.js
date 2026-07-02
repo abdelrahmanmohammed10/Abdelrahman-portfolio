@@ -1379,8 +1379,12 @@ document.addEventListener('DOMContentLoaded', () => {
         this.reset();
         
         // Setup initial drift speeds (always defined, so coordinate updates never produce NaN!)
-        this.vx = (Math.random() - 0.5) * 0.05 * this.z;
-        this.vy = -Math.random() * 0.05 * this.z - 0.015 * this.z;
+        this.vx = (Math.random() - 0.5) * 0.06 * this.z;
+        this.vy = -Math.random() * 0.06 * this.z - 0.02 * this.z;
+        
+        // Physical velocity states for Spring-Back movement
+        this.px = 0;
+        this.py = 0;
         
         // Setup twinkling with GSAP if available
         if (typeof gsap !== 'undefined') {
@@ -1405,6 +1409,10 @@ document.addEventListener('DOMContentLoaded', () => {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         
+        // original targets for spring physical memory
+        this.ox = this.x;
+        this.oy = this.y;
+        
         const sizeRand = Math.random();
         if (sizeRand > 0.96) this.z = Math.random() * 0.7 + 0.5;
         else if (sizeRand > 0.72) this.z = Math.random() * 0.4 + 0.25;
@@ -1425,12 +1433,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       update() {
-        // ALWAYS use manual native physics for x/y updates. GSAP tweening coordinates overwrites physics and breaks mouse interaction!
-        this.x += this.vx;
-        this.y += this.vy;
-        this.y += scrollSpeed * this.z * 0.5;
+        // Drift the original target position
+        this.ox += this.vx;
+        this.oy += this.vy;
+        this.oy += scrollSpeed * this.z * 0.5;
         
-        // Twinkle factor determination (GSAP tween value vs native math phase)
+        // Wrap original positions
+        if (this.ox < -50) { this.ox = width + 50; this.x = this.ox; }
+        if (this.ox > width + 50) { this.ox = -50; this.x = this.ox; }
+        if (this.oy < -50) { this.oy = height + 50; this.y = this.oy; }
+        if (this.oy > height + 50) { this.oy = -50; this.y = this.oy; }
+        
+        // Calculate acceleration towards the original target path (Spring force)
+        let ax = (this.ox - this.x) * 0.04;
+        let ay = (this.oy - this.y) * 0.04;
+        
+        // Twinkle factor
         let currentTwinkle = 0;
         if (typeof gsap !== 'undefined') {
             currentTwinkle = this.twinkle;
@@ -1439,27 +1457,31 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTwinkle = Math.sin(this.twinklePhase) * 0.5;
         }
         
+        // Calculate mouse repulsion
         let dx = this.x - mouse.x;
         let dy = this.y - mouse.y;
         let distSq = dx * dx + dy * dy;
         const maxDist = 200;
+        
         if (distSq < maxDist * maxDist) {
           let dist = Math.sqrt(distSq);
           if (dist > 0) {
             let force = (maxDist - dist) / maxDist;
-            this.x -= (dx / dist) * force * 4;
-            this.y -= (dy / dist) * force * 4;
-            this.alpha = Math.min(1, this.baseAlpha + force + currentTwinkle);
+            // Accelerate away from mouse
+            ax += (dx / dist) * force * 3.5 * (1.2 - this.z * 0.6);
+            ay += (dy / dist) * force * 3.5 * (1.2 - this.z * 0.6);
+            this.alpha = Math.min(1.0, this.baseAlpha + force * 0.4);
           }
         } else {
-          this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + currentTwinkle));
+          this.alpha = Math.max(0.1, Math.min(1.0, this.baseAlpha + currentTwinkle));
         }
         
-        // Screen wrap
-        if (this.x < -50) this.x = width + 50;
-        if (this.x > width + 50) this.x = -50;
-        if (this.y < -50) this.y = height + 50;
-        if (this.y > height + 50) this.y = -50;
+        // Update velocity with damping and update position
+        this.px = (this.px + ax) * 0.82;
+        this.py = (this.py + ay) * 0.82;
+        
+        this.x += this.px;
+        this.y += this.py;
       }
       
       draw() {
@@ -1641,30 +1663,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
       draw() {
         const img = cloudImages[this.imgIndex];
+        
+        let renderBreathX = this.breathX;
+        let renderBreathY = this.breathY;
+        let alphaBreath = 0;
+        
+        if (typeof gsap === 'undefined') {
+          renderBreathX = 1 + Math.sin(this.breathPhase) * 0.09;
+          renderBreathY = 1 + Math.cos(this.breathPhase * 0.75) * 0.09;
+          alphaBreath = Math.sin(this.breathPhase) * 0.03;
+        }
+        
+        const finalAlpha = Math.max(0.08, Math.min(1.0, this.alpha + alphaBreath));
+        const drawW = this.width * renderBreathX * this.scaleX;
+        const drawH = this.height * renderBreathY * this.scaleY;
+        const drawX = this.x + this.offsetX - (drawW - this.width) / 2;
+        const drawY = this.y + this.offsetY - (drawH - this.height) / 2;
+        
+        // Draw the preloaded WebP image if fully ready
         if (img && img.complete && img.naturalWidth > 0) {
           ctx.save();
+          ctx.globalAlpha = finalAlpha;
+          ctx.drawImage(img, drawX, drawY, drawW, drawH);
+          ctx.restore();
+        } else {
+          // Bulletproof procedural fallback if WebP images are loading or blocked (e.g. file:// CORS context)
+          ctx.save();
+          ctx.globalAlpha = finalAlpha * 0.75; // slightly softer fallback
           
-          let renderBreathX = this.breathX;
-          let renderBreathY = this.breathY;
-          let alphaBreath = 0;
+          const cx = drawX + drawW / 2;
+          const cy = drawY + drawH / 2;
           
-          if (typeof gsap === 'undefined') {
-            renderBreathX = 1 + Math.sin(this.breathPhase) * 0.09;
-            renderBreathY = 1 + Math.cos(this.breathPhase * 0.75) * 0.09;
-            alphaBreath = Math.sin(this.breathPhase) * 0.03;
-          }
+          // Soft radial glow representing the cloud body
+          const grad = ctx.createRadialGradient(cx, cy - drawH * 0.1, 5, cx, cy, drawW * 0.5);
+          grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+          grad.addColorStop(0.55, 'rgba(235, 243, 255, 0.78)');
+          grad.addColorStop(1, 'rgba(220, 232, 248, 0)');
           
-          ctx.globalAlpha = Math.max(0.1, Math.min(1.0, this.alpha + alphaBreath));
-          const drawW = this.width * renderBreathX * this.scaleX;
-          const drawH = this.height * renderBreathY * this.scaleY;
+          ctx.fillStyle = grad;
+          ctx.beginPath();
           
-          ctx.drawImage(
-            img, 
-            this.x + this.offsetX - (drawW - this.width) / 2, 
-            this.y + this.offsetY - (drawH - this.height) / 2, 
-            drawW, 
-            drawH
-          );
+          const r = drawH * 0.44;
+          ctx.arc(cx - drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
+          ctx.arc(cx + drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
+          ctx.arc(cx, cy - drawH * 0.05, r * 1.15, 0, Math.PI * 2);
+          ctx.arc(cx - drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
+          ctx.arc(cx + drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
+          
+          ctx.fill();
           ctx.restore();
         }
       }
