@@ -1219,7 +1219,9 @@ document.addEventListener('DOMContentLoaded', () => {
       img.onerror = () => {
         console.warn(`Failed to load cloud image: ${src}`);
       };
-      img.src = src;
+      // Dynamically resolve cloud path relative to subpage context
+      const isSubpage = window.location.pathname.includes('/cv plan/') || window.location.pathname.includes('/cv%20plan/');
+      img.src = isSubpage ? '../' + src : src;
       cloudImages.push(img);
     });
     
