@@ -1058,7 +1058,7 @@ button, input, textarea {
 }
 
 /* MOBILE HEADER & NAVIGATION (HIDDEN ON DESKTOP) */
-.mobile-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(13, 19, 33, 0.85) !important;
+.mobile-header { background: rgba(13, 19, 33, 0.85) !important;
   display: none;
 }
 
@@ -3011,7 +3011,7 @@ button, input, textarea {
   }
   
   /* Mobile Header */
-  .mobile-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(13, 19, 33, 0.85) !important;
+  .mobile-header { background: rgba(13, 19, 33, 0.85) !important;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -3594,7 +3594,7 @@ html[lang="en"] .spine-dot::after {
     margin-left: 0;
     margin-right: 0;
   }
-  html[lang="ar"] .mobile-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(13, 19, 33, 0.85) !important;
+  html[lang="ar"] .mobile-header { background: rgba(13, 19, 33, 0.85) !important;
     left: 16px;
     right: 16px;
   }
@@ -4092,14 +4092,14 @@ html[data-theme="light"] .about-text { color: var(--text-primary); font-weight: 
 html[data-theme="light"] .about-text strong { color: var(--text-primary); font-weight: 700; }
 
 /* ----- STAT CARDS ----- */
-html[data-theme="light"] .stat-card { background: rgba(255,255,255,0.96); border-color: var(--border-color); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(30,61,97,0.08); }
+html[data-theme="light"] .stat-card { background: rgba(255,255,255,0.96); border-color: var(--border-color); box-shadow: 0 2px 10px rgba(30,61,97,0.08); }
 html[data-theme="light"] .stat-card:hover { background: #ffffff; border-color: var(--color-cyan); box-shadow: 0 4px 20px rgba(var(--color-cyan-rgb),0.12); }
 html[data-theme="light"] .stat-num { color: var(--text-primary); }
 html[data-theme="light"] .stat-plus { color: var(--color-cyan); }
 html[data-theme="light"] .stat-label { color: var(--text-muted); }
 
 /* ----- SKILL CARDS ----- */
-html[data-theme="light"] .skill-category { background: rgba(255,255,255,0.96); border-color: var(--border-color); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(30,61,97,0.08); }
+html[data-theme="light"] .skill-category { background: rgba(255,255,255,0.96); border-color: var(--border-color); box-shadow: 0 2px 10px rgba(30,61,97,0.08); }
 html[data-theme="light"] .skill-category:hover { background: #ffffff; border-color: var(--border-hover); transform: translateY(-5px); box-shadow: 0 12px 28px -8px rgba(30, 61, 97, 0.14); }
 html[data-theme="light"] .skill-category[data-drawer*="strategy"]:hover,
 html[data-theme="light"] .skill-category[data-drawer*="growth"]:hover,
@@ -4125,7 +4125,7 @@ html[data-theme="light"] .skill-category[data-drawer*="leadership"] .tag:hover {
 }
 
 /* ----- PROJECT CARDS ----- */
-html[data-theme="light"] .project-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
+html[data-theme="light"] .project-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .project-glass-card:hover { background: #ffffff; border-color: rgba(30, 61, 97, 0.25); box-shadow: 0 8px 25px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .project-card-title { color: var(--text-primary); }
 html[data-theme="light"] .project-card-meta { color: var(--text-muted); font-weight: 600; }
@@ -4142,7 +4142,7 @@ html[data-theme="light"] .project-card-peek .peek-desc { color: var(--text-muted
 html[data-theme="light"] .project-card-peek .peek-hint { color: var(--color-gold); }
 
 /* ----- CAMPAIGN CARDS ----- */
-html[data-theme="light"] .campaign-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
+html[data-theme="light"] .campaign-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .campaign-glass-card:hover { background: #ffffff; border-color: rgba(30, 61, 97, 0.25); box-shadow: 0 8px 25px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .post-num { color: var(--color-purple); }
 html[data-theme="light"] .post-caption { color: var(--text-primary); }
@@ -4174,7 +4174,7 @@ html[data-theme="light"] .timeline-card:hover {
 }
 
 /* ----- CERTIFICATES ----- */
-html[data-theme="light"] .certificate-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
+html[data-theme="light"] .certificate-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .certificate-glass-card:hover { background: #ffffff; border-color: rgba(30, 61, 97, 0.25); box-shadow: 0 8px 25px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .cert-type-tag { color: var(--color-purple); }
 html[data-theme="light"] .cert-card-title { color: var(--text-primary); }
@@ -4183,13 +4183,13 @@ html[data-theme="light"] .cert-card-reason { color: var(--text-primary); font-we
 html[data-theme="light"] .cert-year { color: var(--color-gold); font-weight: 700; }
 html[data-theme="light"] .cert-view-prompt { color: var(--text-muted); }
 html[data-theme="light"] .certificate-glass-card:hover .cert-view-prompt { color: var(--color-cyan); }
-html[data-theme="light"] .cert-download-center { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(30, 61, 97, 0.05); }
+html[data-theme="light"] .cert-download-center { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); box-shadow: 0 2px 10px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .cert-download-center p { color: var(--text-primary); font-weight: 500; }
 html[data-theme="light"] .btn-full-download { color: #ffffff; background: var(--color-purple); border-color: var(--color-purple); }
 html[data-theme="light"] .btn-full-download:hover { background: transparent; color: var(--color-purple); box-shadow: 0 0 20px var(--border-color); }
 
 /* ----- CONTACT ----- */
-html[data-theme="light"] .contact-form-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
+html[data-theme="light"] .contact-form-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .form-title { color: var(--text-primary); }
 html[data-theme="light"] .form-desc { color: var(--text-muted); }
 html[data-theme="light"] .form-group label { color: var(--text-primary); font-weight: 600; }
