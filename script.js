@@ -1701,9 +1701,9 @@ document.addEventListener('DOMContentLoaded', () => {
           
           // Volumetric 3D radial gradient shading representing the cloud body
           const grad = ctx.createRadialGradient(cx, cy - drawH * 0.12, 5, cx, cy, drawW * 0.5);
-          grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');       # Pure bright center
-          grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.85)');     # Soft light-blue volume
-          grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.45)');     # Blue-grey boundary shadow
+          grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');       // Pure bright center
+          grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.85)');     // Soft light-blue volume
+          grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.45)');     // Blue-grey boundary shadow
           grad.addColorStop(1.0, 'rgba(191, 219, 254, 0)');
           
           ctx.fillStyle = grad;
