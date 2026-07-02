@@ -1201,33 +1201,68 @@ document.addEventListener('DOMContentLoaded', () => {
     const numStars = window.innerWidth > 768 ? 250 : 120;
     const numClouds = window.innerWidth > 768 ? 16 : 8; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
 
-    // Preload cloud images for light mode
-    const cloudImages = [];
-    const cloudSources = ['cloud-flat-1.webp', 'cloud-flat-2.webp', 'cloud-flat-3.webp'];
-    let cloudsLoaded = false;
-    let loadedCount = 0;
-
-    cloudSources.forEach(src => {
-      const img = new Image();
-      // Attach onload callback BEFORE setting src to guarantee it fires for cached assets
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === cloudSources.length) {
-          cloudsLoaded = true;
+    // Offscreen Canvas Cache for high-performance volumetric cloud rendering
+    const cloudCacheCanvases = [];
+    
+    function createCloudCache() {
+      cloudCacheCanvases.length = 0;
+      for (let i = 0; i < 3; i++) {
+        const offCanvas = document.createElement('canvas');
+        const w = 900;
+        const h = 450;
+        offCanvas.width = w;
+        offCanvas.height = h;
+        const offCtx = offCanvas.getContext('2d');
+        
+        const cx = w / 2;
+        const cy = h / 2;
+        const drawW = 600;
+        const drawH = 330;
+        
+        offCtx.save();
+        // Apply soft ambient drop-shadow filter inside the cached canvas texture once!
+        offCtx.filter = 'drop-shadow(0px 10px 20px rgba(30, 61, 97, 0.05))';
+        
+        // Volumetric 3D radial gradient shading
+        const grad = offCtx.createRadialGradient(cx, cy - drawH * 0.12, 5, cx, cy, drawW * 0.5);
+        grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');       // Pure bright center
+        grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.82)');     // Soft light-blue volume
+        grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.40)');     // Blue-grey boundary shadow
+        grad.addColorStop(1.0, 'rgba(191, 219, 254, 0)');
+        
+        offCtx.fillStyle = grad;
+        offCtx.beginPath();
+        
+        const r = drawH * 0.44;
+        
+        if (i === 0) {
+          offCtx.arc(cx - drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
+          offCtx.arc(cx + drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
+          offCtx.arc(cx, cy - drawH * 0.05, r * 1.15, 0, Math.PI * 2);
+          offCtx.arc(cx - drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
+          offCtx.arc(cx + drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
+        } else if (i === 1) {
+          offCtx.arc(cx - drawW * 0.25, cy + drawH * 0.1, r * 0.80, 0, Math.PI * 2);
+          offCtx.arc(cx + drawW * 0.25, cy + drawH * 0.1, r * 0.80, 0, Math.PI * 2);
+          offCtx.arc(cx - drawW * 0.05, cy - drawH * 0.04, r * 1.15, 0, Math.PI * 2);
+          offCtx.arc(cx + drawW * 0.1, cy - drawH * 0.08, r * 1.05, 0, Math.PI * 2);
+        } else {
+          offCtx.arc(cx - drawW * 0.18, cy + drawH * 0.05, r * 0.90, 0, Math.PI * 2);
+          offCtx.arc(cx + drawW * 0.18, cy + drawH * 0.05, r * 0.90, 0, Math.PI * 2);
+          offCtx.arc(cx - drawW * 0.02, cy - drawH * 0.08, r * 1.25, 0, Math.PI * 2);
         }
-      };
-      img.onerror = () => {
-        console.warn(`Failed to load cloud image: ${src}`);
-      };
-      // Dynamically resolve cloud path relative to subpage context
-      const isSubpage = window.location.pathname.includes('/cv plan/') || window.location.pathname.includes('/cv%20plan/');
-      img.src = isSubpage ? '../' + src : src;
-      cloudImages.push(img);
-    });
+        
+        offCtx.fill();
+        offCtx.restore();
+        
+        cloudCacheCanvases.push(offCanvas);
+      }
+    }
     
     // Palette for realistic stars
     // Palette for realistic stars (Color Temperature: Blue-White, Amber, Red Dwarf, Aurora Cyan)
-    const starColors = ['#FFFFFF', '#F8F9FA', '#A0C4FF', '#FFD166', '#FFADAD', '#2EC4B6'];
+    // Palette aligned with brand identity (Teal/Cyan, Solar Gold/Amber, Space Indigo/Purple, Soft Blue, Crisp White)
+    const starColors = ['#FFFFFF', '#2EC4B6', '#FF9F1C', '#4F46E5', '#A0C4FF'];
     
     // Mouse interaction with interpolation for organic, fluid lag
     let mouse = { x: -1000, y: -1000 };
@@ -1423,21 +1458,20 @@ document.addEventListener('DOMContentLoaded', () => {
         this.oy = this.y;
         
         const sizeRand = Math.random();
-        if (sizeRand > 0.96) this.z = Math.random() * 0.7 + 0.5;
-        else if (sizeRand > 0.72) this.z = Math.random() * 0.4 + 0.25;
-        else this.z = Math.random() * 0.15 + 0.08;
+        if (sizeRand > 0.88) this.z = Math.random() * 1.3 + 0.7; // Wider size variation (up to 2px!)
+        else if (sizeRand > 0.55) this.z = Math.random() * 0.6 + 0.25;
+        else this.z = Math.random() * 0.22 + 0.08;
 
-        this.baseAlpha = Math.random() * 0.7 + 0.3;
+        this.baseAlpha = Math.random() * 0.75 + 0.25;
         this.alpha = this.baseAlpha;
         
         this.color = starColors[Math.floor(Math.random() * starColors.length)];
         
         if (this.color === '#FFFFFF') { this.rgb = { r: 255, g: 255, b: 255 }; }
-        else if (this.color === '#F8F9FA') { this.rgb = { r: 248, g: 249, b: 250 }; }
-        else if (this.color === '#A0C4FF') { this.rgb = { r: 160, g: 196, b: 255 }; }
-        else if (this.color === '#FFD166') { this.rgb = { r: 255, g: 209, b: 102 }; }
-        else if (this.color === '#FFADAD') { this.rgb = { r: 255, g: 173, b: 173 }; }
-        else if (this.color === '#2EC4B6') { this.rgb = { r: 46, g: 196, b: 182 }; }
+        else if (this.color === '#2EC4B6') { this.rgb = { r: 46, g: 196, b: 182 }; } // Teal/Cyan
+        else if (this.color === '#FF9F1C') { this.rgb = { r: 255, g: 159, b: 28 }; }  // Solar Gold/Amber
+        else if (this.color === '#4F46E5') { this.rgb = { r: 79, g: 70, b: 229 }; }   // Space Indigo/Purple
+        else if (this.color === '#A0C4FF') { this.rgb = { r: 160, g: 196, b: 255 }; }  // Soft Blue
         else { this.rgb = { r: 255, g: 255, b: 255 }; }
       }
       
@@ -1476,10 +1510,10 @@ document.addEventListener('DOMContentLoaded', () => {
           let dist = Math.sqrt(distSq);
           if (dist > 0) {
             let force = (maxDist - dist) / maxDist;
-            // Gravity attraction: pull towards mouse!
-            ax -= (dx / dist) * force * 3.2 * (1.2 - this.z * 0.6);
-            ay -= (dy / dist) * force * 3.2 * (1.2 - this.z * 0.6);
-            this.alpha = Math.min(1.0, this.baseAlpha + force * 0.4);
+            // Gravity attraction: pull towards mouse! Stronger and more responsive star grouping
+            ax -= (dx / dist) * force * 5.8 * (1.5 - this.z * 0.5);
+            ay -= (dy / dist) * force * 5.8 * (1.5 - this.z * 0.5);
+            this.alpha = Math.min(1.0, this.baseAlpha + force * 0.55);
           }
         } else {
           this.alpha = Math.max(0.1, Math.min(1.0, this.baseAlpha + currentTwinkle));
@@ -1496,12 +1530,13 @@ document.addEventListener('DOMContentLoaded', () => {
       draw() {
         let currentTwinkle = (typeof gsap !== 'undefined') ? this.twinkle : Math.sin(this.twinklePhase) * 0.3;
         let currentZ = Math.max(0.1, this.z + currentTwinkle);
-        let renderAlpha = this.alpha * 0.6;
+        let renderAlpha = this.alpha * 0.65; // Stronger visibility
 
-        if (this.z > 0.8 && renderAlpha > 0.2) {
+        // Ambient glow aura
+        if (this.z > 0.85 && renderAlpha > 0.2) {
           ctx.beginPath();
-          ctx.arc(this.x, this.y, currentZ * 4, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.15})`;
+          ctx.arc(this.x, this.y, currentZ * 4.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.18})`;
           ctx.fill();
         }
 
@@ -1510,15 +1545,16 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha})`;
         ctx.fill();
         
-        if (this.z > 0.95 && renderAlpha > 0.2) {
-          let spikeSize = currentZ * 4.5;
+        // 4-point color-temperature lens flare spikes for massive stars
+        if (this.z > 1.1 && renderAlpha > 0.2) {
+          let spikeSize = currentZ * 5.0;
           ctx.beginPath();
           ctx.moveTo(this.x - spikeSize, this.y);
           ctx.lineTo(this.x + spikeSize, this.y);
           ctx.moveTo(this.x, this.y - spikeSize);
           ctx.lineTo(this.x, this.y + spikeSize);
-          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.2})`;
-          ctx.lineWidth = 0.3;
+          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.25})`;
+          ctx.lineWidth = 0.5;
           ctx.stroke();
         }
       }
@@ -1533,7 +1569,7 @@ document.addEventListener('DOMContentLoaded', () => {
         this.x = Math.random() * (width + 800) - 400;
         this.y = randomY ? Math.random() * height : -400;
         this.z = Math.random() * 0.8 + 0.35;
-        this.imgIndex = Math.floor(Math.random() * cloudSources.length);
+        this.imgIndex = Math.floor(Math.random() * 3);
         
         this.baseWidth = 550 + Math.random() * 350;
         this.width = this.baseWidth * this.z;
@@ -1724,6 +1760,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       resize();
+      
+      // Initialize Offscreen Cloud Textures Cache (Pre-renders all complex gradients and shadow filters once)
+      createCloudCache();
       
       // Initialize Stars
       stars = [];
