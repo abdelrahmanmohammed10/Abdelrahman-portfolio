@@ -1535,11 +1535,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         this.offsetX = 0;
         this.offsetY = 0;
+        
+        // Spring velocity offset states for elastic cloud physics
+        this.vxOffset = 0;
+        this.vyOffset = 0;
+        
         this.scaleX = 1;
         this.scaleY = 1;
         
         this.breathX = 1.0;
         this.breathY = 1.0;
+        
+        // Define drift velocity ALWAYS (so updates never produce NaN!)
+        this.vx = (0.05 + Math.random() * 0.08) * this.z;
+        this.vy = (Math.random() - 0.5) * 0.015 * this.z;
         
         if (typeof gsap !== 'undefined') {
           this.breathXTween = gsap.to(this, {
@@ -1559,42 +1568,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "sine.inOut",
             delay: Math.random() * 2
           });
-
-          this.startDrift();
         } else {
-          // DRIFT & BREATH FALLBACKS
-          this.vx = (0.03 + Math.random() * 0.05) * this.z;
-          this.vy = (0.01 + Math.random() * 0.02) * this.z;
+          // BREATH FALLBACKS
           this.breathPhase = Math.random() * Math.PI * 2;
           this.breathSpeed = Math.random() * 0.005 + 0.002;
         }
-      }
-
-      startDrift() {
-        if (typeof gsap === 'undefined') return;
-        const distanceLeft = (width + this.width + 100) - this.x;
-        const totalDistance = width + 2 * this.width + 200;
-        const driftDuration = (distanceLeft / totalDistance) * (100 + Math.random() * 80);
-        
-        this.driftTween = gsap.to(this, {
-          x: width + this.width + 100,
-          duration: driftDuration,
-          ease: "none",
-          onComplete: () => {
-            this.x = -this.width - 100;
-            this.y = Math.random() * height * 0.75;
-            this.driftTween = gsap.to(this, {
-              x: width + this.width + 100,
-              duration: 100 + Math.random() * 80,
-              ease: "none",
-              repeat: -1,
-              onRepeat: () => {
-                this.x = -this.width - 100;
-                this.y = Math.random() * height * 0.75;
-              }
-            });
-          }
-        });
       }
 
       update() {
