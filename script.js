@@ -1426,9 +1426,11 @@ document.addEventListener('DOMContentLoaded', () => {
         this.vx = (Math.random() - 0.5) * 0.06 * this.z;
         this.vy = -Math.random() * 0.06 * this.z - 0.02 * this.z;
         
-        // Physical velocity states for Spring-Back movement
-        this.px = 0;
-        this.py = 0;
+        // Smooth offset targets for mouse interaction
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.drawX = this.x;
+        this.drawY = this.y;
         
         // Setup twinkling with GSAP if available
         if (typeof gsap !== 'undefined') {
@@ -1453,9 +1455,10 @@ document.addEventListener('DOMContentLoaded', () => {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         
-        // original targets for spring physical memory
-        this.ox = this.x;
-        this.oy = this.y;
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.drawX = this.x;
+        this.drawY = this.y;
         
         const sizeRand = Math.random();
         if (sizeRand > 0.88) this.z = Math.random() * 1.3 + 0.7; // Wider size variation (up to 2px!)
@@ -1476,20 +1479,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       update() {
-        // Drift the original target position
-        this.ox += this.vx;
-        this.oy += this.vy;
-        this.oy += scrollSpeed * this.z * 0.5;
+        // Native drift
+        this.x += this.vx;
+        this.y += this.vy;
+        this.y += scrollSpeed * this.z * 0.5;
         
         // Wrap original positions
-        if (this.ox < -50) { this.ox = width + 50; this.x = this.ox; }
-        if (this.ox > width + 50) { this.ox = -50; this.x = this.ox; }
-        if (this.oy < -50) { this.oy = height + 50; this.y = this.oy; }
-        if (this.oy > height + 50) { this.oy = -50; this.y = this.oy; }
-        
-        // Calculate acceleration towards the original target path (Spring force)
-        let ax = (this.ox - this.x) * 0.04;
-        let ay = (this.oy - this.y) * 0.04;
+        if (this.x < -50) this.x = width + 50;
+        if (this.x > width + 50) this.x = -50;
+        if (this.y < -50) this.y = height + 50;
+        if (this.y > height + 50) this.y = -50;
         
         // Twinkle factor
         let currentTwinkle = 0;
@@ -1500,31 +1499,34 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTwinkle = Math.sin(this.twinklePhase) * 0.5;
         }
         
-        // Calculate mouse repulsion
-        let dx = this.x - mouse.x;
-        let dy = this.y - mouse.y;
+        // Smooth mouse attraction
+        let dx = (this.x + this.offsetX) - mouse.x;
+        let dy = (this.y + this.offsetY) - mouse.y;
         let distSq = dx * dx + dy * dy;
         const maxDist = 200;
         
-        if (distSq < maxDist * maxDist) {
+        let targetOffsetX = 0;
+        let targetOffsetY = 0;
+        let targetAlpha = this.baseAlpha;
+        
+        if (distSq < maxDist * maxDist && distSq > 0) {
           let dist = Math.sqrt(distSq);
-          if (dist > 0) {
-            let force = (maxDist - dist) / maxDist;
-            // Gravity attraction: pull towards mouse! Stronger and more responsive star grouping
-            ax -= (dx / dist) * force * 5.8 * (1.5 - this.z * 0.5);
-            ay -= (dy / dist) * force * 5.8 * (1.5 - this.z * 0.5);
-            this.alpha = Math.min(1.0, this.baseAlpha + force * 0.55);
-          }
+          let force = (maxDist - dist) / maxDist;
+          // Gravity attraction: pull gently towards mouse
+          targetOffsetX = -(dx / dist) * force * 55 * this.z;
+          targetOffsetY = -(dy / dist) * force * 55 * this.z;
+          targetAlpha = Math.min(1.0, this.baseAlpha + force * 0.55);
         } else {
-          this.alpha = Math.max(0.1, Math.min(1.0, this.baseAlpha + currentTwinkle));
+          targetAlpha = Math.max(0.1, Math.min(1.0, this.baseAlpha + currentTwinkle));
         }
         
-        // Update velocity with damping and update position
-        this.px = (this.px + ax) * 0.82;
-        this.py = (this.py + ay) * 0.82;
+        // Damped interpolation for ultra-smooth movement
+        this.offsetX += (targetOffsetX - this.offsetX) * 0.08;
+        this.offsetY += (targetOffsetY - this.offsetY) * 0.08;
+        this.alpha += (targetAlpha - this.alpha) * 0.08;
         
-        this.x += this.px;
-        this.y += this.py;
+        this.drawX = this.x + this.offsetX;
+        this.drawY = this.y + this.offsetY;
       }
       
       draw() {
@@ -1535,13 +1537,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ambient glow aura
         if (this.z > 0.85 && renderAlpha > 0.2) {
           ctx.beginPath();
-          ctx.arc(this.x, this.y, currentZ * 4.5, 0, Math.PI * 2);
+          ctx.arc(this.drawX, this.drawY, currentZ * 4.5, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.18})`;
           ctx.fill();
         }
 
         ctx.beginPath();
-        ctx.arc(this.x, this.y, currentZ, 0, Math.PI * 2);
+        ctx.arc(this.drawX, this.drawY, currentZ, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha})`;
         ctx.fill();
         
@@ -1549,10 +1551,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.z > 1.1 && renderAlpha > 0.2) {
           let spikeSize = currentZ * 5.0;
           ctx.beginPath();
-          ctx.moveTo(this.x - spikeSize, this.y);
-          ctx.lineTo(this.x + spikeSize, this.y);
-          ctx.moveTo(this.x, this.y - spikeSize);
-          ctx.lineTo(this.x, this.y + spikeSize);
+          ctx.moveTo(this.drawX - spikeSize, this.drawY);
+          ctx.lineTo(this.drawX + spikeSize, this.drawY);
+          ctx.moveTo(this.drawX, this.drawY - spikeSize);
+          ctx.lineTo(this.drawX, this.drawY + spikeSize);
           ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.25})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
@@ -1821,7 +1823,12 @@ document.addEventListener('DOMContentLoaded', () => {
             star.draw();
           });
 
-          // Draw constellation lines (Optimized connection distance and threshold)
+          // Draw constellation lines (Optimized connection rendering with single path)
+          ctx.beginPath();
+          ctx.strokeStyle = '#2EC4B6';
+          ctx.lineWidth = 0.35;
+          ctx.globalAlpha = 0.05; // Use a fixed soft opacity to allow batching all lines in one path
+          const maxConnDistSq = 6400; // 80 * 80
           for (let i = 0; i < stars.length; i++) {
             let starA = stars[i];
             if (starA.z < 0.65) continue;
@@ -1830,23 +1837,20 @@ document.addEventListener('DOMContentLoaded', () => {
               let starB = stars[j];
               if (starB.z < 0.65) continue;
               
-              let dx = starA.x - starB.x;
-              let dy = starA.y - starB.y;
+              let dx = starA.drawX - starB.drawX;
+              if (dx > 80 || dx < -80) continue;
+              let dy = starA.drawY - starB.drawY;
+              if (dy > 80 || dy < -80) continue;
+
               let distSq = dx * dx + dy * dy;
-              const maxConnDist = 80;
-              if (distSq < maxConnDist * maxConnDist) {
-                let dist = Math.sqrt(distSq);
-                let alphaFactor = (maxConnDist - dist) / maxConnDist;
-                let lineAlpha = Math.min(starA.alpha, starB.alpha) * 0.09 * alphaFactor;
-                ctx.beginPath();
-                ctx.moveTo(starA.x, starA.y);
-                ctx.lineTo(starB.x, starB.y);
-                ctx.strokeStyle = `rgba(46, 196, 182, ${lineAlpha})`;
-                ctx.lineWidth = 0.35;
-                ctx.stroke();
+              if (distSq < maxConnDistSq) {
+                ctx.moveTo(starA.drawX, starA.drawY);
+                ctx.lineTo(starB.drawX, starB.drawY);
               }
             }
           }
+          ctx.stroke();
+          ctx.globalAlpha = 1.0;
           
           // Comet spawning and processing
           if (!activeComet) {
@@ -2498,7 +2502,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // System Prompt context for Gemini API
     const systemPrompt = `You are Astro-Bot — AbdelrahmanMohammed's personal AI assistant embedded in his portfolio website.
 
-Your personality: Confident, sharp, strategic. You speak like an elite senior marketing consultant — direct, no fluff, every sentence carries weight. You're proud of Abdelrahman's work and you know his background cold.
+Your personality: Confident, sharp, highly strategic, and analytical. You speak like an elite senior marketing consultant and Chief Strategy Officer — direct, no fluff, every sentence carries weight. You are designed to provide rapid, deep insights into business models, marketing analytics, consumer psychology, and brand strategy. You're proud of Abdelrahman's work and you know his background cold.
 
 Abdelrahman Mohammed Abdelhafez:
 • Digital Marketing Strategist & Brand Planner based in Giza, Egypt
@@ -2517,15 +2521,13 @@ Projects:
 
 RESPONSE RULES:
 1. Match the user's language (Arabic or English). If Arabic, write natural Egyptian/MSA Arabic.
-2. Keep responses concise — 2-4 sentences max for simple questions, up to 6 for concepts.
-3. When asked about a marketing/business concept (Blue Ocean, SWOT, CRO, SEO, etc.), structure your answer as:
-   • **Definition:** One sharp sentence explaining the concept.
-   • **How Abdelrahman Applied It:** Reference a specific project (Kyoko, New Direction, etc.) with real detail.
-   • **What This Means For You:** How hiring Abdelrahman means this strategy works for THEIR brand.
-4. Never use generic filler phrases like "I'd be happy to help" or "That's a great question". Get straight to the point.
-5. Always advocate for hiring Abdelrahman — but with evidence, not empty praise.
-6. If asked something unrelated to marketing/business, briefly answer then redirect: "But what really matters — how can Abdelrahman's strategy skills grow your brand?"
-7. Never fabricate experience or certifications.
+2. Be extremely fast and concise. Cut out all introductory fluff ("I'd be happy to help", "Great question"). Get straight to the strategic core. 2-3 sentences for simple questions, heavily packed with value.
+3. When discussing deep topics (Blue Ocean strategy, CAC/LTV ratios, Growth Loops, Behavioral Economics, SEO architecture):
+   • Provide advanced, nuanced insights. Do not give beginner definitions.
+   • Frame the concept through Abdelrahman's applied experience.
+   • Deliver actionable strategic value immediately.
+4. Always position Abdelrahman as a high-ROI strategic investment, linking his specific analytical skills (e.g., UX mapping at Tabby, Retention at Concentrix) to the user's potential growth.
+5. Never fabricate experience or certifications.
 
 FEW-SHOT EXAMPLES:
 
