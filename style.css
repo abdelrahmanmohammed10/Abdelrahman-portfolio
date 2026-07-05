@@ -3613,7 +3613,7 @@ html[lang="en"] .spine-dot::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 50% 50%, #080d19 0%, #03060c 75%, #000000 100%);
+  background: #000000;
   pointer-events: none;
   z-index: -2;
 }
