@@ -1,16 +1,7 @@
 {
   "headers": [
     {
-      "source": "/(fonts|images)/(*.)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(.*).(webp|woff2|png|jpg|svg|css|js)",
+      "source": "/(.*)\\.(css|js|woff2|png|jpg|svg|webp|pdf)",
       "headers": [
         {
           "key": "Cache-Control",
