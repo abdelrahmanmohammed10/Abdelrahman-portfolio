@@ -10,9 +10,8 @@ window.addEventListener('load', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  let lastActiveSection = 'hero';
-  scrollSpeed = 0;
-  lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+  let scrollSpeed = 0;
+  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
 
   // Set stagger indices for cards in containers dynamically on load
   const cardContainers = document.querySelectorAll('.stats-grid, .projects-stack, .campaigns-grid, .certificates-grid, .timeline-items');
@@ -30,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const applyTheme = (theme) => {
     if (theme === 'light') {
       html.setAttribute('data-theme', 'light');
+      if (typeof window.loadCloudImages === 'function') {
+        window.loadCloudImages();
+      }
     } else {
       html.removeAttribute('data-theme');
     }
@@ -456,7 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const spineDots = Array.from(document.querySelectorAll('.nav-spine .spine-dot'));
   const mobLinks = Array.from(document.querySelectorAll('.mobile-menu .mob-link'));
   const currentIndexEl = document.querySelector('.spine-progress-counter .current-index');
-  // lastActiveSection declared at DOMContentLoaded top
 
   const timeline = document.querySelector('.timeline-container');
   const spineProgress = document.querySelector('.spine-progress');
@@ -869,6 +870,9 @@ document.addEventListener('DOMContentLoaded', () => {
         activeTriggerElement = card;
         const imgSrc = card.getAttribute('data-img');
         lightboxImg.src = imgSrc;
+        // Dynamically set descriptive alt text for lightbox accessibility (Fixes A11)
+        const certTitle = card.querySelector('h5') ? card.querySelector('h5').textContent : 'Certificate';
+        lightboxImg.alt = certTitle + ' - Enlarged View';
         lightbox.removeAttribute('inert'); // Enable interaction
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
@@ -1149,7 +1153,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Update spine dots aria-labels dynamically for screen readers
-    const spineDots = document.querySelectorAll('.spine-dot');
     spineDots.forEach(dot => {
       const label = lang === 'ar' ? dot.getAttribute('data-title-ar') : dot.getAttribute('data-title-en');
       dot.setAttribute('aria-label', label || 'Navigation dot');
@@ -1198,10 +1201,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let width, height;
     let stars = [];
     let clouds = [];
+    
+    // Cache active theme state to prevent expensive DOM attribute queries in animate loop
+    let isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const themeObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme') {
+          isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        }
+      });
+    });
+    themeObserver.observe(document.documentElement, { attributes: true });
     const numStars = window.innerWidth > 768 ? 250 : 120;
     const numClouds = window.innerWidth > 768 ? 16 : 8; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
 
-    // Preload original realistic WebP cloud images for light mode
+    // Preload original realistic WebP cloud images for light mode (Lazy-loaded)
     const cloudImages = [];
     const cloudSources = ['cloud-flat-1.webp', 'cloud-flat-2.webp', 'cloud-flat-3.webp'];
     let cloudsLoaded = false;
@@ -1210,6 +1224,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Offscreen Canvas Cache for high-performance volumetric cloud rendering
     const cloudCacheCanvases = [];
     const cloudPadding = 80; // Padding to prevent drop-shadow clipping
+
+    window.loadCloudImages = function() {
+      if (cloudImages.length > 0) return; // Already loaded or loading
+      cloudSources.forEach(src => {
+        const img = new Image();
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === cloudSources.length) {
+            cloudsLoaded = true;
+            createCloudCache();
+          }
+        };
+        img.onerror = () => {
+          console.warn(`Failed to load cloud image: ${src}`);
+          loadedCount++;
+          if (loadedCount === cloudSources.length) {
+            createCloudCache();
+          }
+        };
+        const isSubpage = window.location.pathname.includes('/cv plan/') || window.location.pathname.includes('/cv%20plan/');
+        img.src = isSubpage ? '../' + src : src;
+        cloudImages.push(img);
+      });
+    };
     
     function createCloudCache() {
       cloudCacheCanvases.length = 0;
@@ -1261,27 +1299,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    cloudSources.forEach(src => {
-      const img = new Image();
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === cloudSources.length) {
-          cloudsLoaded = true;
-          createCloudCache();
-        }
-      };
-      img.onerror = () => {
-        console.warn(`Failed to load cloud image: ${src}`);
-        loadedCount++;
-        if (loadedCount === cloudSources.length) {
-          createCloudCache();
-        }
-      };
-      // Dynamically resolve cloud path relative to subpage context
-      const isSubpage = window.location.pathname.includes('/cv plan/') || window.location.pathname.includes('/cv%20plan/');
-      img.src = isSubpage ? '../' + src : src;
-      cloudImages.push(img);
-    });
+
     
     // Palette for realistic stars
     // Palette for realistic stars (Color Temperature: Blue-White, Amber, Red Dwarf, Aurora Cyan)
@@ -1302,6 +1320,7 @@ document.addEventListener('DOMContentLoaded', () => {
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset scale to prevent resize scaling accumulation
       ctx.scale(dpr, dpr);
     }
 
@@ -1761,36 +1780,6 @@ document.addEventListener('DOMContentLoaded', () => {
             drawH + padY * 2
           );
           ctx.restore();
-        } else {
-          // Bulletproof procedural fallback if WebP images are loading or blocked (e.g. file:// CORS context)
-          ctx.save();
-          ctx.globalAlpha = finalAlpha * 0.75; // slightly softer fallback
-          
-          // Apply soft ambient drop-shadow filter to procedural canvas puffs
-          ctx.filter = 'drop-shadow(0px 6px 12px rgba(30, 61, 97, 0.05))';
-          
-          const cx = drawX + drawW / 2;
-          const cy = drawY + drawH / 2;
-          
-          // Volumetric 3D radial gradient shading representing the cloud body
-          const grad = ctx.createRadialGradient(cx, cy - drawH * 0.12, 5, cx, cy, drawW * 0.5);
-          grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');       // Pure bright center
-          grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.85)');     // Soft light-blue volume
-          grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.45)');     // Blue-grey boundary shadow
-          grad.addColorStop(1.0, 'rgba(191, 219, 254, 0)');
-          
-          ctx.fillStyle = grad;
-          ctx.beginPath();
-          
-          const r = drawH * 0.44;
-          ctx.arc(cx - drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
-          ctx.arc(cx + drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
-          ctx.arc(cx, cy - drawH * 0.05, r * 1.15, 0, Math.PI * 2);
-          ctx.arc(cx - drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
-          ctx.arc(cx + drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
-          
-          ctx.fill();
-          ctx.restore();
         }
       }
     }
@@ -1856,8 +1845,7 @@ document.addEventListener('DOMContentLoaded', () => {
           mouse.y += (targetMouse.y - mouse.y) * 0.08;
         }
         
-        // Read active theme
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
         
         if (isLight) {
           clouds.forEach(cloud => {
@@ -1953,7 +1941,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cacheSpineDotOffsets();
         updateSpineActiveLine();
       }, 200);
-    });
+    }, { passive: true });
     
     // Merged global mousemove event listener (handles spotlight AND starfield)
     window.addEventListener('mousemove', (e) => {
@@ -1972,7 +1960,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mouseout', () => {
       targetMouse.x = -1000;
       targetMouse.y = -1000;
-    });
+    }, { passive: true });
     
     window.addEventListener('touchstart', (e) => {
       targetMouse.x = e.touches[0].clientX;
@@ -2421,15 +2409,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Helper to open drawer
-    // Deprecated openDrawerHelper
-    const openDrawerHelper_deprecated = (drawer) => {
-      drawer.classList.add('visible');
-      drawer.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      const panel = drawer.querySelector('.drawer-panel');
-      gsap.fromTo(panel, { x: "100%" }, { x: "0%", duration: 0.5, ease: "power3.out" });
-    };
+
   };
 
   initInteractiveSkills();
@@ -2618,38 +2598,52 @@ Response:
       return langKB.defaultResponse;
     };
 
-    // Main API Calling Function
+    // Main API Calling Function with Serverless Vercel + Direct Fallback (GitHub Pages compat)
     const fetchGeminiResponse = async (query, lang) => {
+      // 1. Try Vercel Serverless Backend first (API Key is secure on server)
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-        const payload = {
-          contents: [{ role: 'user', parts: [{ text: query }] }],
-          systemInstruction: {
-            parts: [{ text: systemPrompt }]
-          },
-          generationConfig: {
-            maxOutputTokens: 800,
-            temperature: 0.7
-          }
-        };
-
-        const response = await fetch(url, {
+        const response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ query, systemPrompt })
         });
 
-        if (!response.ok) {
-          throw new Error('API request failed');
+        if (response.ok) {
+          const responseData = await response.json();
+          return responseData.candidates[0].content.parts[0].text;
         }
+        
+        throw new Error('Serverless function returned non-200 status');
+      } catch (backendError) {
+        console.warn('Backend serverless endpoint failed/not found, trying direct client-side fallback...', backendError);
+        
+        // 2. Direct Client-side Fallback (for static platforms like GitHub Pages)
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: [{ text: query }] }],
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              generationConfig: { maxOutputTokens: 800, temperature: 0.7 }
+            })
+          });
 
-        const responseData = await response.json();
-        return responseData.candidates[0].content.parts[0].text;
-      } catch (error) {
-        console.warn('Gemini API call failed, falling back to local KB', error);
-        return getLocalResponse(query, lang);
+          if (!response.ok) {
+            throw new Error('Direct API request failed');
+          }
+
+          const responseData = await response.json();
+          return responseData.candidates[0].content.parts[0].text;
+        } catch (clientError) {
+          console.warn('Gemini client API call failed, falling back to local KB', clientError);
+          return getLocalResponse(query, lang);
+        }
       }
     };
 
