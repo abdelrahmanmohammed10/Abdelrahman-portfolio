@@ -219,9 +219,16 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ----- 5. MAGNETIC HOVER EFFECT (GSAP Physics) ----- */
   const magneticButtons = document.querySelectorAll('.magnetic-button');
   magneticButtons.forEach(btn => {
+    let rect = null;
+    
+    btn.addEventListener('mouseenter', () => {
+      if (window.innerWidth <= 1024) return;
+      rect = btn.getBoundingClientRect();
+    });
+
     btn.addEventListener('mousemove', (e) => {
       if (window.innerWidth <= 1024) return;
-      const rect = btn.getBoundingClientRect();
+      if (!rect) rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
       
@@ -238,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (innerSpan) {
         gsap.to(innerSpan, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1.1, 0.6)", overwrite: "auto" });
       }
+      rect = null;
     });
   });
 
@@ -253,132 +261,145 @@ document.addEventListener('DOMContentLoaded', () => {
       el.classList.add('visible');
     });
 
-    // 1. Heading slide-reveals
-    document.querySelectorAll('.split-reveal-heading').forEach(heading => {
-      gsap.from(heading, {
-        opacity: 0,
-        y: 35,
-        duration: 0.9,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: heading,
-          start: "top 88%",
-          toggleActions: "play none none none"
-        }
+    // Mobile Animation Bypass: Disable ScrollTrigger calculations on mobile viewports (<768px) to save CPU
+    if (window.innerWidth > 768) {
+      // 1. Heading slide-reveals
+      document.querySelectorAll('.split-reveal-heading').forEach(heading => {
+        gsap.from(heading, {
+          opacity: 0,
+          y: 35,
+          duration: 0.9,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: heading,
+            start: "top 88%",
+            toggleActions: "play none none none"
+          }
+        });
       });
-    });
 
-    // 2. Staggered card reveals
-    // Skills categories (Guarded for existense on subpages)
-    if (document.querySelector('.skills-grid')) {
-      gsap.from(".skills-grid .skill-category", {
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".skills-grid",
-          start: "top 88%",
-          toggleActions: "play none none none"
-        }
-      });
-    }
+      // 2. Staggered card reveals
+      // Skills categories (Guarded for existense on subpages)
+      if (document.querySelector('.skills-grid')) {
+        gsap.from(".skills-grid .skill-category", {
+          opacity: 0,
+          y: 40,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".skills-grid",
+            start: "top 88%",
+            toggleActions: "play none none none"
+          }
+        });
+      }
 
-    // Timeline items (Guarded for existence on subpages)
-    if (document.querySelector('.timeline-items')) {
-      gsap.from(".timeline-items .timeline-item", {
-        opacity: 0,
-        x: -30,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".timeline-items",
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
-    }
+      // Timeline items (Guarded for existence on subpages)
+      if (document.querySelector('.timeline-items')) {
+        gsap.from(".timeline-items .timeline-item", {
+          opacity: 0,
+          x: -30,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".timeline-items",
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
+      }
 
-    // Projects (Guarded for existence on subpages)
-    if (document.querySelector('.projects-stack')) {
-      gsap.from(".projects-stack .project-glass-card", {
-        opacity: 0,
-        y: 50,
-        duration: 0.9,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".projects-stack",
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
-    }
+      // Projects (Guarded for existence on subpages)
+      if (document.querySelector('.projects-stack')) {
+        gsap.from(".projects-stack .project-glass-card", {
+          opacity: 0,
+          y: 50,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".projects-stack",
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
+      }
 
-    // Campaigns (Guarded for existence on subpages)
-    if (document.querySelector('.campaigns-grid')) {
-      gsap.from(".campaigns-grid .campaign-glass-card", {
-        opacity: 0,
-        y: 50,
-        duration: 0.9,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".campaigns-grid",
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
-    }
+      // Campaigns (Guarded for existence on subpages)
+      if (document.querySelector('.campaigns-grid')) {
+        gsap.from(".campaigns-grid .campaign-glass-card", {
+          opacity: 0,
+          y: 50,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".campaigns-grid",
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
+      }
 
-    // Credentials (Guarded for existence on subpages)
-    if (document.querySelector('.certificates-grid')) {
-      gsap.from(".certificates-grid .certificate-glass-card", {
-        opacity: 0,
-        y: 35,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".certificates-grid",
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
-    }
+      // Credentials (Guarded for existence on subpages)
+      if (document.querySelector('.certificates-grid')) {
+        gsap.from(".certificates-grid .certificate-glass-card", {
+          opacity: 0,
+          y: 35,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".certificates-grid",
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
+      }
 
-    // 3. GSAP Count-up animations
-    document.querySelectorAll('.stat-num').forEach(num => {
-      const limit = parseInt(num.getAttribute('data-val')) || 0;
-      // Start element text at 0 before running the count-up tween
-      num.textContent = "0";
-      gsap.to(num, {
-        textContent: limit,
-        duration: 1.6,
-        ease: "power2.out",
-        snap: { textContent: 1 },
-        scrollTrigger: {
-          trigger: num,
-          start: "top 88%",
-          toggleActions: "play none none none"
-        }
+      // 3. GSAP Count-up animations
+      document.querySelectorAll('.stat-num').forEach(num => {
+        const limit = parseInt(num.getAttribute('data-val')) || 0;
+        // Start element text at 0 before running the count-up tween
+        num.textContent = "0";
+        gsap.to(num, {
+          textContent: limit,
+          duration: 1.6,
+          ease: "power2.out",
+          snap: { textContent: 1 },
+          scrollTrigger: {
+            trigger: num,
+            start: "top 88%",
+            toggleActions: "play none none none"
+          }
+        });
       });
-    });
 
-    // 4. Timeline Spine Progress line filling animation
-    if (document.querySelector('.timeline-container') && document.querySelector('.spine-progress')) {
-      gsap.to(".spine-progress", {
-        height: "100%",
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".timeline-container",
-          start: "top center",
-          end: "bottom center",
-          scrub: true
-        }
+      // 4. Timeline Spine Progress line filling animation
+      if (document.querySelector('.timeline-container') && document.querySelector('.spine-progress')) {
+        gsap.to(".spine-progress", {
+          height: "100%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".timeline-container",
+            start: "top center",
+            end: "bottom center",
+            scrub: true
+          }
+        });
+      }
+    } else {
+      // Mobile Fallback: Instantly display final statistics count numbers
+      document.querySelectorAll('.stat-num').forEach(num => {
+        num.textContent = num.getAttribute('data-val') || "0";
       });
+      // Set timeline spine progress full height
+      const spineProgress = document.querySelector('.spine-progress');
+      if (spineProgress) {
+        spineProgress.style.height = "100%";
+      }
     }
 
   } else {
@@ -1619,6 +1640,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     class CloudParticle {
       constructor() {
+        this.loadFade = 0; // Prevent visual snap by starting invisible and fading in smoothly when loaded
         this.reset(true);
       }
 
@@ -1678,6 +1700,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       update() {
+        if (cloudsLoaded) {
+          this.loadFade += (1.0 - this.loadFade) * 0.04;
+        } else {
+          this.loadFade = 0;
+        }
+
         // ALWAYS use manual native drift physics for x/y updates. GSAP tweening overwrites physics and breaks mouse/parallax interactions!
         this.x += this.vx;
         this.y += this.vy;
@@ -1754,7 +1782,7 @@ document.addEventListener('DOMContentLoaded', () => {
           alphaBreath = Math.sin(this.breathPhase) * 0.03;
         }
         
-        const finalAlpha = Math.max(0.08, Math.min(1.0, this.alpha + alphaBreath));
+        const finalAlpha = Math.max(0.08, Math.min(1.0, this.alpha + alphaBreath)) * this.loadFade;
         const drawW = this.width * renderBreathX * this.scaleX;
         const drawH = this.height * renderBreathY * this.scaleY;
         const drawX = this.x + this.offsetX - (drawW - this.width) / 2;
