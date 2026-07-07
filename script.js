@@ -29,9 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const applyTheme = (theme) => {
     if (theme === 'light') {
       html.setAttribute('data-theme', 'light');
-      if (typeof window.loadCloudImages === 'function') {
-        window.loadCloudImages();
-      }
     } else {
       html.removeAttribute('data-theme');
     }
@@ -1236,39 +1233,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const numStars = window.innerWidth > 768 ? 250 : 120;
     const numClouds = window.innerWidth > 768 ? 16 : 8; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
 
-    // Preload original realistic WebP cloud images for light mode (Lazy-loaded)
-    const cloudImages = [];
-    const cloudSources = ['cloud-flat-1.webp', 'cloud-flat-2.webp', 'cloud-flat-3.webp'];
-    let cloudsLoaded = false;
-    let loadedCount = 0;
+    let cloudsLoaded = true; // Instantly loaded because they are procedural!
 
     // Offscreen Canvas Cache for high-performance volumetric cloud rendering
     const cloudCacheCanvases = [];
     const cloudPadding = 80; // Padding to prevent drop-shadow clipping
-
-    window.loadCloudImages = function() {
-      if (cloudImages.length > 0) return; // Already loaded or loading
-      cloudSources.forEach(src => {
-        const img = new Image();
-        img.onload = () => {
-          loadedCount++;
-          if (loadedCount === cloudSources.length) {
-            cloudsLoaded = true;
-            createCloudCache();
-          }
-        };
-        img.onerror = () => {
-          console.warn(`Failed to load cloud image: ${src}`);
-          loadedCount++;
-          if (loadedCount === cloudSources.length) {
-            createCloudCache();
-          }
-        };
-        const isSubpage = window.location.pathname.includes('/cv plan/') || window.location.pathname.includes('/cv%20plan/');
-        img.src = isSubpage ? '../' + src : src;
-        cloudImages.push(img);
-      });
-    };
     
     function createCloudCache() {
       cloudCacheCanvases.length = 0;

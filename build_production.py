@@ -40,17 +40,9 @@ def minify_js(js_content):
     # Strip comments safely
     js = pattern.sub(replace, js_content)
     
-    # Remove excessive blank lines
-    js = re.sub(r'\n\s*\n', '\n', js)
-    
-    # Simple whitespace compression (only where safe)
-    # Note: Full token compression without parser is risky, so we keep structural indentations but clean up trailing whitespace.
-    lines = []
-    for line in js.splitlines():
-        line = line.strip()
-        if line:
-            lines.append(line)
-    return '\n'.join(lines)
+    # Clean up redundant empty lines (reduce 3+ newlines to just 1 or 2 newlines)
+    js = re.sub(r'\n\s*\n\s*\n', '\n\n', js)
+    return js
 
 def run_build():
     print("--- STARTING PRODUCTION BUILD & MINIFICATION ---")
