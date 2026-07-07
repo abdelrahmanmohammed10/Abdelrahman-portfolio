@@ -1241,48 +1241,95 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function createCloudCache() {
       cloudCacheCanvases.length = 0;
+      
+      // Define 3 different styles of fluffy clouds (width, height, list of puffs relative to center)
+      const cloudStyles = [
+        // Cloud 1: Fluffy, wide cloud
+        {
+          width: 800,
+          height: 400,
+          puffs: [
+            { x: -160, y: 15, r: 85 },
+            { x: -90, y: -15, r: 110 },
+            { x: 0, y: -35, r: 135 },
+            { x: 90, y: -15, r: 110 },
+            { x: 160, y: 15, r: 85 },
+            { x: -70, y: 25, r: 90 },
+            { x: 70, y: 25, r: 90 },
+            { x: 0, y: 25, r: 100 }
+          ]
+        },
+        // Cloud 2: Horizontal, wispy cloud
+        {
+          width: 900,
+          height: 350,
+          puffs: [
+            { x: -220, y: 10, r: 60 },
+            { x: -140, y: -5, r: 80 },
+            { x: -50, y: -15, r: 90 },
+            { x: 50, y: -20, r: 90 },
+            { x: 140, y: -8, r: 80 },
+            { x: 220, y: 10, r: 60 },
+            { x: -90, y: 15, r: 70 },
+            { x: 90, y: 15, r: 70 }
+          ]
+        },
+        // Cloud 3: Dense, stacked cloud
+        {
+          width: 750,
+          height: 450,
+          puffs: [
+            { x: -110, y: 35, r: 80 },
+            { x: 110, y: 35, r: 80 },
+            { x: -70, y: -15, r: 110 },
+            { x: 70, y: -15, r: 110 },
+            { x: 0, y: -50, r: 130 },
+            { x: 0, y: 20, r: 115 },
+            { x: -50, y: 30, r: 95 },
+            { x: 50, y: 30, r: 95 }
+          ]
+        }
+      ];
+
       for (let i = 0; i < 3; i++) {
-        const img = cloudImages[i];
+        const style = cloudStyles[i];
         const offCanvas = document.createElement('canvas');
         
-        // Use the original image dimensions if loaded, otherwise fallback dimensions
-        const imgW = (img && img.complete && img.naturalWidth > 0) ? img.naturalWidth : 900;
-        const imgH = (img && img.complete && img.naturalHeight > 0) ? img.naturalHeight : 450;
-        
-        const w = imgW + cloudPadding * 2;
-        const h = imgH + cloudPadding * 2;
+        const w = style.width + cloudPadding * 2;
+        const h = style.height + cloudPadding * 2;
         offCanvas.width = w;
         offCanvas.height = h;
         const offCtx = offCanvas.getContext('2d');
         
         offCtx.save();
-        // Apply soft ambient drop-shadow filter inside the cached canvas texture once!
-        offCtx.filter = 'drop-shadow(0px 8px 16px rgba(30, 61, 97, 0.08))';
         
-        // Draw the image centered to leave room for the shadow
-        if (img && img.complete && img.naturalWidth > 0) {
-          offCtx.drawImage(img, cloudPadding, cloudPadding, imgW, imgH);
-        } else {
-          // Volumetric 3D radial gradient fallback if image is not loaded
-          const cx = w / 2;
-          const cy = h / 2;
-          const drawW = 600;
-          const drawH = 330;
-          const grad = offCtx.createRadialGradient(cx, cy - drawH * 0.12, 5, cx, cy, drawW * 0.5);
-          grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
-          grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.82)');
-          grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.40)');
-          grad.addColorStop(1.0, 'rgba(191, 219, 254, 0)');
+        // Soft hardware-accelerated drop shadow for depth
+        offCtx.filter = 'drop-shadow(0px 10px 20px rgba(30, 61, 97, 0.06))';
+        
+        const cx = w / 2;
+        const cy = h / 2;
+        
+        // Draw puffs with realistic volumetric radial gradients
+        style.puffs.forEach(puff => {
+          const px = cx + puff.x;
+          const py = cy + puff.y;
+          
+          // Light source is at top-left
+          const gx = px - puff.r * 0.15;
+          const gy = py - puff.r * 0.18;
+          const grad = offCtx.createRadialGradient(gx, gy, 0, px, py, puff.r);
+          
+          // Volumetric shading color gradient: bright highlight to soft blue-grey shadows
+          grad.addColorStop(0, 'rgba(255, 255, 255, 0.98)');
+          grad.addColorStop(0.65, 'rgba(240, 246, 255, 0.88)');
+          grad.addColorStop(0.85, 'rgba(215, 228, 248, 0.55)');
+          grad.addColorStop(1.0, 'rgba(200, 218, 245, 0)');
           
           offCtx.fillStyle = grad;
           offCtx.beginPath();
-          
-          const r = drawH * 0.44;
-          offCtx.arc(cx - drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
-          offCtx.arc(cx + drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
-          offCtx.arc(cx, cy - drawH * 0.05, r * 1.15, 0, Math.PI * 2);
+          offCtx.arc(px, py, puff.r, 0, Math.PI * 2);
           offCtx.fill();
-        }
+        });
         
         offCtx.restore();
         cloudCacheCanvases.push(offCanvas);
