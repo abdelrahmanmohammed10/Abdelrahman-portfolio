@@ -1201,63 +1201,87 @@ document.addEventListener('DOMContentLoaded', () => {
     const numStars = window.innerWidth > 768 ? 250 : 120;
     const numClouds = window.innerWidth > 768 ? 16 : 8; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
 
+    // Preload original realistic WebP cloud images for light mode
+    const cloudImages = [];
+    const cloudSources = ['cloud-flat-1.webp', 'cloud-flat-2.webp', 'cloud-flat-3.webp'];
+    let cloudsLoaded = false;
+    let loadedCount = 0;
+
     // Offscreen Canvas Cache for high-performance volumetric cloud rendering
     const cloudCacheCanvases = [];
+    const cloudPadding = 80; // Padding to prevent drop-shadow clipping
     
     function createCloudCache() {
       cloudCacheCanvases.length = 0;
       for (let i = 0; i < 3; i++) {
+        const img = cloudImages[i];
         const offCanvas = document.createElement('canvas');
-        const w = 900;
-        const h = 450;
+        
+        // Use the original image dimensions if loaded, otherwise fallback dimensions
+        const imgW = (img && img.complete && img.naturalWidth > 0) ? img.naturalWidth : 900;
+        const imgH = (img && img.complete && img.naturalHeight > 0) ? img.naturalHeight : 450;
+        
+        const w = imgW + cloudPadding * 2;
+        const h = imgH + cloudPadding * 2;
         offCanvas.width = w;
         offCanvas.height = h;
         const offCtx = offCanvas.getContext('2d');
         
-        const cx = w / 2;
-        const cy = h / 2;
-        const drawW = 600;
-        const drawH = 330;
-        
         offCtx.save();
         // Apply soft ambient drop-shadow filter inside the cached canvas texture once!
-        offCtx.filter = 'drop-shadow(0px 10px 20px rgba(30, 61, 97, 0.05))';
+        offCtx.filter = 'drop-shadow(0px 8px 16px rgba(30, 61, 97, 0.08))';
         
-        // Volumetric 3D radial gradient shading
-        const grad = offCtx.createRadialGradient(cx, cy - drawH * 0.12, 5, cx, cy, drawW * 0.5);
-        grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');       // Pure bright center
-        grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.82)');     // Soft light-blue volume
-        grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.40)');     // Blue-grey boundary shadow
-        grad.addColorStop(1.0, 'rgba(191, 219, 254, 0)');
-        
-        offCtx.fillStyle = grad;
-        offCtx.beginPath();
-        
-        const r = drawH * 0.44;
-        
-        if (i === 0) {
+        // Draw the image centered to leave room for the shadow
+        if (img && img.complete && img.naturalWidth > 0) {
+          offCtx.drawImage(img, cloudPadding, cloudPadding, imgW, imgH);
+        } else {
+          // Volumetric 3D radial gradient fallback if image is not loaded
+          const cx = w / 2;
+          const cy = h / 2;
+          const drawW = 600;
+          const drawH = 330;
+          const grad = offCtx.createRadialGradient(cx, cy - drawH * 0.12, 5, cx, cy, drawW * 0.5);
+          grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+          grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.82)');
+          grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.40)');
+          grad.addColorStop(1.0, 'rgba(191, 219, 254, 0)');
+          
+          offCtx.fillStyle = grad;
+          offCtx.beginPath();
+          
+          const r = drawH * 0.44;
           offCtx.arc(cx - drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
           offCtx.arc(cx + drawW * 0.22, cy + drawH * 0.08, r * 0.85, 0, Math.PI * 2);
           offCtx.arc(cx, cy - drawH * 0.05, r * 1.15, 0, Math.PI * 2);
-          offCtx.arc(cx - drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
-          offCtx.arc(cx + drawW * 0.08, cy - drawH * 0.11, r * 1.05, 0, Math.PI * 2);
-        } else if (i === 1) {
-          offCtx.arc(cx - drawW * 0.25, cy + drawH * 0.1, r * 0.80, 0, Math.PI * 2);
-          offCtx.arc(cx + drawW * 0.25, cy + drawH * 0.1, r * 0.80, 0, Math.PI * 2);
-          offCtx.arc(cx - drawW * 0.05, cy - drawH * 0.04, r * 1.15, 0, Math.PI * 2);
-          offCtx.arc(cx + drawW * 0.1, cy - drawH * 0.08, r * 1.05, 0, Math.PI * 2);
-        } else {
-          offCtx.arc(cx - drawW * 0.18, cy + drawH * 0.05, r * 0.90, 0, Math.PI * 2);
-          offCtx.arc(cx + drawW * 0.18, cy + drawH * 0.05, r * 0.90, 0, Math.PI * 2);
-          offCtx.arc(cx - drawW * 0.02, cy - drawH * 0.08, r * 1.25, 0, Math.PI * 2);
+          offCtx.fill();
         }
         
-        offCtx.fill();
         offCtx.restore();
-        
         cloudCacheCanvases.push(offCanvas);
       }
     }
+
+    cloudSources.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === cloudSources.length) {
+          cloudsLoaded = true;
+          createCloudCache();
+        }
+      };
+      img.onerror = () => {
+        console.warn(`Failed to load cloud image: ${src}`);
+        loadedCount++;
+        if (loadedCount === cloudSources.length) {
+          createCloudCache();
+        }
+      };
+      // Dynamically resolve cloud path relative to subpage context
+      const isSubpage = window.location.pathname.includes('/cv plan/') || window.location.pathname.includes('/cv%20plan/');
+      img.src = isSubpage ? '../' + src : src;
+      cloudImages.push(img);
+    });
     
     // Palette for realistic stars
     // Palette for realistic stars (Color Temperature: Blue-White, Amber, Red Dwarf, Aurora Cyan)
@@ -1721,7 +1745,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (offCanvas) {
           ctx.save();
           ctx.globalAlpha = finalAlpha;
-          ctx.drawImage(offCanvas, drawX, drawY, drawW, drawH);
+          // Calculate scale ratios to draw the cloud at exactly drawW/drawH while drawing the larger offscreen canvas
+          const imgW = offCanvas.width - cloudPadding * 2;
+          const imgH = offCanvas.height - cloudPadding * 2;
+          const scaleX = drawW / imgW;
+          const scaleY = drawH / imgH;
+          const padX = cloudPadding * scaleX;
+          const padY = cloudPadding * scaleY;
+          
+          ctx.drawImage(
+            offCanvas, 
+            drawX - padX, 
+            drawY - padY, 
+            drawW + padX * 2, 
+            drawH + padY * 2
+          );
           ctx.restore();
         } else {
           // Bulletproof procedural fallback if WebP images are loading or blocked (e.g. file:// CORS context)
