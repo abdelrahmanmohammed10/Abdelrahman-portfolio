@@ -106,10 +106,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = document.querySelector(href);
         if (target) {
           e.preventDefault();
-          lenis.scrollTo(target, {
-            offset: -80, // match header offset
-            duration: 1.2
-          });
+          if (lenis) {
+            lenis.scrollTo(target, {
+              offset: -80, // match header offset
+              duration: 1.2
+            });
+          } else {
+            const offsetPosition = target.getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
         }
       });
     });
@@ -163,6 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set preloader to display none
     tl.set("#preloader", { display: "none" });
     
+    // Unlock scrolling
+    tl.call(() => {
+      document.documentElement.classList.remove('preloading');
+      document.body.classList.remove('preloading');
+    });
+    
     // Parallax background drift-in (scales down and centers)
     tl.to("#three-planet-canvas, .gradient-mesh", { scale: 1, y: 0, duration: 2.0, ease: "power3.out" }, "-=0.5");
     
@@ -179,6 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
     preloader.classList.add('no-gsap');
     setTimeout(() => {
       preloader.classList.add('loaded');
+      document.documentElement.classList.remove('preloading');
+      document.body.classList.remove('preloading');
       setTimeout(() => {
         preloader.style.display = 'none';
       }, 800);
@@ -1173,10 +1189,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Update spine dots aria-labels dynamically for screen readers
+    // Update spine dots aria-labels and data-title attributes dynamically
     spineDots.forEach(dot => {
       const label = lang === 'ar' ? dot.getAttribute('data-title-ar') : dot.getAttribute('data-title-en');
       dot.setAttribute('aria-label', label || 'Navigation dot');
+      dot.setAttribute('data-title', label || '');
     });
 
     // Dynamically toggle aria-hidden on multi-language labels for accessibility
@@ -1827,6 +1844,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       resize();
+      
+      // If currently light theme, make sure cloud images are loading/loaded!
+      if (document.documentElement.getAttribute('data-theme') === 'light' && typeof window.loadCloudImages === 'function') {
+        window.loadCloudImages();
+      }
       
       // Initialize Offscreen Cloud Textures Cache (Pre-renders all complex gradients and shadow filters once)
       createCloudCache();

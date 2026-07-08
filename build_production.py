@@ -91,15 +91,10 @@ def run_build():
             
         original = html_data
         
-        # Replace stylesheet references with .min.css
-        html_data = html_data.replace('href="style.css?v=4.5.0"', 'href="style.min.css?v=4.5.0"')
-        html_data = html_data.replace('href="../style.css?v=4.5.0"', 'href="../style.min.css?v=4.5.0"')
+        # Replace stylesheet references with .min.css using regex to support variable query strings
+        html_data = re.sub(r'href="(\.\./)?style\.css(\?v=\d+\.\d+\.\d+)?"', r'href="\1style.min.css?v=5.0.0"', html_data)
         
-        # Replace javascript references with .min.js
-        html_data = html_data.replace('src="script.js?v=4.4.0"', 'src="script.min.js?v=4.5.0"')
-        html_data = html_data.replace('src="../script.js?v=4.4.0"', 'src="../script.min.js?v=4.5.0"')
-        
-        # Also clean up index.html refs if version varies
+        # Replace javascript references with .min.js using regex
         html_data = re.sub(r'src="(\.\./)?script\.js(\?v=\d+\.\d+\.\d+)?"', r'src="\1script.min.js?v=4.5.0"', html_data)
         
         if html_data != original:
