@@ -5081,3 +5081,10 @@ html.gsap-active .split-reveal-heading {
   border-color: var(--color-cyan);
   box-shadow: 0 10px 30px rgba(var(--color-cyan-rgb), 0.08);
 }
+
+/* Static tags (no DB description) styling */
+.drawer-tags-list .drawer-skill-chip.static-tag {
+  cursor: default;
+  pointer-events: none;
+}
+

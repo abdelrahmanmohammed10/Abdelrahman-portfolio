@@ -38,23 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(THEME_KEY, theme);
   };
 
-  // Restore saved preference (default = system preference)
-  let savedTheme = localStorage.getItem(THEME_KEY);
-  if (!sessionStorage.getItem('themeInitialized')) {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    savedTheme = prefersDark ? 'dark' : 'light';
-    sessionStorage.setItem('themeInitialized', 'true');
-  } else {
-    savedTheme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  }
+  // Restore saved preference (default = dark)
+  const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
   applyTheme(savedTheme);
-
-  // Listen for changes in system color scheme preference
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem(THEME_KEY)) {
-      applyTheme(e.matches ? 'dark' : 'light');
-    }
-  });
 
   const toggleTheme = () => {
     const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
@@ -249,17 +235,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const y = e.clientY - rect.top - rect.height / 2;
       
       gsap.to(btn, { x: x * 0.35, y: y * 0.35, duration: 0.3, ease: "power2.out", overwrite: "auto" });
-      const innerSpan = btn.querySelector('span');
-      if (innerSpan) {
-        gsap.to(innerSpan, { x: x * 0.15, y: y * 0.15, duration: 0.3, ease: "power2.out", overwrite: "auto" });
+      const innerEl = btn.querySelector('span, svg');
+      if (innerEl) {
+        gsap.to(innerEl, { x: x * 0.15, y: y * 0.15, duration: 0.3, ease: "power2.out", overwrite: "auto" });
       }
     });
 
     btn.addEventListener('mouseleave', () => {
       gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1.1, 0.6)", overwrite: "auto" });
-      const innerSpan = btn.querySelector('span');
-      if (innerSpan) {
-        gsap.to(innerSpan, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1.1, 0.6)", overwrite: "auto" });
+      const innerEl = btn.querySelector('span, svg');
+      if (innerEl) {
+        gsap.to(innerEl, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1.1, 0.6)", overwrite: "auto" });
       }
       rect = null;
     });
@@ -2189,56 +2175,7 @@ document.addEventListener('DOMContentLoaded', () => {
       desc_en: "Creating professional, clean social media templates, pitch presentations, and visual identity guides without heavy tools.",
       desc_ar: "تصميم منشورات منصات التواصل، عروض تقديم الخطط، وكتيبات الهوية البصرية بشكل سريع واحترافي متناسق.",
       use_en: "Designed marketing playbook templates and social post drafts for retail and charity campaigns.",
-      use_ar: "صمم العروض التقديمية للخطط التسويقية ونماذج المنشورات لحملات التوعية الخيرية والأعمال الاستشارية."
-    },
-    "odoo": {
-      title_en: "Odoo CMS",
-      title_ar: "نظام أودو لإدارة المحتوى",
-      desc_en: "Managing website pages, structuring product information, and coordinating digital content on Odoo ERP portals.",
-      desc_ar: "إدارة وتنسيق محتوى مواقع الويب، ترتيب المنتجات، والتحكم بالصفحات من خلال نظام إدارة المحتوى Odoo CMS.",
-      use_en: "Coordinated digital content, managed product information, and executed page updates for Fine Stone portals.",
-      use_ar: "أدار محتوى المنتجات والصفحات الإلكترونية، وحدث العروض الحصرية بموقع شركة فاين ستون التابعة ليونيون إير."
-    },
-    "ai-tools": {
-      title_en: "AI Productivity Tools",
-      title_ar: "أدوات الذكاء الاصطناعي",
-      desc_en: "Utilizing advanced language and generative models for content drafts, keyword research, and workflow automation.",
-      desc_ar: "استثمار النماذج اللغوية المتقدمة في إعداد مسودات المحتوى، البحث عن الكلمات المفتاحية، وأتمتة المهام اليومية.",
-      use_en: "Integrates AI prompt generation and visual mockups into strategic marketing processes to double execution speed.",
-      use_ar: "يوظف تقنيات الذكاء الاصطناعي لتسريع صياغة المحتوى وإعداد التقارير التحليلية، مما يضاعف سرعة التنفيذ."
-    },
-    "office": {
-      title_en: "Office 365 Suite",
-      title_ar: "حزمة أوفيس ٣٦٥",
-      desc_en: "Leveraging Excel, Word, and PowerPoint for structured marketing playbooks, budgeting, and performance spreadsheets.",
-      desc_ar: "استخدام تطبيقات إكسل، وورد، وبوربوينت لبناء خطط العمل، إعداد الميزانيات، وعرض التقارير التحليلية للمديرين.",
-      use_en: "Certified MOS (Microsoft Office Specialist) in ECDL, preparing data models and dashboards.",
-      use_ar: "حاصل على شهادة MOS و ECDL، ويستخدم إكسل لإعداد أوراق ميزانيات الحملات ومخططات نموذج العمل التجاري."
-    },
-    // Leadership
-    "team-lead": {
-      title_en: "Team Leadership",
-      title_ar: "إدارة وقيادة الفرق",
-      desc_en: "Guiding team workflows, delegating deliverables, resolving friction points, and running goal-oriented projects.",
-      desc_ar: "تنسيق مهام فرق العمل، توجيه الأفراد، تذليل العقبات، وقيادة مشاريع ترويجية متزامنة لتحقيق أهداف محددة.",
-      use_en: "Led an 8-member marketing team at Resala Charity, structuring campaigns for local donation collection.",
-      use_ar: "قاد فريقاً تسويقياً من 8 أفراد في جمعية رسالة، لتنظيم وإطلاق حملات توعية وجمع تبرعات للمستشفيات والأيتام."
-    },
-    "trainer": {
-      title_en: "Corporate Training (CCT)",
-      title_ar: "مدرب شركات معتمد",
-      desc_en: "Designing educational workshops, structuring lessons, and delivering skill-development courses for professionals.",
-      desc_ar: "تصميم وتقديم ورش العمل التدريبية، ونقل الخبرات وتطوير الكفاءات المهنية للأفراد والشركات.",
-      use_en: "Accredited CCT (Certified Corporate Trainer) from Dr. Ibrahim Elfiky Center, running communication skills training.",
-      use_ar: "حاصل على دبلومة CCT المعتمدة من مركز كندي (الدكتور إبراهيم الفقي) لتدريب الكفاءات وتطوير مهارات الاتصال."
-    },
-    "speaking": {
-      title_en: "Public Speaking",
-      title_ar: "الخطابة والإلقاء",
-      desc_en: "Presenting complex strategic strategies in clear, engaging, and persuasive speeches to corporate leaders.",
-      desc_ar: "تقديم الخطط والمشاريع المعقدة في عروض تقديمية واضحة ومقنعة أمام الجمهور وصناع القرار بالشركات.",
-      use_en: "Won the official Resala Public Speaking Championship, applying stage performance skills to presentations.",
-      use_ar: "فاز ببطولة جمعية رسالة الرسمية للتحدث والإلقاء أمام الجمهور، ويوظف هذه المهارة لعرض أفكاره ومخططاته التسويقية."
+      use_ar: "صمم قوالب منشورات وحملات تسويقية لشركات تجزئة وجمعيات خيرية باستخدام كانفا."
     },
     "bilingual": {
       title_en: "Bilingual Communication",
@@ -2247,10 +2184,239 @@ document.addEventListener('DOMContentLoaded', () => {
       desc_ar: "إدارة المراسلات والاجتماعات المهنية وكتابة التقارير باللغتين العربية والإنجليزية بطلاقة تامة ومهنية.",
       use_en: "Resolved billing and retention cases in English at Concentrix, and designed bilingual marketing briefs.",
       use_ar: "تعامل مع عملاء Boost Mobile بالولايات المتحدة بالإنجليزية في كونسنتريكس، ويصيغ خططه بنصوص ثنائية اللغة."
+    },
+    // New additions for missing tags
+    "journey": {
+      title_en: "Customer Journey Mapping",
+      title_ar: "رسم خرائط رحلة العميل",
+      desc_en: "Mapping digital touchpoints to identify friction and optimize conversions throughout the marketing funnel.",
+      desc_ar: "تحديد كافة نقاط التفاعل الرقمية مع العميل للكشف عن معوقات الشراء وتحسين رحلة التحويل بالكامل.",
+      use_en: "Mapped conversion-focused user paths for e-commerce clients to identify drop-off barriers.",
+      use_ar: "رسم خرائط رحلات المستخدم لمتاجر إلكترونية لتحديد نقاط توقف العملاء وتسهيل الشراء."
+    },
+    "pricing": {
+      title_en: "Pricing Strategy",
+      title_ar: "استراتيجية التسعير والتنافس",
+      desc_en: "Analyzing competitor price structures to define value propositions and optimized commercial margins.",
+      desc_ar: "تحليل هيكل أسعار المنافسين لتحديد القيمة المقترحة المثالية وحساب الهوامش التجارية بدقة.",
+      use_en: "Evaluated competitors' pricing to structure subscription packages and discount incentives.",
+      use_ar: "دراسة أسعار المنتجات والخدمات المنافسة لوضع عروض تسعير مرنة تزيد المبيعات."
+    },
+    "segmentation": {
+      title_en: "Market Segmentation",
+      title_ar: "تقسيم وتحديد قطاعات السوق",
+      desc_en: "Grouping prospects based on demographics, behavior, and intent to customize personalized ad creatives.",
+      desc_ar: "تصنيف العملاء المحتملين بناءً على الخصائص الجغرافية والسلوك ونية الشراء لتخصيص الإعلانات الإبداعية.",
+      use_en: "Segmented audiences for retail campaigns to ensure highly relevant marketing angles.",
+      use_ar: "تقسيم قاعدة العملاء لحملات التجزئة لتقديم إعلانات موجهة بدقة ترفع نسبة الاستجابة."
+    },
+    "pillars": {
+      title_en: "Content Pillars",
+      title_ar: "ركائز المحتوى الأساسية",
+      desc_en: "Structuring content around primary brand themes to ensure consistent brand message alignment.",
+      desc_ar: "تقسيم المحتوى إلى ركائز موضوعية أساسية لضمان تقديم رسالة متسقة ومتوازنة للعلامة التجارية باستمرار.",
+      use_en: "Structured educational, promotional, and authority themes for brand playbooks.",
+      use_ar: "تنظيم وتوزيع موضوعات النشر بين التثقيف والترويج والتفاعل لترسيخ هوية العلامة."
+    },
+    "ugc": {
+      title_en: "UGC Strategy",
+      title_ar: "استراتيجية المحتوى من المستخدمين",
+      desc_en: "Crafting campaigns that encourage customers to create reviews and visual content, boosting organic trust.",
+      desc_ar: "تصميم مبادرات تحث العملاء على إنشاء محتوى مرئي وتقييمات إيجابية، مما يعزز المصداقية العضوية بشكل مباشر.",
+      use_en: "Designed incentive campaigns for retail brands to double user-submitted photos and reviews.",
+      use_ar: "بناء حملات تشجيعية لتحفيز العملاء على مشاركة تجاربهم ومراجعاتهم المصورة للمنتجات."
+    },
+    "hashtag": {
+      title_en: "Hashtag Strategy",
+      title_ar: "استراتيجية الهاشتاج والانتشار",
+      desc_en: "Analyzing trending hashtags and categorizing them for maximum reach and discoverability across social networks.",
+      desc_ar: "تحليل ودراسة الهاشتاجات الأكثر تفاعلاً وتصنيفها لتحقيق أقصى قدر من الوصول العضوي عبر شبكات التواصل الاجتماعي.",
+      use_en: "Developed classified hashtag templates to streamline discovery and organic reach.",
+      use_ar: "إعداد قوائم وتصنيفات وسوم (Hashtags) مخصصة لرفع فرص الظهور والانتشار العضوي للمنشورات."
+    },
+    "retention": {
+      title_en: "Customer Retention",
+      title_ar: "استبقاء العملاء وولائهم",
+      desc_en: "Designing strategies to encourage repeat purchases and improve long-term subscriber lifetime value.",
+      desc_ar: "تصميم استراتيجيات تحفز العملاء على تكرار الشراء وترفع من قيمتهم الإجمالية مع العلامة التجارية.",
+      use_en: "Formulated churn-reduction guidelines in marketing playbooks for retail platforms.",
+      use_ar: "صياغة إرشادات وتقنيات لتقليل معدلات تسرب العملاء وزيادة ولائهم في خططه الاستشارية."
+    },
+    "retargeting": {
+      title_en: "Retargeting",
+      title_ar: "حملات إعادة الاستهداف",
+      desc_en: "Setting custom audience pools based on user web behavior to bring back warmer prospects.",
+      desc_ar: "إعداد شرائح جماهيرية مخصصة ومبنية على سلوك زوار الموقع لإعادة استهدافهم وتحفيزهم على إتمام الشراء.",
+      use_en: "Set up tracking pixels and custom audiences for cart abandoners to recover lost sales.",
+      use_ar: "تهيئة أكواد التتبع وإنشاء جماهير مخصصة للذين تركوا سلة الشراء لاسترجاع مبيعات مفقودة."
+    },
+    "ab-testing": {
+      title_en: "A/B Testing",
+      title_ar: "اختبارات المقارنة الثنائية A/B",
+      desc_en: "Running controlled experiments on ad copies, designs, and landing pages to isolate high-performing variants.",
+      desc_ar: "إجراء تجارب مقارنة منضبطة على نصوص الإعلانات والتصاميم وصفحات الهبوط لتحديد وبناء النسخ الأكثر فعالية.",
+      use_en: "Conducted split tests on Meta ad headlines to optimize click-through rate (CTR).",
+      use_ar: "إجراء اختبارات مقارنة على عناوين إعلانات ميتا لاختيار الصيغ الأكثر جذباً للزوار."
+    },
+    "funnel": {
+      title_en: "Funnel Optimization",
+      title_ar: "تحسين وتطوير قمع المبيعات",
+      desc_en: "Diagnosing drops in awareness, consideration, and conversion phases to enhance overall acquisition ROI.",
+      desc_ar: "تشخيص وتحليل نسب التسرب في مراحل الوعي والاهتمام والتحويل لرفع العائد الإجمالي على الاستثمار التسويقي.",
+      use_en: "Mapped e-commerce buyer pathways to address bottlenecks and drop-offs.",
+      use_ar: "تشخيص وحل فجوات الخروج في قنوات الشراء لتسهيل الانتقال من الاهتمام للشراء فبلي."
+    },
+    "analytics": {
+      title_en: "Google Analytics",
+      title_ar: "أداة تحليلات جوجل",
+      desc_en: "Tracking user flows, UTM parameters, and conversions to measure digital campaign performance.",
+      desc_ar: "تتبع تدفقات المستخدمين وروابط UTM والتحويلات الرقمية لقياس الكفاءة التشغيلية الحقيقية للحملات الإعلانية.",
+      use_en: "Set up conversion tags and custom dashboards in GA4 for performance reporting.",
+      use_ar: "إعداد علامات التحويل ولوحات البيانات المخصصة في GA4 لتتبع أداء الحملات التسويقية."
+    },
+    "notion": {
+      title_en: "Notion",
+      title_ar: "برنامج نوشن لإدارة العمل",
+      desc_en: "Organizing marketing databases, content templates, playbooks, and task dashboards in a centralized system.",
+      desc_ar: "تنظيم قواعد البيانات، نماذج صناعة المحتوى، وخطط العمل الرقمية في مساحة عمل مركزية متكاملة.",
+      use_en: "Built comprehensive marketing campaign planners and content calendars inside Notion.",
+      use_ar: "تصميم وبناء لوحات تنظيم المهام وجداول المحتوى ومستندات العمل المشتركة داخل نوشن."
+    },
+    "trello": {
+      title_en: "Trello",
+      title_ar: "منصة تريلو لتنظيم المهام",
+      desc_en: "Managing project pipelines, sprints, and task progress using visual Kanban boards.",
+      desc_ar: "متابعة سير العمل والمشاريع التسويقية عبر لوحات كانبان المرئية لتوزيع وتنظيم المهام بين الأفراد.",
+      use_en: "Coordinated campaign deliverables and designer sprints using visual Trello cards.",
+      use_ar: "تنظيم وإسناد مهام التصميمات وصياغة المحتوى للفريق ومتابعة مراحل التنفيذ خطوة بخطوة."
+    },
+    "crisis": {
+      title_en: "Crisis Management",
+      title_ar: "إدارة الأزمات التسويقية",
+      desc_en: "Formulating swift responses to brand sentiment drops or PR issues to safeguard reputation.",
+      desc_ar: "صياغة خطط استجابة سريعة للتعامل مع أي تراجع في تقييمات الجمهور وحماية سمعة العلامة التجارية من أي اهتزاز.",
+      use_en: "Managed client communication guidelines during service interruptions or delivery issues.",
+      use_ar: "وضع أدلة تواصل عاجلة للتعامل مع شكاوى العملاء واسترجاع الثقة أثناء الأزمات التشغيلية."
+    },
+    "stakeholder": {
+      title_en: "Stakeholder Communication",
+      title_ar: "التواصل مع أصحاب المصلحة",
+      desc_en: "Translating complex marketing metrics into clear business-oriented strategic insights for executive boards.",
+      desc_ar: "تبسيط مقاييس التسويق المعقدة وتحويلها إلى رؤى استراتيجية واضحة ومفهومة لدعم قرارات الإدارة العليا والشركاء.",
+      use_en: "Prepared executive performance summaries and return on ad spend (ROAS) dashboards for managers.",
+      use_ar: "تقديم ملخصات أداء إعلاني وتقارير عائد استثماري واضحة لدعم قرارات المسؤولين التنفيذيين."
+    },
+    "workshop": {
+      title_en: "Workshop Facilitation",
+      title_ar: "إدارة وتيسير ورش العمل",
+      desc_en: "Leading interactive brainstorming workshops for campaign development and strategy alignment.",
+      desc_ar: "إدارة جلسات العصف الذهني التفاعلية وورش العمل المخصصة للتطوير الابتكاري للحملات وضبط التوجه الاستراتيجي.",
+      use_en: "Facilitated collaborative marketing workshops to brainstorm creative ideas and campaigns.",
+      use_ar: "تيسير وإدارة ورش عمل مشتركة مع الفريق للتفكير الإبداعي وصياغة مفاهيم الحملات الجديدة."
+    },
+    "team-lead": {
+      title_en: "Team Leadership",
+      title_ar: "قيادة وإدارة الفرق",
+      desc_en: "Directing cross-functional marketing teams, managing production sprint cycles, resolving operational bottlenecks, and aligning creative outputs.",
+      desc_ar: "توجيه وإدارة فرق العمل المتكاملة في المشاريع التسويقية، وتوزيع المهام، ومتابعة الجداول الزمنية ومراحل الإنتاج بكفاءة.",
+      use_en: "Led teams of designers and copywriters for digital campaign launches, coordinating deliverables via Trello boards.",
+      use_ar: "قاد فرقاً ضمت مصممين وكتّاب محتوى لإطلاق حملات تسويقية رقمية، وتنسيق تسليم المهام عبر لوحات تريلو."
+    },
+    "trainer": {
+      title_en: "Corporate Training",
+      title_ar: "التدريب والتطوير المؤسسي",
+      desc_en: "Coaching professionals and corporate teams on marketing fundamentals, digital execution tools, and customer retention strategies.",
+      desc_ar: "تمكين وتدريب الفرق التنفيذية والكوادر المهنية بالشركات على أساسيات التسويق الرقمي، وبناء مسارات استبقاء العملاء.",
+      use_en: "Conducted practical training workshops on advertising dashboards, CRM usage, and sales copywriting framework alignment.",
+      use_ar: "قدم ورش عمل تدريبية وتطبيقية على لوحات التحكم الإعلانية، استخدام أنظمة CRM، ومواءمة صياغة نصوص المبيعات."
+    },
+    "speaking": {
+      title_en: "Public Speaking & Presentation",
+      title_ar: "الخطابة والتقديم الاحترافي",
+      desc_en: "Presenting complex strategic campaign reports, pitches, and analytical insights clearly and persuasively to clients and executives.",
+      desc_ar: "تقديم الخطط التسويقية وتحليلات الأداء المعقدة بطريقة مبسطة ومقنعة أمام العملاء والمسؤولين والشركاء التنفيذيين.",
+      use_en: "Delivered regular strategic briefings and ROI presentations to corporate managers and stakeholders.",
+      use_ar: "قدم ملخصات أداء دورية وعروض تقديمية لعائدات الاستثمار (ROI) أمام مسؤولي الإدارات والشركاء."
+    },
+    "odoo": {
+      title_en: "Odoo CMS",
+      title_ar: "نظام أودو لإدارة المحتوى",
+      desc_en: "Managing web pages, updating creative content banners, publishing blogs, and optimizing landing page layout elements.",
+      desc_ar: "إدارة صفحات المواقع، وتحديث بنرات الحملات، ونشر المدونات، وتعديل وتطوير هيكل صفحات الهبوط للتجارة الإلكترونية.",
+      use_en: "Optimized e-commerce landing pages and product listings inside Odoo for Fine Stone to boost organic SEO visibility.",
+      use_ar: "عمل على تحسين صفحات الهبوط وعرض المنتجات داخل نظام أودو لشركة فاين ستون لزيادة فرص الظهور العضوي في محركات البحث."
+    },
+    "ai-tools": {
+      title_en: "AI Productivity Tools",
+      title_ar: "أدوات الإنتاجية بالذكاء الاصطناعي",
+      desc_en: "Integrating modern artificial intelligence tools to accelerate copy drafting, content ideation, research, and analysis workflows.",
+      desc_ar: "توظيف واستخدام أحدث أدوات الذكاء الاصطناعي لتسريع صياغة النصوص، توليد الأفكار الإبداعية، وتسهيل مهام البحث والتحليل.",
+      use_en: "Utilized generative AI tools to draft marketing campaign concepts, edit bilingual briefs, and outline content layouts.",
+      use_ar: "استخدم أدوات الذكاء الاصطناعي التوليدي لكتابة مسودات الحملات التسويقية، ومراجعة نصوص العمل ثنائية اللغة، ووضع مخططات النشر."
+    },
+    "office": {
+      title_en: "Microsoft Office Suite",
+      title_ar: "حزمة مايكروسوفت أوفيس",
+      desc_en: "Structuring complex datasets in Excel, crafting professional strategy proposal presentations in PowerPoint, and drafting clear reports in Word.",
+      desc_ar: "ترتيب وتنظيم قواعد البيانات المعقدة باستخدام إكسيل، إعداد عروض الخطط الاحترافية في باوربوينت، وكتابة التقارير والمراسلات في وورد.",
+      use_en: "Built pricing models, competitive analysis reports, and performance summary slide decks for client review.",
+      use_ar: "صمم نماذج تسعير المنتجات، تقارير تحليل المنافسين، وعروض ملخصات الأداء لمراجعتها من قبل العملاء."
     }
   };
 
   const initInteractiveSkills = () => {
+    // Helper function to unify tag mapping to skill ID
+    const getSkillId = (text) => {
+      const lower = text.toLowerCase();
+      if (lower.includes("swot")) return "swot";
+      if (lower.includes("smart")) return "smart";
+      if (lower.includes("4ps") || lower.includes("mix")) return "4ps";
+      if (lower.includes("blue ocean") || lower.includes("blue")) return "blue-ocean";
+      if (lower.includes("persona")) return "buyer-persona";
+      if (lower.includes("model canvas") || lower.includes("bmc")) return "bmc";
+      if (lower.includes("journey")) return "journey";
+      if (lower.includes("pricing")) return "pricing";
+      if (lower.includes("segmentation")) return "segmentation";
+      
+      if (lower.includes("bilingual copy") || lower.includes("copy") || lower.includes("writing")) return "copywriting";
+      if (lower.includes("calendar")) return "calendars";
+      if (lower.includes("hero/hub")) return "hero-hub";
+      if (lower.includes("brand voice") || lower.includes("voice")) return "brand-voice";
+      if (lower.includes("audit")) return "audits";
+      if (lower.includes("pillars")) return "pillars";
+      if (lower.includes("ugc")) return "ugc";
+      if (lower.includes("hashtag")) return "hashtag";
+      
+      if (lower.includes("kpi")) return "kpis";
+      if (lower.includes("insights") || lower.includes("insight")) return "insights";
+      if (lower.includes("competitor")) return "competitors";
+      if (lower.includes("cro")) return "cro";
+      if (lower.includes("retention")) return "retention";
+      if (lower.includes("retargeting")) return "retargeting";
+      if (lower.includes("a/b testing") || lower.includes("a/b")) return "ab-testing";
+      if (lower.includes("funnel")) return "funnel";
+      
+      if (lower.includes("meta ads") || lower.includes("meta")) return "meta-ads";
+      if (lower.includes("tiktok")) return "tiktok-ads";
+      if (lower.includes("canva")) return "canva";
+      if (lower.includes("odoo")) return "odoo";
+      if (lower.includes("ai tool") || lower.includes("ai productivity") || lower.includes("ai")) return "ai-tools";
+      if (lower.includes("office") || lower.includes("365")) return "office";
+      if (lower.includes("analytics")) return "analytics";
+      if (lower.includes("notion")) return "notion";
+      if (lower.includes("trello")) return "trello";
+      
+      if (lower.includes("team lead")) return "team-lead";
+      if (lower.includes("corporate trainer") || lower.includes("trainer")) return "trainer";
+      if (lower.includes("speaking")) return "speaking";
+      if (lower.includes("bilingual")) return "bilingual";
+      if (lower.includes("crisis")) return "crisis";
+      if (lower.includes("stakeholder")) return "stakeholder";
+      if (lower.includes("workshop")) return "workshop";
+      
+      return "";
+    };
+
     // 1. Convert tags inside drawers to interactive skill chips
     const drawerTagsLists = document.querySelectorAll('.drawer-tags-list');
     drawerTagsLists.forEach(list => {
@@ -2269,34 +2435,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const textEn = spanEn.textContent;
           const textAr = spanAr.textContent;
           
-          // Map texts to skill-id
-          let skillId = "";
-          const lowerEn = textEn.toLowerCase();
-          if (lowerEn.includes("swot")) skillId = "swot";
-          else if (lowerEn.includes("smart")) skillId = "smart";
-          else if (lowerEn.includes("4ps") || lowerEn.includes("mix")) skillId = "4ps";
-          else if (lowerEn.includes("blue ocean")) skillId = "blue-ocean";
-          else if (lowerEn.includes("persona")) skillId = "buyer-persona";
-          else if (lowerEn.includes("model canvas") || lowerEn.includes("bmc")) skillId = "bmc";
-          else if (lowerEn.includes("bilingual copy") || lowerEn.includes("copy")) skillId = "copywriting";
-          else if (lowerEn.includes("calendar")) skillId = "calendars";
-          else if (lowerEn.includes("hero/hub")) skillId = "hero-hub";
-          else if (lowerEn.includes("brand voice")) skillId = "brand-voice";
-          else if (lowerEn.includes("audit")) skillId = "audits";
-          else if (lowerEn.includes("kpi")) skillId = "kpis";
-          else if (lowerEn.includes("insights")) skillId = "insights";
-          else if (lowerEn.includes("competitor")) skillId = "competitors";
-          else if (lowerEn.includes("cro")) skillId = "cro";
-          else if (lowerEn.includes("meta ads")) skillId = "meta-ads";
-          else if (lowerEn.includes("tiktok")) skillId = "tiktok-ads";
-          else if (lowerEn.includes("canva")) skillId = "canva";
-          else if (lowerEn.includes("odoo")) skillId = "odoo";
-          else if (lowerEn.includes("ai tool") || lowerEn.includes("ai productivity")) skillId = "ai-tools";
-          else if (lowerEn.includes("office")) skillId = "office";
-          else if (lowerEn.includes("team lead")) skillId = "team-lead";
-          else if (lowerEn.includes("corporate trainer") || lowerEn.includes("trainer")) skillId = "trainer";
-          else if (lowerEn.includes("speaking")) skillId = "speaking";
-          else if (lowerEn.includes("bilingual")) skillId = "bilingual";
+          const skillId = getSkillId(textEn);
 
           chipsData.push({ id: skillId, textEn, textAr });
         }
@@ -2305,15 +2444,18 @@ document.addEventListener('DOMContentLoaded', () => {
       // Rebuild the drawer tags list with interactive chips
       list.innerHTML = "";
       chipsData.forEach(chip => {
-        const chipBtn = document.createElement('button');
-        chipBtn.className = 'drawer-skill-chip';
-        chipBtn.setAttribute('data-skill-id', chip.id);
-        chipBtn.innerHTML = `<span class="lang-en">${chip.textEn}</span><span class="lang-ar">${chip.textAr}</span>`;
-        chipBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          selectSkillInDrawer(parentDrawer, chip.id);
-        });
-        list.appendChild(chipBtn);
+        const hasDbEntry = !!SkillDatabase[chip.id];
+        const tagEl = document.createElement(hasDbEntry ? 'button' : 'span');
+        tagEl.className = 'drawer-skill-chip' + (hasDbEntry ? '' : ' static-tag');
+        if (hasDbEntry) {
+          tagEl.setAttribute('data-skill-id', chip.id);
+          tagEl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectSkillInDrawer(parentDrawer, chip.id);
+          });
+        }
+        tagEl.innerHTML = `<span class="lang-en">${chip.textEn}</span><span class="lang-ar">${chip.textAr}</span>`;
+        list.appendChild(tagEl);
       });
 
       // Add the explanation box container at the end of drawer-body
@@ -2395,33 +2537,22 @@ document.addEventListener('DOMContentLoaded', () => {
       // Add data-skill-id to card tags
       const tags = card.querySelectorAll('.tag');
       tags.forEach(tag => {
-        let text = tag.textContent.toLowerCase();
         let skillId = "";
-        if (text.includes("swot")) skillId = "swot";
-        else if (text.includes("smart")) skillId = "smart";
-        else if (text.includes("4ps")) skillId = "4ps";
-        else if (text.includes("blue ocean") || text.includes("blue")) skillId = "blue-ocean";
-        else if (text.includes("persona")) skillId = "buyer-persona";
-        else if (text.includes("bmc")) skillId = "bmc";
-        else if (text.includes("copy") || text.includes("writing")) skillId = "copywriting";
-        else if (text.includes("calendar")) skillId = "calendars";
-        else if (text.includes("voice")) skillId = "brand-voice";
-        else if (text.includes("hero/hub")) skillId = "hero-hub";
-        else if (text.includes("audit")) skillId = "audits";
-        else if (text.includes("kpi")) skillId = "kpis";
-        else if (text.includes("insight")) skillId = "insights";
-        else if (text.includes("competitor")) skillId = "competitors";
-        else if (text.includes("cro")) skillId = "cro";
-        else if (text.includes("meta ads") || text.includes("meta")) skillId = "meta-ads";
-        else if (text.includes("tiktok")) skillId = "tiktok-ads";
-        else if (text.includes("canva")) skillId = "canva";
-        else if (text.includes("odoo")) skillId = "odoo";
-        else if (text.includes("ai tool") || text.includes("ai")) skillId = "ai-tools";
-        else if (text.includes("office")) skillId = "office";
-        else if (text.includes("team lead")) skillId = "team-lead";
-        else if (text.includes("corporate trainer") || text.includes("trainer")) skillId = "trainer";
-        else if (text.includes("speaking")) skillId = "speaking";
-        else if (text.includes("bilingual")) skillId = "bilingual";
+        const enChild = tag.querySelector('.lang-en');
+        if (enChild) {
+          skillId = getSkillId(enChild.textContent);
+        } else if (tag.classList.contains('lang-en')) {
+          skillId = getSkillId(tag.textContent);
+        } else if (tag.classList.contains('lang-ar')) {
+          const prev = tag.previousElementSibling;
+          if (prev && prev.classList.contains('lang-en')) {
+            skillId = getSkillId(prev.textContent);
+          }
+        }
+        
+        if (!skillId) {
+          skillId = getSkillId(tag.textContent);
+        }
         
         tag.setAttribute('data-skill-id', skillId);
 
@@ -2458,8 +2589,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
-
-
   };
 
   initInteractiveSkills();
