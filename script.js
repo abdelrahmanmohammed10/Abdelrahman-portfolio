@@ -2554,6 +2554,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatWindowPanel = document.getElementById('chat-window-panel');
     const chatMessagesContainer = document.getElementById('chat-messages-container');
     const chatSuggestionsContainer = document.getElementById('chat-suggestions-container');
+    const chatInputForm = document.getElementById('chat-input-form');
+    const chatUserInput = document.getElementById('chat-user-input');
+    const chatCloseBtn = document.getElementById('chat-close-btn');
+    const chatSuggestionsToggle = document.getElementById('chat-suggestions-toggle');
     
     if (!chatTriggerBtn || !chatWindowPanel || !chatMessagesContainer) return;
 
@@ -2768,7 +2772,6 @@ Response:
       }
     };
 
-    const chatSuggestionsToggle = document.getElementById('chat-suggestions-toggle');
 
     const getSuggestions = (lang) => {
       if (lang === 'ar') {
