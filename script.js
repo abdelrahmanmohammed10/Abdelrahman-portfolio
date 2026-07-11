@@ -2364,8 +2364,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  /**
+   * Initializes the interactive skills drawers.
+   * Converts static tag spans into interactive buttons and configures click event listeners.
+   */
   const initInteractiveSkills = () => {
-    // Helper function to unify tag mapping to skill ID
+    /**
+     * Maps user-facing tag strings to standard SkillDatabase keys.
+     * @param {string} text - The tag text.
+     * @returns {string} The corresponding skill database key or empty string.
+     */
     const getSkillId = (text) => {
       const lower = text.toLowerCase();
       
@@ -2419,35 +2427,26 @@ document.addEventListener('DOMContentLoaded', () => {
       if (lower.includes("crisis")) return "crisis";
       if (lower.includes("stakeholder")) return "stakeholder";
       if (lower.includes("workshop")) return "workshop";
-      
       return "";
     };
 
-    // 1. Convert tags inside drawers to interactive skill chips
     const drawerTagsLists = document.querySelectorAll('.drawer-tags-list');
     drawerTagsLists.forEach(list => {
       const parentDrawer = list.closest('.project-drawer');
       if (!parentDrawer) return;
       const drawerId = parentDrawer.id;
-
-      // Extract existing spans inside list and group by pairs (EN and AR)
       const spans = Array.from(list.querySelectorAll('span'));
       const chipsData = [];
-      
       for (let i = 0; i < spans.length; i += 2) {
         if (i + 1 < spans.length) {
           const spanEn = spans[i];
           const spanAr = spans[i + 1];
           const textEn = spanEn.textContent;
           const textAr = spanAr.textContent;
-          
           const skillId = getSkillId(textEn);
-
           chipsData.push({ id: skillId, textEn, textAr });
         }
       }
-
-      // Rebuild the drawer tags list with interactive chips
       list.innerHTML = "";
       chipsData.forEach(chip => {
         const hasDbEntry = !!SkillDatabase[chip.id];
@@ -2463,8 +2462,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tagEl.innerHTML = `<span class="lang-en">${chip.textEn}</span><span class="lang-ar">${chip.textAr}</span>`;
         list.appendChild(tagEl);
       });
-
-      // Add the explanation box container at the end of drawer-body
       const drawerBody = parentDrawer.querySelector('.drawer-body');
       if (drawerBody && !drawerBody.querySelector('.skill-explanation-box')) {
         const expBox = document.createElement('div');
@@ -2482,54 +2479,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Function to handle skill selection in drawer
     const selectSkillInDrawer = (drawer, skillId) => {
-      // Deactivate other chips in this drawer
       const chips = drawer.querySelectorAll('.drawer-skill-chip');
       chips.forEach(c => c.classList.remove('active'));
-
-      // Activate clicked chip
       const activeChip = drawer.querySelector(`.drawer-skill-chip[data-skill-id="${skillId}"]`);
       if (activeChip) activeChip.classList.add('active');
-
       const expBox = drawer.querySelector('.skill-explanation-box');
       if (!expBox) return;
-
       const data = SkillDatabase[skillId];
       if (data) {
-        // Set titles/descriptions dynamically based on language
         const titleText = expBox.querySelector('.explanation-title-text');
         const descText = expBox.querySelector('.explanation-desc-text');
         const usecaseText = expBox.querySelector('.explanation-usecase');
-
-        // Render bilingual text inside description box
-        descText.innerHTML = `
-          <span class="lang-en">${data.desc_en}</span>
-          <span class="lang-ar">${data.desc_ar}</span>
-        `;
-        usecaseText.innerHTML = `
-          <span class="lang-en"><strong>How I use it:</strong> ${data.use_en}</span>
-          <span class="lang-ar"><strong>التطبيق والخبرة:</strong> ${data.use_ar}</span>
-        `;
-
-        // Update active language visibility in the dynamically created nodes
+        descText.innerHTML = `<span class="lang-en">${data.desc_en}</span><span class="lang-ar">${data.desc_ar}</span>`;
+        usecaseText.innerHTML = `<span class="lang-en"><strong>How I use it:</strong> ${data.use_en}</span><span class="lang-ar"><strong>التطبيق والخبرة:</strong> ${data.use_ar}</span>`;
         const activeLang = document.documentElement.getAttribute('lang') || 'en';
         descText.querySelectorAll('span').forEach(span => {
-          if (span.classList.contains(`lang-${activeLang}`)) {
-            span.style.display = 'inline';
-          } else {
-            span.style.display = 'none';
-          }
+          span.style.display = span.classList.contains(`lang-${activeLang}`) ? 'inline' : 'none';
         });
         usecaseText.querySelectorAll('span').forEach(span => {
-          if (span.classList.contains(`lang-${activeLang}`)) {
-            span.style.display = 'inline';
-          } else {
-            span.style.display = 'none';
-          }
+          span.style.display = span.classList.contains(`lang-${activeLang}`) ? 'inline' : 'none';
         });
-
-        // Show description box with animation
         expBox.classList.add('visible');
         gsap.fromTo(expBox, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
       } else {
@@ -2537,57 +2507,37 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    // 2. Wire up clicks on overview cards
     const categoryCards = document.querySelectorAll('.skill-category');
     categoryCards.forEach(card => {
-      // Add data-skill-id to card tags
       const tags = card.querySelectorAll('.tag');
       tags.forEach(tag => {
         let skillId = "";
         const enChild = tag.querySelector('.lang-en');
-        if (enChild) {
-          skillId = getSkillId(enChild.textContent);
-        } else if (tag.classList.contains('lang-en')) {
-          skillId = getSkillId(tag.textContent);
-        } else if (tag.classList.contains('lang-ar')) {
+        if (enChild) skillId = getSkillId(enChild.textContent);
+        else if (tag.classList.contains('lang-en')) skillId = getSkillId(tag.textContent);
+        else if (tag.classList.contains('lang-ar')) {
           const prev = tag.previousElementSibling;
-          if (prev && prev.classList.contains('lang-en')) {
-            skillId = getSkillId(prev.textContent);
-          }
+          if (prev && prev.classList.contains('lang-en')) skillId = getSkillId(prev.textContent);
         }
-        
-        if (!skillId) {
-          skillId = getSkillId(tag.textContent);
-        }
-        
+        if (!skillId) skillId = getSkillId(tag.textContent);
         tag.setAttribute('data-skill-id', skillId);
-
-        // Individual tag click listener
         tag.addEventListener('click', (e) => {
           e.preventDefault();
-          e.stopPropagation(); // prevent card drawer trigger
-
+          e.stopPropagation();
           const drawerId = card.getAttribute('data-drawer');
           const drawer = document.getElementById(drawerId);
           if (drawer) {
-            // Open drawer
             openDrawer(drawer);
-            // Select skill and scroll to it
-            setTimeout(() => {
-              selectSkillInDrawer(drawer, skillId);
-            }, 300);
+            setTimeout(() => selectSkillInDrawer(drawer, skillId), 300);
           }
         });
       });
-
-      // Default card click listener
       card.addEventListener('click', (e) => {
-        if (e.target.closest('.tag')) return; // handled by tag click
+        if (e.target.closest('.tag')) return;
         const drawerId = card.getAttribute('data-drawer');
         const drawer = document.getElementById(drawerId);
         if (drawer) {
           openDrawer(drawer);
-          // Hide any previous active selection
           const expBox = drawer.querySelector('.skill-explanation-box');
           if (expBox) expBox.classList.remove('visible');
           const chips = drawer.querySelectorAll('.drawer-skill-chip');
@@ -2604,18 +2554,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatWindowPanel = document.getElementById('chat-window-panel');
     const chatMessagesContainer = document.getElementById('chat-messages-container');
     const chatSuggestionsContainer = document.getElementById('chat-suggestions-container');
-    const chatInputForm = document.getElementById('chat-input-form');
-    const chatUserInput = document.getElementById('chat-user-input');
-    const chatCloseBtn = document.getElementById('chat-close-btn');
     
     if (!chatTriggerBtn || !chatWindowPanel || !chatMessagesContainer) return;
 
-    // API Key obfuscated to prevent static analysis scanners from blocking commits
     const prefix = 'AIza' + 'Sy';
     const keyParts = [prefix, 'AQ.Ab8RN6LtQNHMzMK', 'UOUUctxKN_igsBXH7r-HX5E', 'ZCiYLlxi7yTA'];
     const apiKey = keyParts.join('');
 
-    // Chatbot Knowledge Base (Local Fallback)
     const KB = {
       en: {
         greeting: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about his marketing projects, retention work, or how he can help your team!",
@@ -2625,7 +2570,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "cv",
             keywords: ["cv", "resume", "download", "pdf", "file", "documents", "sira", "ذاتية", "سيرة", "سيره", "تحميل", "تنزيل", "ملف", "ملخص"],
-            response: "You can download my full professional CV in PDF format by clicking <a href=\"Abdelrahman_CV_Final.pdf\" download target=\"_blank\">here</a>."
+            response: "You can download my full professional CV in PDF format by clicking <a href=\"Abdelrahman_CV_v2.pdf\" download target=\"_blank\">here</a>."
           },
           {
             name: "contact",
@@ -2635,32 +2580,22 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["experience", "work", "job", "career", "history", "employer", "employ", "company", "role", "concentrix", "tabby", "fine stone", "resala", "خبرة", "عمل", "وظيفة", "وظائف", "سابق", "خبرات"],
-            response: "My professional experience includes:<br>• <strong>Concentrix (Boost Mobile account):</strong> Sales & Retention Consultant (Aug 2025-Present) - Awarded the 1st Enterprise Loyalty Award (2026) for ranking #1 in customer retention and sales conversion.<br>• <strong>Tabby Technologies Egypt (Fintech/BNPL):</strong> Customer Service & E-commerce Experience Specialist (Apr 2025-Aug 2025) - Restructured FAQ support content and mapped user customer journeys.<br>• <strong>New Direction Academy:</strong> Digital Marketer & Brand Strategist (Sep 2020-May 2022) - Led brand positioning, Facebook/Instagram campaigns, and dual SWOT analyses.<br>• <strong>Fine Stone:</strong> Website Editor & Digital Content Coordinator (Jul 2019-Feb 2020) - Landing page optimizations on Odoo CMS and SEO tracking."
+            response: "My professional experience includes:<br>• <strong>Concentrix (Boost Mobile account):</strong> Customer Retention Specialist & Loyalty Consultant (Aug 2025-Present) - Awarded the 1st Enterprise Loyalty Award (2026) for ranking #1 in customer retention and sales conversion.<br>• <strong>Tabby Technologies Egypt (Fintech/BNPL):</strong> Customer Experience Specialist, E-commerce & BNPL (Apr 2025-Aug 2025) - Restructured FAQ support content and mapped user customer journeys.<br>• <strong>New Direction Academy:</strong> Digital Marketer & Brand Strategist (Sep 2020-May 2022) - Led brand positioning, Facebook/Instagram campaigns, and dual SWOT analyses.<br>• <strong>Fine Stone:</strong> Web Content & SEO Coordinator (Jul 2019-Feb 2020) - Landing page optimizations on Odoo CMS and SEO tracking."
           },
           {
             name: "concentrix",
             keywords: ["concentrix", "loyalty", "retention", "boost mobile", "dish", "كونسنتريكس", "ولاء"],
-            response: "At Concentrix (Aug 2025-Present as a Sales & Retention Consultant), I resolve critical mobile plan and billing issues. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for ranking #1 company-wide in sales conversion and churn reduction."
+            response: "At Concentrix (Aug 2025-Present as a Customer Retention Specialist & Loyalty Consultant), I resolve critical mobile plan and billing issues. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for ranking #1 company-wide in sales conversion and churn reduction."
           },
           {
             name: "tabby",
             keywords: ["tabby", "fintech", "bnpl", "customer service", "ambassador", "تابي"],
-            response: "At Tabby Egypt (Apr 2025-Aug 2025 as a Customer Service & E-commerce Experience Specialist), I supported customers through payment journeys, mapped UX friction points, and restructured self-service guides to reduce support recurrences."
+            response: "At Tabby Egypt (Apr 2025-Aug 2025 as a Customer Experience Specialist, E-commerce & BNPL), I supported customers through payment journeys, mapped UX friction points, and restructured self-service guides to reduce support recurrences."
           },
           {
             name: "projects",
             keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain", "مشاريع", "مشروع", "اعمال", "موقع"],
             response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive e-commerce marketing playbook covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
-          },
-          {
-            name: "skills",
-            keywords: ["skills", "toolkit", "competence", "capabilities", "strategy", "planning", "copywriting", "content", "growth", "analytics", "cro", "meta", "tiktok", "ads", "seo", "swot", "smart", "canvas", "odoo", "canva", "مهارات", "ادوات"],
-            response: "My skills are categorized into:<br>• <strong>Strategy:</strong> SWOT, SMART goals, Buyer Personas, Blue Ocean Strategy, Business Model Canvas (BMC).<br>• <strong>Content:</strong> Bilingual copywriting (AR/EN), Content Calendars, Brand Voice, Content Audits.<br>• <strong>Growth/Analytics:</strong> KPI frameworks, Meta Insights, CRO (Conversion Rate Optimization), Competitor Analysis.<br>• <strong>Tools:</strong> Meta Ads Manager, TikTok Ads Manager, Odoo CMS, Canva, AI productivity."
-          },
-          {
-            name: "why_hire",
-            keywords: ["why", "hire", "recruit", "why you", "results", "fit", "value", "benefits", "choose you"],
-            response: "You should hire Abdelrahman because of his proven track record in customer retention and digital marketing. During his time at Concentrix, he won the 1st Enterprise Loyalty Award (2026) for ranking #1 in retaining customers and reducing churn. He has hands-on experience in building marketing playbooks, executing social campaigns, and optimizing customer support experiences to drive brand loyalty."
           }
         ]
       },
@@ -2672,7 +2607,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "cv",
             keywords: ["سي في", "سيرة", "ذاتية", "سيره", "تحميل", "ملف", "ملخص", "تنزيل", "cv", "resume"],
-            response: "يمكنك تحميل سيرتي الذاتية المهنية والمحدثة بالكامل بصيغة PDF مباشرة بالضغط <a href=\"Abdelrahman_CV_Final.pdf\" download target=\"_blank\">هنا</a>."
+            response: "يمكنك تحميل سيرتي الذاتية المهنية والمحدثة بالكامل بصيغة PDF مباشرة بالضغط <a href=\"Abdelrahman_CV_v2.pdf\" download target=\"_blank\">هنا</a>."
           },
           {
             name: "contact",
@@ -2682,51 +2617,40 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["خبرة", "عمل", "وظيفة", "تاريخ", "سيرة", "شركة", "دور", "كونسنتريكس", "تابي", "فاين ستون", "رسالة", "experience", "work", "job"],
-            response: "تشمل خبراتي المهنية:<br>• <strong>كونسنتريكس (Boost Mobile):</strong> مستشار مبيعات واستبقاء العملاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026) للتميز في الاحتفاظ بالعملاء والمبيعات.<br>• <strong>تابي (التقنية المالية):</strong> أخصائي خدمة العملاء وتجربة التجارة الإلكترونية (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المشترين وتطوير تجربة المستخدم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي ومخطط استراتيجي للعلامة التجارية (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
+            response: "تشمل خبراتي المهنية:<br>• <strong>كونسنتريكس (Boost Mobile):</strong> أخصائي استبقاء العملاء ومستشار الولاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026) للتميز في الاحتفاظ بالعملاء والمبيعات.<br>• <strong>تابي (التقنية المالية):</strong> أخصائي تجربة العملاء والتجارة الإلكترونية (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المشترين وتطوير تجربة المستخدم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي ومخطط استراتيجي للعلامة التجارية (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> منسق المحتوى ومسؤول السيو والويب (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
           },
           {
             name: "concentrix",
             keywords: ["كونسنتريكس", "ولاء", "احتفاظ", "خدمة", "مبيعات", "جوائز", "جائزة", "concentrix", "loyalty"],
-            response: "في شركة كونسنتريكس (مستشار مبيعات واستبقاء العملاء لحساب بوست موبايل التابع لشركة ديش تكنولوجيز من أغسطس ٢٠٢٥ حتى الآن)، حصلت على <strong>جائزة الولاء الأولى على مستوى المؤسسة (٢٠٢٦)</strong> لتميزي في خفض معدلات تسرب العملاء والاحتفاظ بهم وتحقيق الصدارة في المبيعات."
+            response: "في شركة كونسنتريكس (أخصائي استبقاء العملاء ومستشار الولاء لحساب بوست موبايل التابع لشركة ديش تكنولوجيز من أغسطس ٢٠٢٥ حتى الآن)، حصلت على <strong>جائزة الولاء الأولى على مستوى المؤسسة (٢٠٢٦)</strong> لتميزي في خفض معدلات تسرب العملاء والاحتفاظ بهم وتحقيق الصدارة في المبيعات."
           },
           {
             name: "tabby",
             keywords: ["تابي", "تقنية", "مالية", "تقسيط", "فنتك", "عملاء", "دعم", "tabby"],
-            response: "في شركة تابي مصر (أخصائي خدمة العملاء وتجربة التجارة الإلكترونية في الحرم اليوناني بالقاهرة من أبريل ٢٠٢٥ إلى أغسطس ٢٠٢٥)، قمت بمساعدة العملاء وتحديد نقاط الضعف في تجربة المستخدم وتطبيق كتابة المحتوى الإعلاني لرفع الأداء الذاتي للدعم."
+            response: "في شركة تابي مصر (أخصائي تجربة العملاء والتجارة الإلكترونية في الحرم اليوناني بالقاهرة من أبريل ٢٠٢٥ إلى أغسطس ٢٠٢٥)، قمت بمساعدة العملاء وتحديد نقاط الضعف في تجربة المستخدم وتطبيق كتابة المحتوى الإعلاني لرفع الأداء الذاتي للدعم."
           },
           {
             name: "projects",
             keywords: ["مشاريع", "مشروع", "اعمال", "حالة", "دراسة", "كيوكو", "هدايا", "دايركشن", "استضافة", "هوستنج", "projects", "kyoko"],
             response: "أشرفت على تنفيذ عدة مشاريع استراتيجية رئيسية:<br>• <strong>هدايا كيوكو (2026):</strong> خطة تسويقية متكاملة للتجارة الإلكترونية تشمل مخطط نموذج العمل، المزيج التسويقي، واستراتيجية المحيط الأزرق.<br>• <strong>أكاديمية نيو دايركشن:</strong> خطة الإطلاق وتحديد التموضع التنافسي والهوية الكاملة للأكاديمية.<br>• <strong>هوستنج و دومين:</strong> تدقيق شامل لتجربة المستخدم (UX) والمحتوى لرفع المبيعات."
-          },
-          {
-            name: "skills",
-            keywords: ["مهارات", "أدوات", "ميزات", "قدرات", "تسويق", "تحليل", "اعلانات", "كتابة", "محتوى", "skills", "tools"],
-            response: "تنقسم مهاراتي إلى:<br>• <strong>الاستراتيجية:</strong> SWOT، الأهداف الذكية SMART، شخصيات المشتري، استراتيجية المحيط الأزرق، مخطط نموذج العمل.<br>• <strong>المحتوى:</strong> كتابة المحتوى الإعلاني باللغتين العربية والإنجليزية، خطط وجداول المحتوى، نبرة العلامة التجارية.<br>• <strong>النمو والتحليل:</strong> تصميم أطر مؤشرات الأداء (KPIs)، إحصاءات ميتا، تحسين معدلات التحويل (CRO)، وتحليل المنافسين.<br>• <strong>الأدوات:</strong> Meta Ads Manager، TikTok Ads Manager، نظام إدارة المحتوى Odoo، وتطبيقات Canva والذكاء الاصطناعي."
-          },
-          {
-            name: "why_hire",
-            keywords: ["توظيف", "لماذا", "توظف", "تعيين", "مميزات", "لماذا نوظفك", "نتائج", "فائدة"],
-            response: "يجب عليك توظيف عبد الرحمن بسبب سجله الحافل في الاحتفاظ بالعملاء والتسويق الرقمي. خلال عمله في كونسنتريكس، حصل على جائزة الولاء الأولى (2026) لتحقيقه المركز الأول في استبقاء العملاء وتقليل تسربهم. كما يمتلك خبرة عملية في إعداد الخطط التسويقية، وإدارة الحملات الاجتماعية، وتحسين تجارب الدعم لتعزيز ولاء العملاء."
           }
         ]
       }
     };
 
-    // System Prompt context for Gemini API
     const systemPrompt = `You are Astro-Bot — AbdelrahmanMohammed's personal AI assistant embedded in his portfolio website.
 
 Your personality: Confident, sharp, highly strategic, and analytical. You speak like an elite senior marketing consultant and Chief Strategy Officer — direct, no fluff, every sentence carries weight. You are designed to provide rapid, deep insights into business models, marketing analytics, consumer psychology, and brand strategy. You're proud of Abdelrahman's work and you know his background cold.
 
 Abdelrahman Mohammed Abdelhafez:
-• Digital Marketing Strategist & Brand Planner based in Giza, Egypt
+• Customer Retention Specialist & Loyalty Consultant based in Giza, Egypt
 • Contact: +201157265599 | abdelrahman.abdelhafez10@gmail.com | LinkedIn: linkedin.com/in/abdelrahman-abdelhafez-994932167/
 
 Career:
-1. Concentrix — Boost Mobile (Aug 2025–Present): Sales & Retention Consultant. Ranked #1 company-wide. Won 1st Enterprise Loyalty Award 2026. Conducts competitive intelligence, resolves critical cancellations.
-2. Tabby Technologies — Fintech/BNPL (Apr–Aug 2025): E-commerce Experience Specialist. Mapped UX friction points in BNPL checkout flows. Rewrote FAQ content to cut repeat contacts.
-3. New Direction Academy — EdTech (Sep 2020–May 2022): Digital Marketer & Brand Strategist. Built brand from zero: logo, tone, positioning. Ran monthly Facebook/Instagram campaigns. Created dual SWOT, buyer personas, competitor pricing analysis.
-4. Fine Stone / UnionAire Group (Jul 2019–Feb 2020): Website Editor. Optimized Odoo CMS landing pages. Wrote SEO product descriptions. Commended by E-commerce Manager.
+1. Concentrix — Boost Mobile (Aug 2025–Present): Customer Retention Specialist & Loyalty Consultant. Ranked #1 company-wide. Won 1st Enterprise Loyalty Award 2026. Conducts competitive intelligence, resolves critical cancellations, uses customer profiling and behavioral psychology.
+2. Tabby Technologies — Fintech/BNPL (Apr–Aug 2025): Customer Experience Specialist, E-commerce & BNPL. Supported UAE market from Cairo hub, tracked checkout friction, proposed self-service FAQ improvements, managed concurrent operations.
+3. New Direction Academy — EdTech (Sep 2020–May 2022): Digital Marketer & Brand Strategist. Built brand identity from scratch: logo, tone of voice, color palette. Ran campaigns, built SWOT, buyer personas, customer journey map.
+4. Fine Stone / UnionAire Group (Jul 2019–Feb 2020): Web Content & SEO Coordinator. Restructured products on Odoo CMS, applied consistent copywriting.
 
 Projects:
 • Kyoko Gifts (2026): Complete marketing playbook — Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, 4Ps, Blue Ocean positioning, Push & Pull strategy, Meta + TikTok ad copy, content pillars, sales funnel, moderation guide, 6-category KPI framework.
@@ -2757,7 +2681,13 @@ Response:
 **السبب الثاني:** يمتلك مهارات تحليلية متطورة للغاية في دراسة السوق ووضع الأطر والخطط الكاملة (مثل مشروع Kyoko Gifts الذي صمم له مخطط نموذج العمل بالكامل ومؤشرات الأداء السنوية).
 **النتيجة لك:** تعيين عبد الرحمن يضمن لك نموًا مستدامًا وتقليل تكاليف الاستحواذ مع مضاعفة قيمة دورة حياة العميل (LTV)."`;
 
-    // Local fallback response generator
+    /**
+     * Searches the local offline knowledge base for a query.
+     * Matches keywords and scores intents to find the best response.
+     * @param {string} query - The user query text.
+     * @param {string} lang - The active language code ('en' or 'ar').
+     * @returns {string} The localized matched bot response.
+     */
     const getLocalResponse = (query, lang) => {
       const normalizedQuery = query.toLowerCase().trim();
       const langKB = KB[lang] || KB.en;
@@ -2783,7 +2713,13 @@ Response:
       return langKB.defaultResponse;
     };
 
-    // Main API Calling Function with Serverless Vercel + Direct Fallback (GitHub Pages compat)
+    /**
+     * Fetches response from Gemini API (via serverless or client-side fallback).
+     * Falls back to getLocalResponse on failure.
+     * @param {string} query - The user input query.
+     * @param {string} lang - The active language code ('en' or 'ar').
+     * @returns {Promise<string>} The API response text or fallback string.
+     */
     const fetchGeminiResponse = async (query, lang) => {
       // 1. Try Vercel Serverless Backend first (API Key is secure on server)
       try {
@@ -2881,11 +2817,34 @@ Response:
       });
     }
 
+    /**
+     * Escapes HTML special characters in a string to prevent XSS.
+     * @param {string} str - The raw string to escape.
+     * @returns {string} The escaped safe string.
+     */
+    const escapeHTML = (str) => {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
+
+    /**
+     * Adds a chat bubble to the message log container.
+     * @param {string} text - The content of the message.
+     * @param {string} sender - The sender identity ('user' or 'bot').
+     */
     const addMessageBubble = (text, sender) => {
       const bubble = document.createElement('div');
       bubble.className = `chat-msg ${sender}`;
+      
+      // Escape HTML for user-supplied messages to prevent script injection (XSS)
+      let safeText = sender === 'user' ? escapeHTML(text) : text;
+      
       // Clean up markdown formatting from LLM (bold, list items) for clean HTML rendering
-      let htmlText = text
+      let htmlText = safeText
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/- (.*?)\n/g, '• $1<br>')
@@ -2896,6 +2855,9 @@ Response:
       chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
     };
 
+    /**
+     * Displays the typing indicator bubble in the chat log.
+     */
     const showTypingIndicator = () => {
       const indicator = document.createElement('div');
       indicator.className = 'chat-msg bot typing-bubble';
@@ -2905,6 +2867,9 @@ Response:
       chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
     };
 
+    /**
+     * Removes the typing indicator bubble from the chat log.
+     */
     const removeTypingIndicator = () => {
       const indicator = document.getElementById('typing-indicator');
       if (indicator) indicator.remove();
