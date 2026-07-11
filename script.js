@@ -578,10 +578,20 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        // Default to Hero section when near the top of the scroll
         if (scrollTop < 180) {
           currentActive = 'hero';
         }
+
+        // Update active class on mobile floating nav dock
+        const mobileDockLinks = document.querySelectorAll('.mobile-nav-dock-link');
+        mobileDockLinks.forEach(link => {
+          const href = link.getAttribute('href').slice(1);
+          if (href === currentActive) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
 
         // 1b. Mobile Smart Header (Hide on scroll down, show on scroll up) & Dynamic Section Title
         if (mobileHeader) {
@@ -745,6 +755,9 @@ document.addEventListener('DOMContentLoaded', () => {
     drawer.classList.add('active');
     drawer.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    if (lenis) {
+      lenis.stop();
+    }
 
     const panel = drawer.querySelector('.drawer-panel');
     const overlay = drawer.querySelector('.drawer-overlay');
@@ -771,6 +784,9 @@ document.addEventListener('DOMContentLoaded', () => {
       drawer.setAttribute('aria-hidden', 'true');
       drawer.setAttribute('inert', '');
       document.body.style.overflow = '';
+      if (lenis) {
+        lenis.start();
+      }
       if (activeTriggerElement) {
         activeTriggerElement.focus();
         activeTriggerElement = null;
