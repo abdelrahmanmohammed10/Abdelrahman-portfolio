@@ -4137,6 +4137,18 @@ html[data-theme="light"] .skill-category[data-drawer*="leadership"] .tag:hover {
 /* ----- PROJECT CARDS ----- */
 html[data-theme="light"] .project-glass-card { background: rgba(255, 255, 255, 0.96); border-color: var(--border-color); box-shadow: 0 2px 12px rgba(30, 61, 97, 0.05); }
 html[data-theme="light"] .project-glass-card:hover { background: #ffffff; border-color: rgba(30, 61, 97, 0.25); box-shadow: 0 8px 25px rgba(30, 61, 97, 0.05); }
+html[data-theme="light"] .project-glass-card.border-purple:hover {
+  box-shadow: 0 12px 32px -8px rgba(124, 58, 237, 0.18);
+  border-color: rgba(124, 58, 237, 0.35);
+}
+html[data-theme="light"] .project-glass-card.border-cyan:hover {
+  box-shadow: 0 12px 32px -8px rgba(15, 118, 110, 0.18);
+  border-color: rgba(15, 118, 110, 0.35);
+}
+html[data-theme="light"] .project-glass-card.border-gold:hover {
+  box-shadow: 0 12px 32px -8px rgba(180, 83, 9, 0.18);
+  border-color: rgba(180, 83, 9, 0.35);
+}
 html[data-theme="light"] .project-card-title { color: var(--text-primary); }
 html[data-theme="light"] .project-card-meta { color: var(--text-muted); font-weight: 600; }
 html[data-theme="light"] .project-card-desc { color: var(--text-muted); }
