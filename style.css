@@ -5149,6 +5149,7 @@ html.gsap-active .split-reveal-heading {
     stroke-width: 2;
     fill: none;
     transition: transform 0.3s ease;
+    pointer-events: none;
   }
 
   .mobile-nav-dock-link:hover,
@@ -5164,6 +5165,24 @@ html.gsap-active .split-reveal-heading {
   /* Prevent floating nav dock from covering bottom elements */
   footer {
     padding-bottom: 96px !important;
+  }
+
+  /* Position chatbot above the floating bottom nav dock */
+  .chat-widget-container {
+    bottom: 90px !important;
+    right: 20px !important;
+  }
+  html[lang="ar"] .chat-widget-container {
+    right: auto !important;
+    left: 20px !important;
+  }
+  .chat-window-panel {
+    bottom: 90px !important;
+    right: 20px !important;
+  }
+  html[lang="ar"] .chat-window-panel {
+    left: 20px !important;
+    right: auto !important;
   }
 }
 
