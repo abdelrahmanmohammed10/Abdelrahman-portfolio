@@ -2637,7 +2637,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["خبرة", "عمل", "وظيفة", "تاريخ", "سيرة", "شركة", "دور", "كونسنتريكس", "تابي", "فاين ستون", "رسالة", "experience", "work", "job"],
-            response: "تشمل خبراتي المهنية:<br>• <strong>كونسنتريكس (Boost Mobile):</strong> أخصائي استبقاء العملاء ومستشار الولاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026) للتميز في الاحتفاظ بالعملاء والمبيعات.<br>• <strong>تابي (التقنية المالية):</strong> أخصائي تجربة العملاء والتجارة الإلكترونية (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المشترين وتطوير تجربة المستخدم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي ومخطط استراتيجي للعلامة التجارية (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> منسق المحتوى ومسؤول السيو والويب (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
+            response: "تشمل خبراتي المهنية:<br>• <strong>كونسنتريكس (Boost Mobile):</strong> أخصائي استبقاء العملاء ومستشار الولاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026) للتميز في الاحتفاظ بالعملاء والمبيعات.<br>• <strong>تابي (التقنية المالية):</strong> أخصائي تجربة العملاء والتجارة الإلكترونية (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المشترين وتطوير تجربة المستخدم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي ومخطط استراتيجي للعلامة التجارية (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون، يونيون إير جروب:</strong> منسق محتوى الويب والسيو (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
           },
           {
             name: "concentrix",
@@ -2670,7 +2670,7 @@ Career:
 1. Concentrix — Boost Mobile (Aug 2025–Present): Customer Retention Specialist & Loyalty Consultant. Ranked #1 company-wide. Won 1st Enterprise Loyalty Award 2026. Conducts competitive intelligence, resolves critical cancellations, uses customer profiling and behavioral psychology.
 2. Tabby Technologies — Fintech/BNPL (Apr–Aug 2025): Customer Experience Specialist, E-commerce & BNPL. Supported UAE market from Cairo hub, tracked checkout friction, proposed self-service FAQ improvements, managed concurrent operations.
 3. New Direction Academy — EdTech (Sep 2020–May 2022): Digital Marketer & Brand Strategist. Built brand identity from scratch: logo, tone of voice, color palette. Ran campaigns, built SWOT, buyer personas, customer journey map.
-4. Fine Stone / UnionAire Group (Jul 2019–Feb 2020): Web Content & SEO Coordinator. Restructured products on Odoo CMS, applied consistent copywriting.
+4. Fine Stone, One Stop UnionAire Group (Jul 2019–Feb 2020): Web Content & SEO Coordinator. Restructured products on Odoo CMS, applied consistent copywriting.
 
 Projects:
 • Kyoko Gifts (2026): Complete marketing playbook — Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, 4Ps, Blue Ocean positioning, Push & Pull strategy, Meta + TikTok ad copy, content pillars, sales funnel, moderation guide, 6-category KPI framework.
