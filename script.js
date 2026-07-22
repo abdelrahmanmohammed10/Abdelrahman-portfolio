@@ -1,3 +1,8 @@
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('[Portfolio] Unhandled promise rejection:', event.reason);
+  event.preventDefault();
+});
+
 /* ============================================================
    PORTFOLIO V2 INTERACTIVE ENGINE
    ============================================================ */
@@ -9,6 +14,9 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  // Respect OS-level reduced-motion preference
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let scrollSpeed = 0;
   let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -56,16 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let lenis;
   if (window.Lenis) {
     lenis = new Lenis({
-      lerp: 0.08, // Snappier scroll response
-      wheelMultiplier: 1.15,
+      lerp: 0.14, // Direct, crisp scroll response
+      wheelMultiplier: 1.0,
       infinite: false,
-    });
-
-    // Synchronize Lenis scrolling with ScrollTrigger
-    lenis.on('scroll', () => {
-      if (window.ScrollTrigger) {
-        ScrollTrigger.update();
-      }
     });
 
     // Add Lenis to GSAP's tick loop
@@ -73,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
       window.gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
       });
-      // Disable lagSmoothing in GSAP to prevent visual jumps during smooth scroll
-      window.gsap.ticker.lagSmoothing(0);
+      // Restore standard GSAP lag smoothing to handle minor frame drops smoothly
+      window.gsap.ticker.lagSmoothing(500, 33);
     } else {
       // Fallback requestAnimationFrame loop if GSAP isn't loaded
       const step = (time) => {
@@ -127,32 +128,30 @@ document.addEventListener('DOMContentLoaded', () => {
     window.gsap.set(".hero-cta-row", { opacity: 0, y: 35 });
   }
 
-  // Preloader GSAP Timeline
+  // Preloader GSAP Timeline (High-performance fast transition)
   const runGSAPLoader = () => {
     const tl = window.gsap.timeline({
       defaults: { ease: "power2.out" }
     });
 
     // Make preloader logo visible and scale it
-    tl.to(".preloader-logo", { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(1.5)" });
+    tl.to(".preloader-logo", { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.5)" });
     
-    // Draw orbit path
-    tl.to(".logo-orbit", { strokeDashoffset: 0, duration: 1.5, ease: "power2.inOut" }, "-=0.4");
-    
-    // Draw lines path
-    tl.to(".logo-lines", { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut" }, "-=1.1");
+    // Draw orbit and lines paths
+    tl.to(".logo-orbit", { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, "-=0.2");
+    tl.to(".logo-lines", { strokeDashoffset: 0, duration: 0.5, ease: "power2.inOut" }, "-=0.5");
     
     // Stagger fade-in the stars
-    tl.to(".logo-star", { opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: "back.out(1.8)" }, "-=0.9");
+    tl.to(".logo-star", { opacity: 1, scale: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.8)" }, "-=0.4");
     
     // Fill progress bar to 100%
-    tl.to(".preloader-bar", { width: "100%", duration: 1.4, ease: "power1.inOut" }, "-=1.2");
+    tl.to(".preloader-bar", { width: "100%", duration: 0.6, ease: "power1.inOut" }, "-=0.5");
     
     // Transition preloader card out
-    tl.to(".preloader-content", { scale: 1.05, opacity: 0, duration: 0.6, ease: "power2.in" });
+    tl.to(".preloader-content", { scale: 1.03, opacity: 0, duration: 0.35, ease: "power2.in" });
     
     // Fade out preloader overlay
-    tl.to("#preloader", { opacity: 0, duration: 0.6 }, "-=0.4");
+    tl.to("#preloader", { opacity: 0, duration: 0.35 }, "-=0.2");
     
     // Set preloader to display none
     tl.set("#preloader", { display: "none" });
@@ -164,14 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Parallax background drift-in (scales down and centers)
-    tl.to("#three-planet-canvas, .gradient-mesh", { scale: 1, y: 0, duration: 2.0, ease: "power3.out" }, "-=0.5");
+    tl.to("#three-planet-canvas, .gradient-mesh", { scale: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.3");
     
     // Stagger reveal Hero elements with parallax paths
-    tl.to(".hero-brand-header", { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, "-=1.7");
-    tl.to(".hero-name", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power4.out" }, "-=1.5");
-    tl.to(".hero-title", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power4.out" }, "-=1.3");
-    tl.to(".hero-bio", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power4.out" }, "-=1.2");
-    tl.to(".hero-cta-row", { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, "-=1.0");
+    tl.to(".hero-brand-header", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, "-=0.7");
+    tl.to(".hero-name", { opacity: 1, x: 0, y: 0, duration: 0.6, ease: "power4.out" }, "-=0.6");
+    tl.to(".hero-title", { opacity: 1, x: 0, y: 0, duration: 0.6, ease: "power4.out" }, "-=0.5");
+    tl.to(".hero-bio", { opacity: 1, x: 0, y: 0, duration: 0.6, ease: "power4.out" }, "-=0.5");
+    tl.to(".hero-cta-row", { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.4");
   };
 
   // Fallback native preloader loader sequence
@@ -183,8 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.remove('preloading');
       setTimeout(() => {
         preloader.style.display = 'none';
-      }, 800);
-    }, 1200);
+      }, 300);
+    }, 600);
   };
 
   // Run the loader when the window loads
@@ -192,6 +191,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const startLoader = () => {
     if (loaderStarted) return;
     loaderStarted = true;
+    if (prefersReducedMotion) {
+      const pre = document.getElementById('preloader');
+      if (pre) {
+        pre.style.transition = 'opacity 0.3s ease';
+        pre.style.opacity = '0';
+        pre.style.pointerEvents = 'none';
+        setTimeout(() => {
+          pre.style.display = 'none';
+          document.documentElement.classList.remove('preloading');
+          document.body.classList.remove('preloading');
+        }, 300);
+      }
+      return;
+    }
     if (window.gsap) {
       runGSAPLoader();
     } else {
@@ -200,15 +213,20 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('load', () => {
-    setTimeout(startLoader, 200);
+    setTimeout(startLoader, 50);
   });
 
   // Safety fallback in case load event does not trigger
-  setTimeout(startLoader, 3500);
+  setTimeout(startLoader, 1200);
 
   /* ----- 2. DYNAMIC SCROLL PROGRESS BAR ----- */
   const progressBar = document.createElement('div');
   progressBar.className = 'scroll-progress-bar';
+  progressBar.setAttribute('role', 'progressbar');
+  progressBar.setAttribute('aria-label', 'Page scroll progress');
+  progressBar.setAttribute('aria-valuenow', '0');
+  progressBar.setAttribute('aria-valuemin', '0');
+  progressBar.setAttribute('aria-valuemax', '100');
   document.body.appendChild(progressBar);
 
   // Progress bar logic moved to the combined throttled scroll handler below.
@@ -252,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----- 6. GSAP INTERACTIVE ANIMATION ENGINE (ScrollTrigger) ----- */
-  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+  if (!prefersReducedMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
     // Disable CSS transitions to prevent them from fighting GSAP's frame-by-frame updates
@@ -382,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // 4. Timeline Spine Progress line filling animation
       if (document.querySelector('.timeline-container') && document.querySelector('.spine-progress')) {
         gsap.to(".spine-progress", {
-          height: "100%",
+          scaleY: 1,
           ease: "none",
           scrollTrigger: {
             trigger: ".timeline-container",
@@ -475,11 +493,11 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ----- 8. ACTIVE NAV LINK TRACKING & BACKGROUND PLANETS ----- */
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-spine .spine-dot, .mobile-menu .mob-link');
-  let lastScrollY = window.scrollY || document.documentElement.scrollTop;
   const mobileHeader = document.querySelector('.mobile-header');
   const headerSectionTitle = document.querySelector('.header-section-title');
   const spineDots = Array.from(document.querySelectorAll('.nav-spine .spine-dot'));
   const mobLinks = Array.from(document.querySelectorAll('.mobile-menu .mob-link'));
+  const mobileNavDockLinks = Array.from(document.querySelectorAll('.mobile-nav-dock-link'));
   const currentIndexEl = document.querySelector('.spine-progress-counter .current-index');
 
   const timeline = document.querySelector('.timeline-container');
@@ -565,6 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Progress Bar
         const scrollPercent = cachedDocHeight > 0 ? (scrollTop / cachedDocHeight) * 100 : 0;
         progressBar.style.width = scrollPercent + '%';
+        progressBar.setAttribute('aria-valuenow', Math.round(scrollPercent));
 
         // 2. Active Nav Link Tracking & Background Planets
         let currentActive = '';
@@ -583,8 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update active class on mobile floating nav dock
-        const mobileDockLinks = document.querySelectorAll('.mobile-nav-dock-link');
-        mobileDockLinks.forEach(link => {
+        mobileNavDockLinks.forEach(link => {
           const href = link.getAttribute('href').slice(1);
           if (href === currentActive) {
             link.classList.add('active');
@@ -616,7 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Hide on scroll down, show on scroll up
           if (currentScrollY > 150) {
             const isMenuOverlayActive = mobileNav && mobileNav.classList.contains('active');
-            if (currentScrollY > lastScrollY && !isMenuOverlayActive) {
+            if (currentScrollY > lastScrollTop && !isMenuOverlayActive) {
               mobileHeader.classList.add('header-hidden');
             } else {
               mobileHeader.classList.remove('header-hidden');
@@ -624,7 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             mobileHeader.classList.remove('header-hidden');
           }
-          lastScrollY = currentScrollY;
+          lastScrollTop = currentScrollY;
         }
 
         if (currentActive) {
@@ -1125,7 +1143,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const errMsg = isAr 
           ? 'فشل إرسال الرسالة. يرجى التحقق من اتصالك بالإنترنت أو التواصل مباشرة عبر البريد الإلكتروني abdelrahman.abdelhafez10@gmail.com'
           : 'Transmission failed. Please check your connection or contact abdelrahman.abdelhafez10@gmail.com directly.';
-        alert(errMsg);
+        const formArea = document.querySelector('.contact-form-area') || contactForm;
+        if (formArea) {
+          let errDiv = formArea.querySelector('.form-error-msg');
+          if (!errDiv) {
+            errDiv = document.createElement('p');
+            errDiv.className = 'form-error-msg';
+            errDiv.style.cssText = 'color:#ef4444;font-size:0.875rem;margin-top:0.75rem;text-align:center;';
+            formArea.appendChild(errDiv);
+          }
+          errDiv.textContent = errMsg;
+          errDiv.setAttribute('role', 'alert');
+          setTimeout(() => { if (errDiv) errDiv.textContent = ''; }, 6000);
+        }
       })
       .finally(() => {
         // Reset submit button state
@@ -1213,17 +1243,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const messageInput = document.getElementById('message');
+    const chatInput = document.getElementById('chat-user-input');
     
     if (lang === 'ar') {
       document.title = 'عبد الرحمن عبد الحافظ | استراتيجي تسويق رقمي';
-      if (nameInput) nameInput.placeholder = 'اسمك بالكامل';
+      if (nameInput) nameInput.placeholder = 'اسمك الكريم';
       if (emailInput) emailInput.placeholder = 'بريدك الإلكتروني';
-      if (messageInput) messageInput.placeholder = 'قولي أكتر عن مشروعك...';
+      if (messageInput) messageInput.placeholder = 'أخبرني عن مشروعك...';
+      if (chatInput) chatInput.placeholder = 'اسألني أي شيء...';
     } else {
       document.title = 'Abdelrahman Abdelhafez | Digital Marketing Strategist';
       if (nameInput) nameInput.placeholder = 'Your Name';
       if (emailInput) emailInput.placeholder = 'your@email.com';
       if (messageInput) messageInput.placeholder = 'Tell me about your project...';
+      if (chatInput) chatInput.placeholder = 'Ask me anything...';
     }
   };
 
@@ -1252,8 +1285,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     themeObserver.observe(document.documentElement, { attributes: true });
-    const numStars = window.innerWidth > 768 ? 250 : 120;
-    const numClouds = window.innerWidth > 768 ? 16 : 8; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
+    const numStars = window.innerWidth > 768 ? 180 : 80;
+    const numClouds = window.innerWidth > 768 ? 16 : 6; // High visibility cloud layer across the layout
 
     // Preload original realistic WebP cloud images for light mode (Lazy-loaded)
     const cloudImages = [];
@@ -1306,8 +1339,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const offCtx = offCanvas.getContext('2d');
         
         offCtx.save();
-        // Apply soft ambient drop-shadow filter inside the cached canvas texture once!
-        offCtx.filter = 'drop-shadow(0px 8px 16px rgba(30, 61, 97, 0.08))';
+        // Apply soft medium-tone drop-shadow filter inside the cached canvas texture once!
+        offCtx.filter = 'drop-shadow(0px 10px 20px rgba(30, 61, 97, 0.18))';
         
         // Draw the image centered to leave room for the shadow
         if (img && img.complete && img.naturalWidth > 0) {
@@ -1518,7 +1551,7 @@ document.addEventListener('DOMContentLoaded', () => {
         this.drawY = this.y;
         
         // Setup twinkling with GSAP if available
-        if (typeof gsap !== 'undefined') {
+        if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
           this.twinkle = 0;
           this.twinkleTween = gsap.to(this, {
             twinkle: 0.5,
@@ -1596,17 +1629,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let dx = (this.x + this.offsetX) - mouse.x;
         let dy = (this.y + this.offsetY) - mouse.y;
         let distSq = dx * dx + dy * dy;
-        const maxDist = 220;
+        const maxDist = 320;
         let targetAlpha = this.baseAlpha;
         
         if (distSq < maxDist * maxDist && distSq > 0) {
           let dist = Math.sqrt(distSq);
           let force = (maxDist - dist) / maxDist;
-          // Fast and accurate gravitational grouping pull force
-          let pull = force * 6.8 * (this.z + 0.25);
+          // Responsive gravitational grouping pull force
+          let pull = force * 14.0 * (this.z + 0.25);
           axOffset -= (dx / dist) * pull;
           ayOffset -= (dy / dist) * pull;
-          targetAlpha = Math.min(1.0, this.baseAlpha + force * 0.55);
+          targetAlpha = Math.min(1.0, this.baseAlpha + force * 0.75);
         } else {
           targetAlpha = Math.max(0.1, Math.min(1.0, this.baseAlpha + currentTwinkle));
         }
@@ -1629,31 +1662,36 @@ document.addEventListener('DOMContentLoaded', () => {
         let renderAlpha = Math.max(0.05, Math.min(1.0, this.alpha * (0.65 + currentTwinkle * 0.45)));
         let renderSize = this.z;
 
+        ctx.save();
+        ctx.fillStyle = this.color;
+
         // Ambient glow aura
         if (this.z > 0.85 && renderAlpha > 0.18) {
+          ctx.globalAlpha = renderAlpha * 0.14;
           ctx.beginPath();
           ctx.arc(this.drawX, this.drawY, renderSize * 3.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.14})`;
           ctx.fill();
         }
 
+        ctx.globalAlpha = renderAlpha;
         ctx.beginPath();
         ctx.arc(this.drawX, this.drawY, renderSize, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha})`;
         ctx.fill();
         
         // 4-point color-temperature lens flare spikes for massive stars (subtle crosses)
         if (this.z > 1.15 && renderAlpha > 0.2) {
+          ctx.globalAlpha = renderAlpha * 0.25;
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = 0.5;
           let spikeSize = renderSize * 4.0;
           ctx.beginPath();
           ctx.moveTo(this.drawX - spikeSize, this.drawY);
           ctx.lineTo(this.drawX + spikeSize, this.drawY);
           ctx.moveTo(this.drawX, this.drawY - spikeSize);
           ctx.lineTo(this.drawX, this.drawY + spikeSize);
-          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.2})`;
-          ctx.lineWidth = 0.4;
           ctx.stroke();
         }
+        ctx.restore();
       }
     }
 
@@ -1678,6 +1716,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         this.offsetX = 0;
         this.offsetY = 0;
+        this.targetOffsetX = 0;
+        this.targetOffsetY = 0;
+        this.targetScale = 1.0;
+        this.targetAlpha = this.baseAlpha;
+        this.attractScale = 1.0;
         
         // Spring velocity offset states for elastic cloud physics
         this.vxOffset = 0;
@@ -1693,7 +1736,7 @@ document.addEventListener('DOMContentLoaded', () => {
         this.vx = (0.05 + Math.random() * 0.08) * this.z;
         this.vy = (Math.random() - 0.5) * 0.015 * this.z;
         
-        if (typeof gsap !== 'undefined') {
+        if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
           this.breathXTween = gsap.to(this, {
             breathX: 1.09,
             duration: 3 + Math.random() * 3,
@@ -1752,40 +1795,48 @@ document.addEventListener('DOMContentLoaded', () => {
           this.x = Math.random() * (width + 200) - 100;
         }
         
-        // Mouse repulsion
-        const cx = this.x + this.width / 2;
-        const cy = this.y + this.height / 2;
-        const dx = cx - mouse.x;
-        const dy = cy - mouse.y;
-        const distSq = dx * dx + dy * dy;
-        const maxDist = 380;
-        
-        let targetOffsetX = 0;
-        let targetOffsetY = 0;
-        let targetScaleX = 1;
-        let targetScaleY = 1;
-        let targetAlpha = this.baseAlpha;
-        
-        if (distSq < maxDist * maxDist) {
-          const dist = Math.sqrt(distSq);
-          if (dist > 0) {
-            const force = (maxDist - dist) / maxDist;
-            targetOffsetX = (dx / dist) * force * 110 * this.z;
-            targetOffsetY = (dy / dist) * force * 75 * this.z;
-            const angle = Math.atan2(dy, dx);
-            const stretchAmount = force * 0.24;
-            targetScaleX = 1.0 - stretchAmount * Math.cos(2 * angle);
-            targetScaleY = 1.0 + stretchAmount * Math.cos(2 * angle);
-            targetAlpha = Math.min(1.0, this.baseAlpha + force * 0.18);
+        // === CLOUD MOUSE ATTRACTION — flies toward cursor, collapses near it ===
+        if (!prefersReducedMotion) {
+          const ATTRACT_RADIUS     = 500;
+          const ATTRACT_STRENGTH_X = 220;
+          const ATTRACT_STRENGTH_Y = 140;
+          const COLLAPSE_SCALE     = 0.85;
+          const BRIGHTEN_AMOUNT    = 0.25;
+
+          const cx = this.x + this.width / 2;
+          const cy = this.y + this.height / 2;
+          const dx = cx - mouse.x;
+          const dy = cy - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < ATTRACT_RADIUS && dist > 1 && mouse.x !== -1000) {
+            const proximity = 1 - (dist / ATTRACT_RADIUS);
+            const force = proximity * proximity;
+
+            // Pull TOWARD mouse (negate direction vector)
+            this.targetOffsetX = -(dx / dist) * force * ATTRACT_STRENGTH_X * this.z;
+            this.targetOffsetY = -(dy / dist) * force * ATTRACT_STRENGTH_Y * this.z;
+            this.targetScale   = 1 - (force * (1 - COLLAPSE_SCALE));
+            this.targetAlpha   = this.baseAlpha + force * BRIGHTEN_AMOUNT;
+          } else {
+            this.targetOffsetX = 0;
+            this.targetOffsetY = 0;
+            this.targetScale   = 1.0;
+            this.targetAlpha   = this.baseAlpha;
           }
+        } else {
+          this.targetOffsetX = 0;
+          this.targetOffsetY = 0;
+          this.targetScale   = 1.0;
+          this.targetAlpha   = this.baseAlpha;
         }
-        
-        const speedFactor = 0.026;
-        this.offsetX += (targetOffsetX - this.offsetX) * speedFactor;
-        this.offsetY += (targetOffsetY - this.offsetY) * speedFactor;
-        this.scaleX += (targetScaleX - this.scaleX) * speedFactor;
-        this.scaleY += (targetScaleY - this.scaleY) * speedFactor;
-        this.alpha += (targetAlpha - this.alpha) * speedFactor;
+
+        // Spring interpolation toward target values
+        const LERP = 0.075;
+        this.offsetX      += (this.targetOffsetX - this.offsetX) * LERP;
+        this.offsetY      += (this.targetOffsetY - this.offsetY) * LERP;
+        this.attractScale += (this.targetScale   - this.attractScale) * LERP;
+        this.alpha        += (this.targetAlpha   - this.alpha) * LERP;
       }
 
       draw() {
@@ -1802,8 +1853,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const finalAlpha = Math.max(0.08, Math.min(1.0, this.alpha + alphaBreath)) * this.loadFade;
-        const drawW = this.width * renderBreathX * this.scaleX;
-        const drawH = this.height * renderBreathY * this.scaleY;
+        const drawW = this.width * renderBreathX * this.scaleX * this.attractScale;
+        const drawH = this.height * renderBreathY * this.scaleY * this.attractScale;
         const drawX = this.x + this.offsetX - (drawW - this.width) / 2;
         const drawY = this.y + this.offsetY - (drawH - this.height) / 2;
         
@@ -1873,13 +1924,18 @@ document.addEventListener('DOMContentLoaded', () => {
       isTabVisible = !document.hidden;
       if (isTabVisible) {
         lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-        lastScrollY = lastScrollTop;
         animate();
       }
     });
 
     function animate() {
       if (!isTabVisible) return;
+      
+      // Pause background rendering if modal/drawer overlay is active (body overflow hidden)
+      if (document.body.style.overflow === 'hidden') {
+        requestAnimationFrame(animate);
+        return;
+      }
       
       try {
         ctx.clearRect(0, 0, width, height);
@@ -2548,18 +2604,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       });
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.tag')) return;
-        const drawerId = card.getAttribute('data-drawer');
-        const drawer = document.getElementById(drawerId);
-        if (drawer) {
-          openDrawer(drawer);
-          const expBox = drawer.querySelector('.skill-explanation-box');
-          if (expBox) expBox.classList.remove('visible');
-          const chips = drawer.querySelectorAll('.drawer-skill-chip');
-          chips.forEach(c => c.classList.remove('active'));
-        }
-      });
     });
   };
 
@@ -2576,6 +2620,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatSuggestionsToggle = document.getElementById('chat-suggestions-toggle');
     
     if (!chatTriggerBtn || !chatWindowPanel || !chatMessagesContainer) return;
+
+    chatMessagesContainer.setAttribute('aria-live', 'polite');
+    chatMessagesContainer.setAttribute('aria-atomic', 'false');
+    chatMessagesContainer.setAttribute('aria-relevant', 'additions');
 
     const prefix = 'AIza' + 'Sy';
     const keyParts = [prefix, 'AQ.Ab8RN6LtQNHMzMK', 'UOUUctxKN_igsBXH7r-HX5E', 'ZCiYLlxi7yTA'];
