@@ -631,18 +631,20 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileHeader.classList.remove('show-section-title');
           }
 
-          // Hide on scroll down, show on scroll up
-          if (currentScrollY > 150) {
+          // Hide on scroll down, show on scroll up with 12px scroll delta threshold to prevent micro-flicker
+          const scrollDelta = currentScrollY - lastScrollTop;
+          if (currentScrollY > 200 && Math.abs(scrollDelta) > 12) {
             const isMenuOverlayActive = mobileNav && mobileNav.classList.contains('active');
-            if (currentScrollY > lastScrollTop && !isMenuOverlayActive) {
+            if (scrollDelta > 0 && !isMenuOverlayActive) {
               mobileHeader.classList.add('header-hidden');
             } else {
               mobileHeader.classList.remove('header-hidden');
             }
-          } else {
+            lastScrollTop = currentScrollY;
+          } else if (currentScrollY <= 200) {
             mobileHeader.classList.remove('header-hidden');
+            lastScrollTop = currentScrollY;
           }
-          lastScrollTop = currentScrollY;
         }
 
         if (currentActive) {

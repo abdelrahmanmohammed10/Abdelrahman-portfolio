@@ -5168,25 +5168,29 @@ html.gsap-active .split-reveal-heading {
   .mobile-nav-dock {
     display: flex;
     position: fixed;
-    bottom: 20px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(13, 19, 33, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(13, 19, 33, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 35px;
     padding: 6px 16px;
     gap: 12px;
     z-index: var(--z-dock);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), 0 0 10px rgba(46, 196, 182, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 0 0 15px rgba(46, 196, 182, 0.2);
     align-items: center;
+    animation: floatDockEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes floatDockEnter {
+    from { opacity: 0; transform: translate(-50%, 20px) scale(0.94); }
+    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
   }
 
   html[data-theme="light"] .mobile-nav-dock {
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    box-shadow: 0 8px 32px 0 rgba(30, 61, 97, 0.08), 0 0 10px rgba(8, 102, 92, 0.1);
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 8px 32px 0 rgba(30, 61, 97, 0.12), 0 0 10px rgba(8, 102, 92, 0.15);
   }
 
   .mobile-nav-dock-link {
@@ -5197,7 +5201,23 @@ html.gsap-active .split-reveal-heading {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-nav-dock-link:active {
+    transform: scale(0.90);
+    transition: transform 0.1s ease;
+  }
+
+  /* Drawer Bottom Sheet Drag Handle Indicator */
+  .drawer-drag-handle {
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    margin: 10px auto 14px auto;
+    opacity: 0.6;
   }
 
   .mobile-nav-dock-link svg {
@@ -5225,22 +5245,37 @@ html.gsap-active .split-reveal-heading {
     padding-bottom: 96px !important;
   }
 
-  /* Position chatbot above the floating bottom nav dock */
+  /* Position chatbot above the floating bottom nav dock with safe area support */
   .chat-widget-container {
-    bottom: 90px !important;
-    right: 20px !important;
+    bottom: calc(85px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 16px !important;
+    z-index: var(--z-nav) !important;
   }
   html[lang="ar"] .chat-widget-container {
     right: auto !important;
-    left: 20px !important;
+    left: 16px !important;
   }
   .chat-window-panel {
-    bottom: 90px !important;
-    right: 20px !important;
+    bottom: calc(85px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 16px !important;
+    width: min(380px, calc(100vw - 32px)) !important;
   }
   html[lang="ar"] .chat-window-panel {
-    left: 20px !important;
+    left: 16px !important;
     right: auto !important;
+  }
+
+  /* Rocket Scroll-to-Top Button: Stacks cleanly 14px ABOVE the Chat trigger button (85px + 54px + 14px = 153px) */
+  .scroll-to-top-btn {
+    bottom: calc(153px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 16px !important;
+    width: 44px !important;
+    height: 44px !important;
+    z-index: var(--z-dock) !important;
+  }
+  html[lang="ar"] .scroll-to-top-btn {
+    right: auto !important;
+    left: 16px !important;
   }
 }
 
