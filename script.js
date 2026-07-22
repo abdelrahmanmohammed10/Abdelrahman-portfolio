@@ -1832,7 +1832,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Spring interpolation toward target values
-        const LERP = 0.075;
+        const LERP = 0.22;
         this.offsetX      += (this.targetOffsetX - this.offsetX) * LERP;
         this.offsetY      += (this.targetOffsetY - this.offsetY) * LERP;
         this.attractScale += (this.targetScale   - this.attractScale) * LERP;
@@ -1940,17 +1940,17 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         ctx.clearRect(0, 0, width, height);
         
-        // Smoothly interpolate mouse coordinates for a beautifully damped interaction lag!
+        // Direct & responsive mouse coordinate tracking (removes artificial hover delay)
         if (targetMouse.x === -1000) {
-          mouse.x += (targetMouse.x - mouse.x) * 0.08;
-          mouse.y += (targetMouse.y - mouse.y) * 0.08;
+          mouse.x += (targetMouse.x - mouse.x) * 0.35;
+          mouse.y += (targetMouse.y - mouse.y) * 0.35;
           if (Math.abs(mouse.x - targetMouse.x) < 1) {
             mouse.x = -1000;
             mouse.y = -1000;
           }
         } else {
-          mouse.x += (targetMouse.x - mouse.x) * 0.08;
-          mouse.y += (targetMouse.y - mouse.y) * 0.08;
+          mouse.x += (targetMouse.x - mouse.x) * 0.35;
+          mouse.y += (targetMouse.y - mouse.y) * 0.35;
         }
         
 
