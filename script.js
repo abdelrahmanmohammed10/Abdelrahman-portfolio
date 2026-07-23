@@ -1540,9 +1540,9 @@ document.addEventListener('DOMContentLoaded', () => {
       constructor() {
         this.reset();
         
-        // Setup initial drift speeds (always defined, so coordinate updates never produce NaN!)
-        this.vx = (Math.random() - 0.5) * 0.06 * this.z;
-        this.vy = -Math.random() * 0.06 * this.z - 0.02 * this.z;
+        // Setup initial drift speeds — increased for visible ambient animation without mouse
+        this.vx = (Math.random() - 0.5) * 0.14 * this.z;
+        this.vy = -Math.random() * 0.12 * this.z - 0.04 * this.z;
         
         // Smooth offset targets & velocity states for spring physical interactions
         this.offsetX = 0;
@@ -1734,13 +1734,13 @@ document.addEventListener('DOMContentLoaded', () => {
         this.breathX = 1.0;
         this.breathY = 1.0;
         
-        // Define drift velocity ALWAYS (so updates never produce NaN!)
-        this.vx = (0.05 + Math.random() * 0.08) * this.z;
-        this.vy = (Math.random() - 0.5) * 0.015 * this.z;
+        // Define drift velocity — increased for visible ambient cloud movement without mouse
+        this.vx = (0.12 + Math.random() * 0.14) * this.z;
+        this.vy = (Math.random() - 0.5) * 0.03 * this.z;
         
         if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
           this.breathXTween = gsap.to(this, {
-            breathX: 1.09,
+            breathX: 1.14,
             duration: 3 + Math.random() * 3,
             repeat: -1,
             yoyo: true,
@@ -1749,7 +1749,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           
           this.breathYTween = gsap.to(this, {
-            breathY: 1.09,
+            breathY: 1.12,
             duration: 2.5 + Math.random() * 3,
             repeat: -1,
             yoyo: true,
