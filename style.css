@@ -3954,7 +3954,7 @@ html[data-theme="light"] {
   --color-violet: #6d28d9;        /* Violet */
   --color-violet-rgb: 109, 40, 217;
   --text-primary: #0f172a;        /* Soft Slate-900 (WCAG AAA >= 16:1) */
-  --text-muted: #334155;          /* Slate-700 Muted Text (WCAG AAA >= 7:1) */
+  --text-muted: #1e293b;          /* Slate-800 — stronger body text (11.7:1 contrast on white) */
   --text-dark: #0f172a;           /* Soft Dark */
   --color-navy-rgb: 30, 61, 97;
   --color-navy: #1e3d61;
@@ -4134,11 +4134,11 @@ html[data-theme="light"] .hero-social-links a { border-color: rgba(30,61,97,0.25
 html[data-theme="light"] .hero-social-links a:hover { color: var(--color-cyan); border-color: var(--color-cyan); background: rgba(var(--color-cyan-rgb),0.08); box-shadow: 0 0 12px rgba(var(--color-cyan-rgb),0.2); }
 
 /* ----- HEADINGS / EYEBROW ----- */
-html[data-theme="light"] .eyebrow-split .text { color: var(--color-purple); }
-html[data-theme="light"] .eyebrow-split .line { background: var(--color-purple); }
+html[data-theme="light"] .eyebrow-split .text { color: var(--color-gold); }
+html[data-theme="light"] .eyebrow-split .line { background: var(--color-gold); }
 html[data-theme="light"] .split-reveal-heading { color: var(--text-primary); }
-html[data-theme="light"] .split-reveal-heading em { color: var(--color-cyan); }
-html[data-theme="light"] .split-reveal-heading em::after { background: var(--color-cyan); }
+html[data-theme="light"] .split-reveal-heading em { color: var(--color-gold); }
+html[data-theme="light"] .split-reveal-heading em::after { background: var(--color-gold); }
 html[data-theme="light"] .section-lead { color: var(--text-primary); font-weight: 500; }
 html[data-theme="light"] .about-column-title,
 html[data-theme="light"] .skills-title { color: var(--text-primary); }
