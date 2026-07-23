@@ -5094,6 +5094,8 @@ html[data-theme="light"] .chat-close-btn:hover {
   .cert-download-center,
   .floating-lang-toggle,
   .mobile-header,
+  .mobile-nav-dock,
+  .project-drawer,
   .chat-window-panel,
   .chat-trigger-btn {
     backdrop-filter: none !important;
