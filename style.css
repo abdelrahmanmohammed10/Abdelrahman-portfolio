@@ -3947,18 +3947,18 @@ html[data-theme="light"] {
   --bg-card-hover: rgba(255, 255, 255, 0.98);
   --border-color: rgba(15, 23, 42, 0.08); /* Softer, elegant borders */
   --border-hover: rgba(15, 23, 42, 0.2);
-  --color-gold: #7a5100;          /* Solar Flare light theme shade */
-  --color-cyan: #08665c;          /* Aurora Emerald light theme shade */
-  --color-cyan-rgb: 8, 102, 92;
-  --color-purple: #5b21b6;        /* Violet light shade — brand-compliant */
-  --color-violet: #7c3aed;        /* Violet */
-  --color-violet-rgb: 124, 58, 237;
+  --color-gold: #b45309;          /* Rich Solar Flare Gold (5.02:1 contrast) */
+  --color-cyan: #0f766e;          /* Vibrant Aurora Emerald (5.47:1 contrast) */
+  --color-cyan-rgb: 15, 118, 110;
+  --color-purple: #6d28d9;        /* Rich Brand Violet (7.10:1 contrast) */
+  --color-violet: #6d28d9;        /* Violet */
+  --color-violet-rgb: 109, 40, 217;
   --text-primary: #0f172a;        /* Soft Slate-900 (WCAG AAA >= 16:1) */
   --text-muted: #334155;          /* Slate-700 Muted Text (WCAG AAA >= 7:1) */
   --text-dark: #0f172a;           /* Soft Dark */
   --color-navy-rgb: 30, 61, 97;
   --color-navy: #1e3d61;
-  scrollbar-color: #5b21b6 #f8fafc;
+  scrollbar-color: #6d28d9 #f8fafc;
 }
 
 /* SCROLLBAR */
